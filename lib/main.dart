@@ -16,8 +16,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
 //        primarySwatch: Colors.blue,
-        primaryColor: Colors.black,
-      ),
+          primaryColor: Color(0xff141410),
+          platform: TargetPlatform.iOS),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }

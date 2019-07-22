@@ -4,8 +4,24 @@ import 'news.dart';
 import 'bbs.dart';
 import 'tool.dart';
 import 'my.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:cain_flutter/localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'ProviderModel.dart';
+import 'dart:async';
 
-void main() => runApp(MyApp());
+void main() {
+  final counter = ProviderModel();
+  runApp(
+    Provider.value(
+      child: ChangeNotifierProvider.value(
+        value: counter,
+        child: MyApp(),
+      ),
+    ),
+  );
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -19,6 +35,17 @@ class MyApp extends StatelessWidget {
           primaryColor: Color(0xff141410),
           platform: TargetPlatform.iOS),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        // 自己要补个文件 localizations.dart
+        ChineseCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        //此处
+        const Locale('zh', 'CH'),
+        const Locale('en', 'US'),
+      ],
     );
   }
 }

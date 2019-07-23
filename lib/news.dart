@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class News extends StatefulWidget {
@@ -12,6 +13,14 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
 
   AnimationController animationLoadingController;
   Animation animationLoading;
+
+  List banner = [
+    {'img': 'banner1', 'title': 'App 1.6.2版本上线：模拟器迭代与太古装备展示'},
+    {'img': 'banner2', 'title': '晒成绩，夺头衔！十七赛季全民大秘境挑战赛启动'},
+    {'img': 'banner3', 'title': '暗黑“3”分钟第二十六期：赛季专属巫医散件吹箭'},
+    {'img': 'banner4', 'title': '多玛之书：老圣教军的怀念'},
+    {'img': 'banner5', 'title': '曾经的暗黑破坏神之父，现在怎么样了？'},
+  ];
 
   @override
   void initState() {
@@ -67,21 +76,21 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
           decoration: BoxDecoration(
               image: DecorationImage(
             image: AssetImage('images/img_search.png'),
-            fit: BoxFit.cover,
+            fit: BoxFit.contain,
           )),
           child: Row(
             children: <Widget>[
               Container(
-                  padding: EdgeInsets.only(left: 30),
+                  padding: EdgeInsets.only(left: 20),
                   child: Image.asset(
                     'images/icon_search.png',
-                    width: 20,
+                    width: 16,
                   )),
               Container(
-                padding: EdgeInsets.only(left: 10),
+                padding: EdgeInsets.only(left: 4),
                 child: Text(
                   '搜索关键词',
-                  style: TextStyle(color: Color(0xffB5A88E), fontSize: 16),
+                  style: TextStyle(color: Color(0xffB5A88E), fontSize: 14),
                 ),
               )
             ],
@@ -103,24 +112,57 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
           child: ListView(
             children: <Widget>[
               Container(
+                height: width / 640 * 260,
+                child: Swiper(
+                  itemBuilder: (BuildContext context, int index) {
+                    print(index);
+                    return Stack(
+                      fit: StackFit.expand,
+                      children: <Widget>[
+                        new Image.asset(
+                          "images/${banner[index]['img']}.jpg",
+                          fit: BoxFit.fill,
+                        ),
+                        Positioned(
+                            bottom: 24,
+                            left: 10,
+                            child: Text(
+                              banner[index]['title'],
+                              style: TextStyle(color: Color(0xffF5DA9C)),
+                            ))
+                      ],
+                    );
+                  },
+                  itemCount: banner.length,
+                  pagination: new SwiperPagination(
+                      builder: RectSwiperPaginationBuilder(
+                          size: const Size(22.0, 10.0),
+                          activeSize: const Size(22.0, 10.0),
+                          activeColor: Color(0xffF5DA9C),
+                          color: Color(0x91908C87))),
+//                  control: new SwiperControl(),
+                ),
+              ),
+              Container(
                 color: Colors.greenAccent,
                 height: 1000.0,
               ),
               Container(
                 color: Colors.blue,
                 height: 1000.0,
-              )
+              ),
             ],
           ),
           header: CustomHeader(
-            height: 100,
             refreshStyle: RefreshStyle.Behind,
             builder: (c, m) {
               return Container(
-                height: 200,
                 child: Center(
                   child: Image.asset(
-                      'images/head_loading${animationLoadingController == null ? 1 : (animationLoadingController.value * (8 - 1.01 + 1) + 1).toInt()}.png'),
+                    'images/head_loading${animationLoadingController == null ? 1 : (animationLoadingController.value * (8 - 1.01 + 1) + 1).toInt()}.png',
+                    width: ScreenUtil.getInstance().setWidth(78),
+                    height: ScreenUtil.getInstance().setWidth(84),
+                  ),
                 ),
               );
             },

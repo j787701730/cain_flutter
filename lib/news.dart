@@ -1,24 +1,55 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_easyrefresh/easy_refresh.dart';
-import 'package:flutter_easyrefresh/phoenix_header.dart';
-import 'package:flutter_easyrefresh/phoenix_footer.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class News extends StatefulWidget {
   @override
   _NewsState createState() => _NewsState();
 }
 
-class _NewsState extends State<News> {
+class _NewsState extends State<News> with TickerProviderStateMixin {
+  RefreshController _refreshController = RefreshController();
+
+  AnimationController animationLoadingController;
+  Animation animationLoading;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
   }
 
-  GlobalKey<EasyRefreshState> _easyRefreshKey = new GlobalKey<EasyRefreshState>();
-  GlobalKey<RefreshHeaderState> _headerKey = new GlobalKey<RefreshHeaderState>();
-  GlobalKey<RefreshFooterState> _footerKey = new GlobalKey<RefreshFooterState>();
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _refreshController.dispose();
+    animationLoadingController.dispose();
+  }
+
+  _loading() {
+    animationLoadingController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 2000),
+    );
+    animationLoading = Tween(begin: 0.0, end: 1.0).animate(animationLoadingController);
+    animationLoadingController.addListener(() {
+//      print((animationLoadingController.value * (7 - 1 + 1) + 1).toInt());
+      setState(() {});
+    });
+
+    animationLoadingController.addStatusListener((AnimationStatus status) {
+//      print('new ${animationLoadingController.status}');
+      if (status == AnimationStatus.completed && animationLoadingController != null) {
+        animationLoadingController.reset();
+        animationLoadingController.forward();
+        //当动画在开始处停止再次从头开始执行动画
+      } else if (status == AnimationStatus.dismissed && animationLoadingController != null) {
+        animationLoadingController.forward();
+      }
+    });
+    animationLoadingController.forward();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,37 +90,41 @@ class _NewsState extends State<News> {
       ),
       body: Container(
         color: Color(0xffE8DAC5),
-//          child: EasyRefresh(
-//            key: _easyRefreshKey,
-//            refreshHeader: PhoenixHeader(
-//              key: _headerKey,
-//            ),
-//            refreshFooter: PhoenixFooter(
-//              key: _footerKey,
-//            ),
-        child: ListView(
-          children: <Widget>[
-            Container(
-              height: 1000,
-              child: Center(
-                child: Text('1'),
+        child: SmartRefresher(
+          controller: _refreshController,
+//          onOffsetChange: _onOffsetChange,
+          onRefresh: () async {
+            _loading();
+            await Future.delayed(Duration(milliseconds: 3000));
+            _refreshController.refreshCompleted();
+            animationLoadingController.stop();
+          },
+          child: ListView(
+            children: <Widget>[
+              Container(
+                color: Colors.greenAccent,
+                height: 1000.0,
               ),
-            ),
-          ],
+              Container(
+                color: Colors.blue,
+                height: 1000.0,
+              )
+            ],
+          ),
+          header: CustomHeader(
+            height: 100,
+            refreshStyle: RefreshStyle.Behind,
+            builder: (c, m) {
+              return Container(
+                height: 200,
+                child: Center(
+                  child: Image.asset(
+                      'images/head_loading${(animationLoadingController.value * (8 - 1.01 + 1) + 1).toInt()}.png'),
+                ),
+              );
+            },
+          ),
         ),
-//            onRefresh: () async {
-//              await new Future.delayed(const Duration(seconds: 1), () {
-//                if (!mounted) return;
-////                setState(() {});
-//              });
-//            },
-//            loadMore: () async {
-//              await new Future.delayed(const Duration(seconds: 1), () {
-//                if (!mounted) return;
-////                setState(() {});
-//              });
-//            },
-//          )
       ),
     );
   }

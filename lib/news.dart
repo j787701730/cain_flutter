@@ -17,17 +17,6 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
   void initState() {
     // TODO: implement initState
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    _refreshController.dispose();
-    animationLoadingController.dispose();
-  }
-
-  _loading() {
     animationLoadingController = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: 2000),
@@ -40,14 +29,25 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
 
     animationLoadingController.addStatusListener((AnimationStatus status) {
 //      print('new ${animationLoadingController.status}');
-      if (status == AnimationStatus.completed && animationLoadingController != null) {
+      if (status == AnimationStatus.completed) {
         animationLoadingController.reset();
         animationLoadingController.forward();
         //当动画在开始处停止再次从头开始执行动画
-      } else if (status == AnimationStatus.dismissed && animationLoadingController != null) {
+      } else if (status == AnimationStatus.dismissed) {
         animationLoadingController.forward();
       }
     });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _refreshController.dispose();
+    animationLoadingController.dispose();
+  }
+
+  _loading() {
     animationLoadingController.forward();
   }
 
@@ -95,9 +95,10 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
 //          onOffsetChange: _onOffsetChange,
           onRefresh: () async {
             _loading();
-            await Future.delayed(Duration(milliseconds: 3000));
-            _refreshController.refreshCompleted();
+            await Future.delayed(Duration(milliseconds: 2000));
+            animationLoadingController.reset();
             animationLoadingController.stop();
+            _refreshController.refreshCompleted();
           },
           child: ListView(
             children: <Widget>[
@@ -119,7 +120,7 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
                 height: 200,
                 child: Center(
                   child: Image.asset(
-                      'images/head_loading${(animationLoadingController.value * (8 - 1.01 + 1) + 1).toInt()}.png'),
+                      'images/head_loading${animationLoadingController == null ? 1 : (animationLoadingController.value * (8 - 1.01 + 1) + 1).toInt()}.png'),
                 ),
               );
             },

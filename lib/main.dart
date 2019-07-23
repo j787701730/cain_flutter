@@ -1,20 +1,20 @@
-import 'package:flutter/material.dart';
-import 'package:toast/toast.dart';
-import 'news.dart';
-import 'bbs.dart';
-import 'tool.dart';
-import 'my.dart';
-import 'package:provider/provider.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cain_flutter/localizations.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:provider/provider.dart';
+import 'package:toast/toast.dart';
+
 import 'ProviderModel.dart';
-import 'dart:async';
+import 'bbs.dart';
+import 'my.dart';
+import 'news.dart';
+import 'tool.dart';
 
 void main() {
   final counter = ProviderModel();
   runApp(
-    Provider.value(
+    Provider<String>.value(
+      value: 'cain',
       child: ChangeNotifierProvider.value(
         value: counter,
         child: MyApp(),

@@ -10,7 +10,7 @@ class ProviderModel with ChangeNotifier {
   Color get color => _color;
 
   // 状态栏的背景图
-  String _topBackground = '';
+  String _topBackground = 'title_bar_bg.jpg';
 
   String get topBackground => _topBackground;
 
@@ -24,7 +24,7 @@ class ProviderModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void changeTopBackground(bg) {
+  void changeTopBackground({bg: 'title_bar_bg.jpg'}) {
     _topBackground = bg;
     notifyListeners();
   }

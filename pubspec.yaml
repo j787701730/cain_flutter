@@ -29,6 +29,7 @@ dependencies:
   flutter_screenutil: ^0.5.2
   shared_preferences: ^0.5.3+2
   provider: ^3.0.0+1
+  flutter_easyrefresh: ^1.2.7
 
 dev_dependencies:
   flutter_test:

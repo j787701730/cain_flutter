@@ -106,159 +106,174 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    return WillPopScope(
-        onWillPop: () async {
-          Toast.show("再按一次退出app", context, duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
-          if (_lastPressedAt == null ||
-              DateTime.now().difference(_lastPressedAt) > Duration(seconds: 1)) {
-            //两次点击间隔超过1秒则重新计时
-            _lastPressedAt = DateTime.now();
-            return false;
-          }
-          return true;
-        },
-        child: Scaffold(
+    return Container(
+      decoration: BoxDecoration(
+          image: DecorationImage(
+              alignment: Alignment.topCenter,
+              image: AssetImage('images/${Provider.of<ProviderModel>(context).topBackground}'))),
+      child: WillPopScope(
+          onWillPop: () async {
+            Toast.show("再按一次退出app", context, duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+            if (_lastPressedAt == null ||
+                DateTime.now().difference(_lastPressedAt) > Duration(seconds: 1)) {
+              //两次点击间隔超过1秒则重新计时
+              _lastPressedAt = DateTime.now();
+              return false;
+            }
+            return true;
+          },
+          child: Scaffold(
+            backgroundColor: Colors.transparent,
 //      appBar: AppBar(
 //        title: Text(widget.title),
 //      ),
-          body: nav[_tabIndex],
-          bottomNavigationBar: Theme(
-              data: ThemeData(splashFactory: NoSplashFactory(), highlightColor: Color(0xffff)),
-              child: Container(
-                height: width / 4 * 98 / 186 + 1,
-                decoration: BoxDecoration(
-                    color: Colors.black,
-                    image: DecorationImage(
-                        image: AssetImage('images/icon_pgall_menuebg.png'), fit: BoxFit.cover)),
-                child: BottomNavigationBar(
-                  selectedFontSize: 0,
-                  unselectedFontSize: 0,
-                  showSelectedLabels: false,
-                  showUnselectedLabels: false,
-                  type: BottomNavigationBarType.fixed,
-                  backgroundColor: Color(0x00ffffff),
-                  selectedItemColor: Color(0xffFFDF8E),
-                  unselectedItemColor: Color(0xffB39972),
-                  items: <BottomNavigationBarItem>[
-                    BottomNavigationBarItem(
-                        backgroundColor: Color(0x00ffffff),
-                        icon: Container(
-                          width: width / 4,
-                          child: Stack(
-                            children: <Widget>[
-                              Image.asset(
-                                _tabIndex == 0
-                                    ? 'images/btn_news_hover.png'
-                                    : 'images/btn_news.png',
-                                fit: BoxFit.fitWidth,
-                              ),
-                              Positioned(
-                                  width: width / 4,
-                                  bottom: 0,
-                                  child: Center(
-                                    child: Text(
-                                      '资讯',
-                                      style: TextStyle(
-                                          color: _tabIndex == 0
-                                              ? Color(0xffFFDF8E)
-                                              : Color(0xffB39972),
-                                          fontSize: 10),
-                                    ),
-                                  ))
-                            ],
+            body: nav[_tabIndex],
+            bottomNavigationBar: Theme(
+                data: ThemeData(splashFactory: NoSplashFactory(), highlightColor: Color(0xffff)),
+                child: Container(
+                  height: width / 4 * 98 / 186 + 1,
+                  decoration: BoxDecoration(
+                      color: Colors.black,
+                      image: DecorationImage(
+                          image: AssetImage('images/icon_pgall_menuebg.png'), fit: BoxFit.cover)),
+                  child: BottomNavigationBar(
+                    selectedFontSize: 0,
+                    unselectedFontSize: 0,
+                    showSelectedLabels: false,
+                    showUnselectedLabels: false,
+                    type: BottomNavigationBarType.fixed,
+                    backgroundColor: Color(0x00ffffff),
+                    selectedItemColor: Color(0xffFFDF8E),
+                    unselectedItemColor: Color(0xffB39972),
+                    items: <BottomNavigationBarItem>[
+                      BottomNavigationBarItem(
+                          backgroundColor: Color(0x00ffffff),
+                          icon: Container(
+                            width: width / 4,
+                            child: Stack(
+                              children: <Widget>[
+                                Image.asset(
+                                  _tabIndex == 0
+                                      ? 'images/btn_news_hover.png'
+                                      : 'images/btn_news.png',
+                                  fit: BoxFit.fitWidth,
+                                ),
+                                Positioned(
+                                    width: width / 4,
+                                    bottom: 0,
+                                    child: Center(
+                                      child: Text(
+                                        '资讯',
+                                        style: TextStyle(
+                                            color: _tabIndex == 0
+                                                ? Color(0xffFFDF8E)
+                                                : Color(0xffB39972),
+                                            fontSize: 10),
+                                      ),
+                                    ))
+                              ],
+                            ),
                           ),
-                        ),
-                        title: Text(
-                          '资讯',
-                        )),
-                    BottomNavigationBarItem(
-                        icon: Container(
-                            width: width / 4,
-                            child: Stack(
-                              children: <Widget>[
-                                Image.asset(
-                                  _tabIndex == 1
-                                      ? 'images/btn_bbs_hover.png'
-                                      : 'images/btn_bbs.png',
-                                  fit: BoxFit.fitWidth,
-                                ),
-                                Positioned(
-                                    width: width / 4,
-                                    bottom: 0,
-                                    child: Center(
-                                      child: Text(
-                                        '社区',
-                                        style: TextStyle(
-                                            color: _tabIndex == 1
-                                                ? Color(0xffFFDF8E)
-                                                : Color(0xffB39972),
-                                            fontSize: 10),
-                                      ),
-                                    ))
-                              ],
-                            )),
-                        title: Text('社区')),
-                    BottomNavigationBarItem(
-                        icon: Container(
-                            width: width / 4,
-                            child: Stack(
-                              children: <Widget>[
-                                Image.asset(
-                                  _tabIndex == 2
-                                      ? 'images/btn_tool_hover.png'
-                                      : 'images/btn_tool.png',
-                                  fit: BoxFit.fitWidth,
-                                ),
-                                Positioned(
-                                    width: width / 4,
-                                    bottom: 0,
-                                    child: Center(
-                                      child: Text(
-                                        '工具',
-                                        style: TextStyle(
-                                            color: _tabIndex == 2
-                                                ? Color(0xffFFDF8E)
-                                                : Color(0xffB39972),
-                                            fontSize: 10),
-                                      ),
-                                    ))
-                              ],
-                            )),
-                        title: Text('')),
-                    BottomNavigationBarItem(
-                        icon: Container(
-                            width: width / 4,
-                            child: Stack(
-                              children: <Widget>[
-                                Image.asset(
-                                  _tabIndex == 3 ? 'images/btn_my_hover.png' : 'images/btn_my.png',
-                                  fit: BoxFit.fitWidth,
-                                ),
-                                Positioned(
-                                    width: width / 4,
-                                    bottom: 0,
-                                    child: Center(
-                                      child: Text(
-                                        '我',
-                                        style: TextStyle(
-                                            color: _tabIndex == 3
-                                                ? Color(0xffFFDF8E)
-                                                : Color(0xffB39972),
-                                            fontSize: 10),
-                                      ),
-                                    ))
-                              ],
-                            )),
-                        title: Text('我')),
-                  ],
-                  currentIndex: _tabIndex,
-                  onTap: (index) {
-                    setState(() {
-                      _tabIndex = index;
-                    });
-                  },
-                ),
-              )),
-        ));
+                          title: Text(
+                            '资讯',
+                          )),
+                      BottomNavigationBarItem(
+                          icon: Container(
+                              width: width / 4,
+                              child: Stack(
+                                children: <Widget>[
+                                  Image.asset(
+                                    _tabIndex == 1
+                                        ? 'images/btn_bbs_hover.png'
+                                        : 'images/btn_bbs.png',
+                                    fit: BoxFit.fitWidth,
+                                  ),
+                                  Positioned(
+                                      width: width / 4,
+                                      bottom: 0,
+                                      child: Center(
+                                        child: Text(
+                                          '社区',
+                                          style: TextStyle(
+                                              color: _tabIndex == 1
+                                                  ? Color(0xffFFDF8E)
+                                                  : Color(0xffB39972),
+                                              fontSize: 10),
+                                        ),
+                                      ))
+                                ],
+                              )),
+                          title: Text('社区')),
+                      BottomNavigationBarItem(
+                          icon: Container(
+                              width: width / 4,
+                              child: Stack(
+                                children: <Widget>[
+                                  Image.asset(
+                                    _tabIndex == 2
+                                        ? 'images/btn_tool_hover.png'
+                                        : 'images/btn_tool.png',
+                                    fit: BoxFit.fitWidth,
+                                  ),
+                                  Positioned(
+                                      width: width / 4,
+                                      bottom: 0,
+                                      child: Center(
+                                        child: Text(
+                                          '工具',
+                                          style: TextStyle(
+                                              color: _tabIndex == 2
+                                                  ? Color(0xffFFDF8E)
+                                                  : Color(0xffB39972),
+                                              fontSize: 10),
+                                        ),
+                                      ))
+                                ],
+                              )),
+                          title: Text('')),
+                      BottomNavigationBarItem(
+                          icon: Container(
+                              width: width / 4,
+                              child: Stack(
+                                children: <Widget>[
+                                  Image.asset(
+                                    _tabIndex == 3
+                                        ? 'images/btn_my_hover.png'
+                                        : 'images/btn_my.png',
+                                    fit: BoxFit.fitWidth,
+                                  ),
+                                  Positioned(
+                                      width: width / 4,
+                                      bottom: 0,
+                                      child: Center(
+                                        child: Text(
+                                          '我',
+                                          style: TextStyle(
+                                              color: _tabIndex == 3
+                                                  ? Color(0xffFFDF8E)
+                                                  : Color(0xffB39972),
+                                              fontSize: 10),
+                                        ),
+                                      ))
+                                ],
+                              )),
+                          title: Text('我')),
+                    ],
+                    currentIndex: _tabIndex,
+                    onTap: (index) {
+                      setState(() {
+                        _tabIndex = index;
+                      });
+                      if (index == 3) {
+                        Provider.of<ProviderModel>(context)
+                            .changeTopBackground(bg: 'bg_pgmy_header.jpg');
+                      } else {
+                        Provider.of<ProviderModel>(context).changeTopBackground();
+                      }
+                    },
+                  ),
+                )),
+          )),
+    );
   }
 }

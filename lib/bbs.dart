@@ -7,6 +7,12 @@ class Bbs extends StatefulWidget {
 
 class _BbsState extends State<Bbs> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container();
   }

@@ -33,7 +33,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
 //        primarySwatch: Colors.blue,
           primaryColor: Color(0xff141410),
-          platform: TargetPlatform.iOS),
+          platform: TargetPlatform.iOS,
+          fontFamily: 'SourceHanSansCN',
+          textTheme: TextTheme()),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,

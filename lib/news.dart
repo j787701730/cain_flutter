@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'news_list.dart';
 
 class News extends StatefulWidget {
   @override
@@ -21,101 +22,7 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
     {'img': 'banner4', 'title': '多玛之书：老圣教军的怀念'},
     {'img': 'banner5', 'title': '曾经的暗黑破坏神之父，现在怎么样了？'},
   ];
-
-  List news = [
-    {
-      'imgs': [
-        'new1_1',
-        'new1_2',
-        'new1_3',
-      ],
-      'title': 'App 1.6.2版本上线：模拟器迭代与太古装备展示',
-      'type': '1', // 1 帖子, 0 无
-      'show': '3', // 3 三列, 2 右图, 1 全图
-      'author': '秋仲琉璃子不语',
-      'source': '新崔斯特姆',
-      'num': 119
-    },
-    {
-      'imgs': [
-        'new2',
-      ],
-      'title': '卡达拉的传奇装备回收计划第十六期',
-      'type': '1', // 1 帖子, 0 无
-      'show': '2', // 3 三列, 2 右图, 1 全图
-      'author': '卡达拉',
-      'source': '',
-      'num': 22
-    },
-    {
-      'imgs': [
-        'new3_1',
-        'new3_2',
-        'new3_3',
-      ],
-      'title': '十七赛季国服天梯观察：一骑绝尘棒棒糖，5分通关双黑奥',
-      'type': '1', // 1 帖子, 0 无
-      'show': '3', // 3 三列, 2 右图, 1 全图
-      'author': 'mediumdog',
-      'source': '新崔斯特姆',
-      'num': 119
-    },
-    {
-      'imgs': [
-        'new4',
-      ],
-      'title': '暗黑讲堂vol.3录像回顾：挑战失败的原因就是漏球！',
-      'type': '0', // 1 帖子, 0 无
-      'show': '1', // 3 三列, 2 右图, 1 全图
-      'author': '卡达拉',
-      'source': '',
-      'num': 221
-    },
-    {
-      'imgs': [
-        'new5',
-      ],
-      'title': '暴雪联合创始人Frank Pearce离职，挥别28年暴雪生涯',
-      'type': '0', // 1 帖子, 0 无
-      'show': '1', // 3 三列, 2 右图, 1 全图
-      'author': '卡达拉',
-      'source': '不朽之地',
-      'num': 221
-    },
-    {
-      'imgs': [
-        'new6',
-      ],
-      'title': '天下第一又来了：猎魔人火多重120层实战视频分享',
-      'type': '0', // 1 帖子, 0 无
-      'show': '1', // 3 三列, 2 右图, 1 全图
-      'author': '卡光贼溜的萌新',
-      'source': '探险者工会',
-      'num': 221
-    },
-    {
-      'imgs': [
-        'new7',
-      ],
-      'title': 'Diablo传说·诅咒宝石：崔斯特姆旧事提（上）',
-      'type': '0', // 1 帖子, 0 无
-      'show': '1', // 3 三列, 2 右图, 1 全图
-      'author': '克里斯勇度',
-      'source': '',
-      'num': 21
-    },
-    {
-      'imgs': [
-        'new8',
-      ],
-      'title': '84秒116层！死灵法师魂法队极限速刷展示',
-      'type': '0', // 1 帖子, 0 无
-      'show': '1', // 3 三列, 2 右图, 1 全图
-      'author': '千年小啊黎',
-      'source': '',
-      'num': 221
-    },
-  ];
+  int page = 0;
 
   @override
   void initState() {
@@ -160,6 +67,14 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     ScreenUtil.instance = ScreenUtil(width: 640, height: 1136)..init(context);
+    precacheImage(AssetImage("images/head_loading1.png"), context);
+    precacheImage(AssetImage("images/head_loading2.png"), context);
+    precacheImage(AssetImage("images/head_loading3.png"), context);
+    precacheImage(AssetImage("images/head_loading4.png"), context);
+    precacheImage(AssetImage("images/head_loading5.png"), context);
+    precacheImage(AssetImage("images/head_loading6.png"), context);
+    precacheImage(AssetImage("images/head_loading7.png"), context);
+    precacheImage(AssetImage("images/head_loading8.png"), context);
     return Scaffold(
       backgroundColor: Colors.transparent,
       appBar: AppBar(
@@ -204,13 +119,58 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
             animationLoadingController.stop();
             _refreshController.refreshCompleted();
           },
+          enablePullUp: true,
+          header: CustomHeader(
+            refreshStyle: RefreshStyle.Behind,
+            builder: (c, m) {
+              return Container(
+                child: Center(
+                  child: Image.asset(
+                    'images/head_loading${(animationLoadingController.value * (8 - 1.01 + 1) + 1).toInt()}.png',
+                    width: ScreenUtil.getInstance().setWidth(78),
+                    height: ScreenUtil.getInstance().setWidth(84),
+                  ),
+                ),
+              );
+            },
+          ),
+          footer: CustomFooter(
+            loadStyle: LoadStyle.ShowWhenLoading,
+            builder: (BuildContext context, LoadStatus mode) {
+              Widget body;
+              if (mode == LoadStatus.idle) {
+                body = Text("pull up load");
+              } else if (mode == LoadStatus.loading) {
+//                body =  CupertinoActivityIndicator();
+                body = Text('loading');
+              } else if (mode == LoadStatus.failed) {
+                body = Text("Load Failed!Click retry!");
+              } else {
+                body = Text("No more Data");
+              }
+              return Container(
+                height: 55.0,
+                child: Center(child: body),
+              );
+            },
+          ),
+          onLoading: () async {
+            // monitor network fetch
+            await Future.delayed(Duration(milliseconds: 2000));
+            // if failed,use loadFailed(),if no data return,use LoadNodata()
+//            items.add((items.length+1).toString());
+            if (mounted)
+              setState(() {
+                page = page + 1;
+              });
+            _refreshController.loadComplete();
+          },
           child: ListView(
             children: <Widget>[
               Container(
                 height: width / 640 * 260,
                 child: Swiper(
                   itemBuilder: (BuildContext context, int index) {
-                    print(index);
                     return Stack(
                       fit: StackFit.expand,
                       children: <Widget>[
@@ -221,9 +181,15 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
                         Positioned(
                             bottom: 24,
                             left: 10,
+                            width: width - 20,
                             child: Text(
                               banner[index]['title'],
-                              style: TextStyle(color: Color(0xffF5DA9C)),
+                              style: TextStyle(
+                                  color: Color(0xffF5DA9C),
+                                  fontSize: ScreenUtil.getInstance().setSp(30),
+                                  fontFamily: 'SourceHanSansCN'),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ))
                       ],
                     );
@@ -238,85 +204,8 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
 //                  control: new SwiperControl(),
                 ),
               ),
-              Column(
-                children: news.map<Widget>((item) {
-                  return item['show'] == '2'
-                      ? Container(
-                          child: Row(
-                            children: <Widget>[
-                              Expanded(
-                                  child: Column(
-                                children: <Widget>[
-                                  Wrap(
-                                    children: <Widget>[
-                                      item['type'] == '1'
-                                          ? Container(
-                                              color: Color(0xffCABDA4),
-                                              child: Text(
-                                                '帖子',
-                                                style: TextStyle(color: Color(0xff6A5C41)),
-                                              ),
-                                            )
-                                          : Container(),
-                                      Text(
-                                        item['title'],
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(color: Color(0xff3F311D)),
-                                      )
-                                    ],
-                                  )
-                                ],
-                              )),
-                              Container(
-                                width: width / 3,
-                                child: Image.asset('images/${item['imgs'][0]}.jpg'),
-                              )
-                            ],
-                          ),
-                        )
-                      : Container(
-                          child: Column(
-                            children: <Widget>[
-                              Wrap(
-                                children: <Widget>[
-                                  item['type'] == '1'
-                                      ? Container(
-                                          color: Color(0xffCABDA4),
-                                          child: Text(
-                                            '帖子',
-                                            style: TextStyle(color: Color(0xff6A5C41)),
-                                          ),
-                                        )
-                                      : Container(),
-                                  Text(
-                                    item['title'],
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(color: Color(0xff3F311D)),
-                                  )
-                                ],
-                              )
-                            ],
-                          ),
-                        );
-                }).toList(),
-              )
+              NewsList(page)
             ],
-          ),
-          header: CustomHeader(
-            refreshStyle: RefreshStyle.Behind,
-            builder: (c, m) {
-              return Container(
-                child: Center(
-                  child: Image.asset(
-                    'images/head_loading${animationLoadingController == null ? 1 : (animationLoadingController.value * (8 - 1.01 + 1) + 1).toInt()}.png',
-                    width: ScreenUtil.getInstance().setWidth(78),
-                    height: ScreenUtil.getInstance().setWidth(84),
-                  ),
-                ),
-              );
-            },
           ),
         ),
       ),

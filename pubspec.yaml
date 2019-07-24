@@ -52,6 +52,10 @@ flutter:
   assets:
     - images/
 
+  fonts:
+    - family: SourceHanSansCN
+      fonts:
+        - asset: fonts/SourceHanSansCN-Regular.otf
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

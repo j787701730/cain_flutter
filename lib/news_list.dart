@@ -187,7 +187,7 @@ class _NewsListState extends State<NewsList> {
                       color: Color(0xffC9BBA4), width: ScreenUtil.getInstance().setWidth(1)))),
           child: item['show'] == '2'
               ? Container(
-                  height: ScreenUtil.getInstance().setHeight(60.0 + 76),
+                  height: ScreenUtil.getInstance().setHeight(60.0 + 86),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[

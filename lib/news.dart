@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:flutter_easyrefresh/phoenix_header.dart';
+import 'package:flutter_easyrefresh/phoenix_footer.dart';
 import 'news_list.dart';
 
 class News extends StatefulWidget {
@@ -10,8 +12,9 @@ class News extends StatefulWidget {
 }
 
 class _NewsState extends State<News> with TickerProviderStateMixin {
-  RefreshController _refreshController;
-
+  GlobalKey<EasyRefreshState> _easyRefreshKey = new GlobalKey<EasyRefreshState>();
+  GlobalKey<RefreshHeaderState> _headerKey = new GlobalKey<RefreshHeaderState>();
+  GlobalKey<RefreshFooterState> _footerKey = new GlobalKey<RefreshFooterState>();
   AnimationController animationLoadingController;
   Animation animationLoading;
 
@@ -28,14 +31,13 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _refreshController = RefreshController();
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    _refreshController.dispose();
+
     if (animationLoadingController != null) {
       animationLoadingController.dispose();
     }
@@ -111,108 +113,136 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
         ),
       ),
       body: Container(
-        color: Color(0xffE8DAC5),
-        child: SmartRefresher(
-          controller: _refreshController,
-//          onOffsetChange: _onOffsetChange,
-          onRefresh: () async {
-            _loading();
-            await Future.delayed(Duration(milliseconds: 2000));
-            animationLoadingController.reset();
-            animationLoadingController.stop();
-            _refreshController.refreshCompleted();
-          },
-          enablePullUp: true,
-          header: CustomHeader(
-            refreshStyle: RefreshStyle.Behind,
-            builder: (c, m) {
-              return Container(
-                child: Center(
-                  child: Image.asset(
-                    'images/head_loading${animationLoadingController == null ? 1 : (animationLoadingController.value * (8 - 1.01 + 1) + 1).toInt()}.png',
-                    width: ScreenUtil.getInstance().setWidth(78),
-                    height: ScreenUtil.getInstance().setWidth(84),
+          color: Color(0xffE8DAC5),
+          child: EasyRefresh(
+            key: _easyRefreshKey,
+            behavior: ScrollOverBehavior(),
+            refreshHeader: ClassicsHeader(
+              key: _headerKey,
+              bgColor: Colors.transparent,
+              textColor: Colors.black87,
+              moreInfoColor: Colors.black54,
+              showMore: true,
+            ),
+            refreshFooter: ClassicsFooter(
+              key: _footerKey,
+              bgColor: Colors.transparent,
+              textColor: Colors.black87,
+              moreInfoColor: Colors.black54,
+              showMore: true,
+            ),
+            child: ListView(
+              children: <Widget>[
+                Container(
+                  height: width / 640 * 260,
+                  child: Swiper(
+                    autoplay: true,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Stack(
+                        fit: StackFit.expand,
+                        children: <Widget>[
+                          new Image.asset(
+                            "images/${banner[index]['img']}.jpg",
+                            fit: BoxFit.fill,
+                          ),
+                          Positioned(
+                              bottom: 24,
+                              left: 10,
+                              width: width - 20,
+                              child: Text(
+                                banner[index]['title'],
+                                style: TextStyle(
+                                    color: Color(0xffF5DA9C),
+                                    fontSize: ScreenUtil.getInstance().setSp(30),
+                                    fontFamily: 'SourceHanSansCN'),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ))
+                        ],
+                      );
+                    },
+                    itemCount: banner.length,
+                    pagination: new SwiperPagination(
+                        builder: RectSwiperPaginationBuilder(
+                            size: const Size(22.0, 10.0),
+                            activeSize: const Size(22.0, 10.0),
+                            activeColor: Color(0xffF5DA9C),
+                            color: Color(0x91908C87))),
+//                  control: new SwiperControl(),
                   ),
                 ),
-              );
-            },
-          ),
-          footer: CustomFooter(
-            loadStyle: LoadStyle.ShowWhenLoading,
-            builder: (BuildContext context, LoadStatus mode) {
-              Widget body;
-              if (mode == LoadStatus.idle) {
-                body = Text("pull up load");
-              } else if (mode == LoadStatus.loading) {
-//                body =  CupertinoActivityIndicator();
-                body = Text('loading');
-              } else if (mode == LoadStatus.failed) {
-                body = Text("Load Failed!Click retry!");
-              } else {
-                body = Text("No more Data");
-              }
-              return Container(
-                height: 55.0,
-                child: Center(child: body),
-              );
-            },
-          ),
-          onLoading: () async {
-            // monitor network fetch
-            await Future.delayed(Duration(milliseconds: 2000));
-            // if failed,use loadFailed(),if no data return,use LoadNodata()
-//            items.add((items.length+1).toString());
-            if (mounted)
-              setState(() {
-                page = page + 1;
+                NewsList(page)
+              ],
+            ),
+            onRefresh: () async {
+              await new Future.delayed(const Duration(seconds: 1), () {
+                setState(() {});
               });
-            _refreshController.loadComplete();
-          },
-          child: ListView(
-            children: <Widget>[
-              Container(
-                height: width / 640 * 260,
-                child: Swiper(
-                  autoplay: true,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Stack(
-                      fit: StackFit.expand,
-                      children: <Widget>[
-                        new Image.asset(
-                          "images/${banner[index]['img']}.jpg",
-                          fit: BoxFit.fill,
-                        ),
-                        Positioned(
-                            bottom: 24,
-                            left: 10,
-                            width: width - 20,
-                            child: Text(
-                              banner[index]['title'],
-                              style: TextStyle(
-                                  color: Color(0xffF5DA9C),
-                                  fontSize: ScreenUtil.getInstance().setSp(30),
-                                  fontFamily: 'SourceHanSansCN'),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ))
-                      ],
-                    );
-                  },
-                  itemCount: banner.length,
-                  pagination: new SwiperPagination(
-                      builder: RectSwiperPaginationBuilder(
-                          size: const Size(22.0, 10.0),
-                          activeSize: const Size(22.0, 10.0),
-                          activeColor: Color(0xffF5DA9C),
-                          color: Color(0x91908C87))),
-//                  control: new SwiperControl(),
-                ),
-              ),
-              NewsList(page)
-            ],
+            },
+            loadMore: () async {
+              await new Future.delayed(const Duration(seconds: 1), () {});
+            },
+          )
+
+//        SmartRefresher(
+//          controller: _refreshController,
+////          onOffsetChange: _onOffsetChange,
+//          onRefresh: () async {
+//            _loading();
+//            await Future.delayed(Duration(milliseconds: 2000));
+//            animationLoadingController.reset();
+//            animationLoadingController.stop();
+//            _refreshController.refreshCompleted();
+//          },
+//          enablePullUp: true,
+//          header: CustomHeader(
+//            refreshStyle: RefreshStyle.Behind,
+//            builder: (c, m) {
+//              return Container(
+//                child: Center(
+//                  child: Image.asset(
+//                    'images/head_loading${animationLoadingController == null ? 1 : (animationLoadingController.value * (8 - 1.01 + 1) + 1).toInt()}.png',
+//                    width: ScreenUtil.getInstance().setWidth(78),
+//                    height: ScreenUtil.getInstance().setWidth(84),
+//                  ),
+//                ),
+//              );
+//            },
+//          ),
+//          footer: CustomFooter(
+//            loadStyle: LoadStyle.ShowWhenLoading,
+//            builder: (BuildContext context, LoadStatus mode) {
+//              Widget body;
+//              if (mode == LoadStatus.idle) {
+//                body = Text("pull up load");
+//              } else if (mode == LoadStatus.loading) {
+////                body =  CupertinoActivityIndicator();
+//                body = Text('loading');
+//              } else if (mode == LoadStatus.failed) {
+//                body = Text("Load Failed!Click retry!");
+//              } else {
+//                body = Text("No more Data");
+//              }
+//              return Container(
+//                height: 55.0,
+//                child: Center(child: body),
+//              );
+//            },
+//          ),
+//          onLoading: () async {
+//            // monitor network fetch
+//            await Future.delayed(Duration(milliseconds: 2000));
+//            // if failed,use loadFailed(),if no data return,use LoadNodata()
+////            items.add((items.length+1).toString());
+//            if (mounted)
+//              setState(() {
+//                page = page + 1;
+//              });
+//            _refreshController.loadComplete();
+//          },
+//
+//        ),
           ),
-        ),
-      ),
     );
   }
 }

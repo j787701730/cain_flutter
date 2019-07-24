@@ -10,7 +10,7 @@ class News extends StatefulWidget {
 }
 
 class _NewsState extends State<News> with TickerProviderStateMixin {
-  RefreshController _refreshController = RefreshController();
+  RefreshController _refreshController;
 
   AnimationController animationLoadingController;
   Animation animationLoading;
@@ -28,6 +28,7 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
   void initState() {
     // TODO: implement initState
     super.initState();
+    _refreshController = RefreshController();
   }
 
   @override
@@ -172,6 +173,7 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
               Container(
                 height: width / 640 * 260,
                 child: Swiper(
+                  autoplay: true,
                   itemBuilder: (BuildContext context, int index) {
                     return Stack(
                       fit: StackFit.expand,

@@ -28,6 +28,19 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
   void initState() {
     // TODO: implement initState
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _refreshController.dispose();
+    if (animationLoadingController != null) {
+      animationLoadingController.dispose();
+    }
+  }
+
+  _loading() {
     animationLoadingController = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: 2000),
@@ -48,17 +61,6 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
         animationLoadingController.forward();
       }
     });
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    _refreshController.dispose();
-    animationLoadingController.dispose();
-  }
-
-  _loading() {
     animationLoadingController.forward();
   }
 
@@ -126,7 +128,7 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
               return Container(
                 child: Center(
                   child: Image.asset(
-                    'images/head_loading${(animationLoadingController.value * (8 - 1.01 + 1) + 1).toInt()}.png',
+                    'images/head_loading${animationLoadingController == null ? 1 : (animationLoadingController.value * (8 - 1.01 + 1) + 1).toInt()}.png',
                     width: ScreenUtil.getInstance().setWidth(78),
                     height: ScreenUtil.getInstance().setWidth(84),
                   ),

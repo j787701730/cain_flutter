@@ -106,13 +106,20 @@ class _NewsListState extends State<NewsList> {
       'num': 221
     },
   ];
+  List temp;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    temp = jsonDecode(jsonEncode(news));
+  }
 
   @override
   void didUpdateWidget(NewsList oldWidget) {
     // TODO: implement didUpdateWidget
     super.didUpdateWidget(oldWidget);
     if (oldWidget.page < widget.page) {
-      var temp = jsonDecode(jsonEncode(news));
       setState(() {
         news.addAll(temp);
       });
@@ -264,9 +271,8 @@ class _NewsListState extends State<NewsList> {
                       children: item['imgs'].map<Widget>((img) {
                         return Container(
                           margin: EdgeInsets.only(top: ScreenUtil.getInstance().setHeight(10)),
-                          decoration: BoxDecoration(
-                              color: Colors.blue,
-                              borderRadius: BorderRadius.all(Radius.circular(8))),
+                          decoration:
+                              BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(8))),
                           width: item['imgs'].length == 3
                               ? (width - ScreenUtil.getInstance().setWidth(72)) / 3
                               : width - ScreenUtil.getInstance().setWidth(48),

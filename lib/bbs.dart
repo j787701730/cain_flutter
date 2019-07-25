@@ -211,7 +211,6 @@ class _BbsState extends State<Bbs> with AutomaticKeepAliveClientMixin, TickerPro
                       Wrap(
                         runSpacing: ScreenUtil.getInstance().setWidth(24),
                         children: item['list'].map<Widget>((list) {
-                          print(list['icon']);
                           return Container(
                             decoration: BoxDecoration(
                                 border: Border.all(

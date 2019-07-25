@@ -23,6 +23,61 @@ void main() {
   );
 }
 
+class SplashPage extends StatefulWidget {
+  SplashPage({Key key}) : super(key: key);
+
+  @override
+  _SplashPage createState() => new _SplashPage();
+}
+
+class _SplashPage extends State<SplashPage> {
+  bool isStartHomePage = false;
+
+  @override
+  Widget build(BuildContext context) {
+    precacheImage(AssetImage("images/head_loading1.png"), context);
+    // TODO: implement build
+    return new GestureDetector(
+      onTap: goToHomePage, //设置页面点击事件
+//      child: Image.asset(
+//        "images/iplay_start.jpg",
+//        fit: BoxFit.cover,
+//      ), //此处fit: BoxFit.cover用于拉伸图片,使图片铺满全屏
+      child: Container(
+        color: Color(0xffE8DAC5),
+        child: Center(
+          child: Image.asset('images/head_loading1.png'),
+        ),
+      ),
+    );
+  }
+
+  //页面初始化状态的方法
+  @override
+  void initState() {
+    super.initState();
+    //开启倒计时
+    countDown();
+  }
+
+  void countDown() {
+    //设置倒计时三秒后执行跳转方法
+    var duration = new Duration(milliseconds: 100);
+    new Future.delayed(duration, goToHomePage);
+  }
+
+  void goToHomePage() {
+    //如果页面还未跳转过则跳转页面
+    if (!isStartHomePage) {
+      //跳转主页 且销毁当前页面
+      Navigator.of(context).pushAndRemoveUntil(
+          new MaterialPageRoute(builder: (context) => new MyHomePage()),
+          (Route<dynamic> rout) => false);
+      isStartHomePage = true;
+    }
+  }
+}
+
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -36,7 +91,7 @@ class MyApp extends StatelessWidget {
           platform: TargetPlatform.iOS,
           fontFamily: 'SourceHanSansCN',
           textTheme: TextTheme()),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(),
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
@@ -103,6 +158,21 @@ class _MyHomePageState extends State<MyHomePage> {
   DateTime _lastPressedAt; //上次点击时间
 
   List nav = [News(), Bbs(), Tool(), My()];
+  var _pageController = PageController();
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _pageController.dispose();
+  }
+
+  void _pageChanged(int index) {
+//    print('_pageChanged');
+    setState(() {
+      if (_tabIndex != index) _tabIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -129,7 +199,15 @@ class _MyHomePageState extends State<MyHomePage> {
 //      appBar: AppBar(
 //        title: Text(widget.title),
 //      ),
-            body: nav[_tabIndex],
+            body: PageView.builder(
+                //要点1
+                physics: NeverScrollableScrollPhysics(),
+                //禁止页面左右滑动切换
+                controller: _pageController,
+                onPageChanged: _pageChanged,
+                //回调函数
+                itemCount: nav.length,
+                itemBuilder: (context, index) => nav[index]),
             bottomNavigationBar: Theme(
                 data: ThemeData(splashFactory: NoSplashFactory(), highlightColor: Color(0xffff)),
                 child: Container(
@@ -162,7 +240,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 ),
                                 Positioned(
                                     width: width / 4,
-                                    bottom: 0,
+                                    bottom: 2,
                                     child: Center(
                                       child: Text(
                                         '资讯',
@@ -192,7 +270,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   ),
                                   Positioned(
                                       width: width / 4,
-                                      bottom: 0,
+                                      bottom: 2,
                                       child: Center(
                                         child: Text(
                                           '社区',
@@ -219,7 +297,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   ),
                                   Positioned(
                                       width: width / 4,
-                                      bottom: 0,
+                                      bottom: 2,
                                       child: Center(
                                         child: Text(
                                           '工具',
@@ -246,7 +324,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   ),
                                   Positioned(
                                       width: width / 4,
-                                      bottom: 0,
+                                      bottom: 2,
                                       child: Center(
                                         child: Text(
                                           '我',
@@ -266,6 +344,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       setState(() {
                         _tabIndex = index;
                       });
+                      _pageController.jumpToPage(index);
                       if (index == 3) {
                         Provider.of<ProviderModel>(context)
                             .changeTopBackground(bg: 'bg_pgmy_header.jpg');

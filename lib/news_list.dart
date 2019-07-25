@@ -1,129 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'dart:convert';
 
 class NewsList extends StatefulWidget {
-  final page;
+  final news;
 
-  NewsList(this.page);
+  NewsList(this.news);
 
   @override
   _NewsListState createState() => _NewsListState();
 }
 
 class _NewsListState extends State<NewsList> {
-  List news = [
-    {
-      'imgs': [
-        'new1_1',
-        'new1_2',
-        'new1_3',
-      ],
-      'title': 'App 1.6.2版本上线：模拟器迭代与太古装备展示',
-      'type': '1', // 1 帖子, 0 无
-      'show': '3', // 3 三列, 2 右图, 1 全图
-      'author': '秋仲琉璃子不语',
-      'source': '新崔斯特姆',
-      'num': 119
-    },
-    {
-      'imgs': [
-        'new2',
-      ],
-      'title': '卡达拉的传奇装备回收计划第十六期',
-      'type': '1', // 1 帖子, 0 无
-      'show': '2', // 3 三列, 2 右图, 1 全图
-      'author': '卡达拉',
-      'source': '',
-      'num': 22
-    },
-    {
-      'imgs': [
-        'new3_1',
-        'new3_2',
-        'new3_3',
-      ],
-      'title': '十七赛季国服天梯观察：一骑绝尘棒棒糖，5分通关双黑奥',
-      'type': '1', // 1 帖子, 0 无
-      'show': '3', // 3 三列, 2 右图, 1 全图
-      'author': 'mediumdog',
-      'source': '新崔斯特姆',
-      'num': 119
-    },
-    {
-      'imgs': [
-        'new4',
-      ],
-      'title': '暗黑讲堂vol.3录像回顾：挑战失败的原因就是漏球！',
-      'type': '0', // 1 帖子, 0 无
-      'show': '1', // 3 三列, 2 右图, 1 全图
-      'author': '卡达拉',
-      'source': '',
-      'num': 221
-    },
-    {
-      'imgs': [
-        'new5',
-      ],
-      'title': '暴雪联合创始人Frank Pearce离职，挥别28年暴雪生涯',
-      'type': '0', // 1 帖子, 0 无
-      'show': '1', // 3 三列, 2 右图, 1 全图
-      'author': '卡达拉',
-      'source': '不朽之地',
-      'num': 221
-    },
-    {
-      'imgs': [
-        'new6',
-      ],
-      'title': '天下第一又来了：猎魔人火多重120层实战视频分享',
-      'type': '0', // 1 帖子, 0 无
-      'show': '1', // 3 三列, 2 右图, 1 全图
-      'author': '卡光贼溜的萌新',
-      'source': '探险者工会',
-      'num': 221
-    },
-    {
-      'imgs': [
-        'new7',
-      ],
-      'title': 'Diablo传说·诅咒宝石：崔斯特姆旧事提（上）',
-      'type': '0', // 1 帖子, 0 无
-      'show': '1', // 3 三列, 2 右图, 1 全图
-      'author': '克里斯勇度',
-      'source': '',
-      'num': 21
-    },
-    {
-      'imgs': [
-        'new8',
-      ],
-      'title': '84秒116层！死灵法师魂法队极限速刷展示',
-      'type': '0', // 1 帖子, 0 无
-      'show': '1', // 3 三列, 2 右图, 1 全图
-      'author': '千年小啊黎',
-      'source': '',
-      'num': 221
-    },
-  ];
-  List temp;
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    temp = jsonDecode(jsonEncode(news));
   }
 
   @override
   void didUpdateWidget(NewsList oldWidget) {
     // TODO: implement didUpdateWidget
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.page < widget.page) {
-      setState(() {
-        news.addAll(temp);
-      });
-    }
   }
 
   _title(item) {
@@ -172,7 +69,7 @@ class _NewsListState extends State<NewsList> {
     ScreenUtil.instance = ScreenUtil(width: 640, height: 1136)..init(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: news.map<Widget>((item) {
+      children: widget.news.map<Widget>((item) {
         return Container(
           margin: EdgeInsets.only(
             left: ScreenUtil.getInstance().setWidth(24),

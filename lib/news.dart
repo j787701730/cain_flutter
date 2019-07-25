@@ -1,9 +1,11 @@
+import 'dart:convert';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
-import 'package:flutter_easyrefresh/easy_refresh.dart';
-import 'package:flutter_easyrefresh/phoenix_header.dart';
-import 'package:flutter_easyrefresh/phoenix_footer.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+
 import 'news_list.dart';
 
 class News extends StatefulWidget {
@@ -11,10 +13,9 @@ class News extends StatefulWidget {
   _NewsState createState() => _NewsState();
 }
 
-class _NewsState extends State<News> with TickerProviderStateMixin {
-  GlobalKey<EasyRefreshState> _easyRefreshKey = new GlobalKey<EasyRefreshState>();
-  GlobalKey<RefreshHeaderState> _headerKey = new GlobalKey<RefreshHeaderState>();
-  GlobalKey<RefreshFooterState> _footerKey = new GlobalKey<RefreshFooterState>();
+class _NewsState extends State<News> with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
+  RefreshController _refreshController = RefreshController();
+
   AnimationController animationLoadingController;
   Animation animationLoading;
 
@@ -26,18 +27,129 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
     {'img': 'banner5', 'title': '曾经的暗黑破坏神之父，现在怎么样了？'},
   ];
   int page = 0;
+  bool flag = true;
+
+  List temp = [
+    {
+      'imgs': [
+        'new1_1',
+        'new1_2',
+        'new1_3',
+      ],
+      'title': 'App 1.6.2版本上线：模拟器迭代与太古装备展示',
+      'type': '1', // 1 帖子, 0 无
+      'show': '3', // 3 三列, 2 右图, 1 全图
+      'author': '秋仲琉璃子不语',
+      'source': '新崔斯特姆',
+      'num': 119
+    },
+    {
+      'imgs': [
+        'new2',
+      ],
+      'title': '卡达拉的传奇装备回收计划第十六期',
+      'type': '1', // 1 帖子, 0 无
+      'show': '2', // 3 三列, 2 右图, 1 全图
+      'author': '卡达拉',
+      'source': '',
+      'num': 22
+    },
+    {
+      'imgs': [
+        'new3_1',
+        'new3_2',
+        'new3_3',
+      ],
+      'title': '十七赛季国服天梯观察：一骑绝尘棒棒糖，5分通关双黑奥',
+      'type': '1', // 1 帖子, 0 无
+      'show': '3', // 3 三列, 2 右图, 1 全图
+      'author': 'mediumdog',
+      'source': '新崔斯特姆',
+      'num': 119
+    },
+    {
+      'imgs': [
+        'new4',
+      ],
+      'title': '暗黑讲堂vol.3录像回顾：挑战失败的原因就是漏球！',
+      'type': '0', // 1 帖子, 0 无
+      'show': '1', // 3 三列, 2 右图, 1 全图
+      'author': '卡达拉',
+      'source': '',
+      'num': 221
+    },
+    {
+      'imgs': [
+        'new5',
+      ],
+      'title': '暴雪联合创始人Frank Pearce离职，挥别28年暴雪生涯',
+      'type': '0', // 1 帖子, 0 无
+      'show': '1', // 3 三列, 2 右图, 1 全图
+      'author': '卡达拉',
+      'source': '不朽之地',
+      'num': 221
+    },
+    {
+      'imgs': [
+        'new6',
+      ],
+      'title': '天下第一又来了：猎魔人火多重120层实战视频分享',
+      'type': '0', // 1 帖子, 0 无
+      'show': '1', // 3 三列, 2 右图, 1 全图
+      'author': '卡光贼溜的萌新',
+      'source': '探险者工会',
+      'num': 221
+    },
+    {
+      'imgs': [
+        'new7',
+      ],
+      'title': 'Diablo传说·诅咒宝石：崔斯特姆旧事提（上）',
+      'type': '0', // 1 帖子, 0 无
+      'show': '1', // 3 三列, 2 右图, 1 全图
+      'author': '克里斯勇度',
+      'source': '',
+      'num': 21
+    },
+    {
+      'imgs': [
+        'new8',
+      ],
+      'title': '84秒116层！死灵法师魂法队极限速刷展示',
+      'type': '0', // 1 帖子, 0 无
+      'show': '1', // 3 三列, 2 右图, 1 全图
+      'author': '千年小啊黎',
+      'source': '',
+      'num': 221
+    },
+  ];
+  List news = [];
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    news = jsonDecode(jsonEncode(temp));
+    _ajax();
+  }
+
+  _ajax() async {
+    await Future.delayed(Duration(seconds: 2), () {
+      setState(() {
+        flag = false;
+      });
+      print('_ajax');
+    });
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-
+    _refreshController.dispose();
     if (animationLoadingController != null) {
       animationLoadingController.dispose();
     }
@@ -69,6 +181,7 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     ScreenUtil.instance = ScreenUtil(width: 640, height: 1136)..init(context);
@@ -113,136 +226,120 @@ class _NewsState extends State<News> with TickerProviderStateMixin {
         ),
       ),
       body: Container(
-          color: Color(0xffE8DAC5),
-          child: EasyRefresh(
-            key: _easyRefreshKey,
-            behavior: ScrollOverBehavior(),
-            refreshHeader: ClassicsHeader(
-              key: _headerKey,
-              bgColor: Colors.transparent,
-              textColor: Colors.black87,
-              moreInfoColor: Colors.black54,
-              showMore: true,
-            ),
-            refreshFooter: ClassicsFooter(
-              key: _footerKey,
-              bgColor: Colors.transparent,
-              textColor: Colors.black87,
-              moreInfoColor: Colors.black54,
-              showMore: true,
-            ),
-            child: ListView(
-              children: <Widget>[
-                Container(
-                  height: width / 640 * 260,
-                  child: Swiper(
-                    autoplay: true,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Stack(
-                        fit: StackFit.expand,
-                        children: <Widget>[
-                          new Image.asset(
-                            "images/${banner[index]['img']}.jpg",
-                            fit: BoxFit.fill,
-                          ),
-                          Positioned(
-                              bottom: 24,
-                              left: 10,
-                              width: width - 20,
-                              child: Text(
-                                banner[index]['title'],
-                                style: TextStyle(
-                                    color: Color(0xffF5DA9C),
-                                    fontSize: ScreenUtil.getInstance().setSp(30),
-                                    fontFamily: 'SourceHanSansCN'),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ))
-                        ],
-                      );
-                    },
-                    itemCount: banner.length,
-                    pagination: new SwiperPagination(
-                        builder: RectSwiperPaginationBuilder(
-                            size: const Size(22.0, 10.0),
-                            activeSize: const Size(22.0, 10.0),
-                            activeColor: Color(0xffF5DA9C),
-                            color: Color(0x91908C87))),
-//                  control: new SwiperControl(),
-                  ),
+        color: Color(0xffE8DAC5),
+        child: flag
+            ? Center(
+                child: Image.asset('images/head_loading1.png'),
+              )
+            : SmartRefresher(
+                controller: _refreshController,
+//          onOffsetChange: _onOffsetChange,
+                onRefresh: () async {
+                  _loading();
+                  await Future.delayed(Duration(milliseconds: 2000));
+                  if (mounted)
+                    setState(() {
+                      news = jsonDecode(jsonEncode(temp));
+                    });
+                  animationLoadingController.reset();
+                  animationLoadingController.stop();
+                  _refreshController.refreshCompleted();
+                },
+                enablePullUp: true,
+                header: CustomHeader(
+                  refreshStyle: RefreshStyle.Behind,
+                  builder: (c, m) {
+                    return Container(
+                      child: Center(
+                        child: Image.asset(
+                          'images/head_loading${animationLoadingController == null ? 1 : (animationLoadingController.value * (8 - 1.01 + 1) + 1).toInt()}.png',
+                          width: ScreenUtil.getInstance().setWidth(78),
+                          height: ScreenUtil.getInstance().setWidth(84),
+                        ),
+                      ),
+                    );
+                  },
                 ),
-                NewsList(page)
-              ],
-            ),
-            onRefresh: () async {
-              await new Future.delayed(const Duration(seconds: 1), () {
-                setState(() {});
-              });
-            },
-            loadMore: () async {
-              await new Future.delayed(const Duration(seconds: 1), () {});
-            },
-          )
-
-//        SmartRefresher(
-//          controller: _refreshController,
-////          onOffsetChange: _onOffsetChange,
-//          onRefresh: () async {
-//            _loading();
-//            await Future.delayed(Duration(milliseconds: 2000));
-//            animationLoadingController.reset();
-//            animationLoadingController.stop();
-//            _refreshController.refreshCompleted();
-//          },
-//          enablePullUp: true,
-//          header: CustomHeader(
-//            refreshStyle: RefreshStyle.Behind,
-//            builder: (c, m) {
-//              return Container(
-//                child: Center(
-//                  child: Image.asset(
-//                    'images/head_loading${animationLoadingController == null ? 1 : (animationLoadingController.value * (8 - 1.01 + 1) + 1).toInt()}.png',
-//                    width: ScreenUtil.getInstance().setWidth(78),
-//                    height: ScreenUtil.getInstance().setWidth(84),
-//                  ),
-//                ),
-//              );
-//            },
-//          ),
-//          footer: CustomFooter(
-//            loadStyle: LoadStyle.ShowWhenLoading,
-//            builder: (BuildContext context, LoadStatus mode) {
-//              Widget body;
-//              if (mode == LoadStatus.idle) {
-//                body = Text("pull up load");
-//              } else if (mode == LoadStatus.loading) {
-////                body =  CupertinoActivityIndicator();
-//                body = Text('loading');
-//              } else if (mode == LoadStatus.failed) {
-//                body = Text("Load Failed!Click retry!");
-//              } else {
-//                body = Text("No more Data");
-//              }
-//              return Container(
-//                height: 55.0,
-//                child: Center(child: body),
-//              );
-//            },
-//          ),
-//          onLoading: () async {
-//            // monitor network fetch
-//            await Future.delayed(Duration(milliseconds: 2000));
-//            // if failed,use loadFailed(),if no data return,use LoadNodata()
-////            items.add((items.length+1).toString());
-//            if (mounted)
-//              setState(() {
-//                page = page + 1;
-//              });
-//            _refreshController.loadComplete();
-//          },
-//
-//        ),
-          ),
+                footer: CustomFooter(
+                  loadStyle: LoadStyle.ShowWhenLoading,
+                  builder: (BuildContext context, LoadStatus mode) {
+                    Widget body;
+                    if (mode == LoadStatus.idle) {
+                      body = Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[CupertinoActivityIndicator(), Text('   载入中...')],
+                      );
+                    } else if (mode == LoadStatus.loading) {
+                      body = Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[CupertinoActivityIndicator(), Text('   载入中...')],
+                      );
+                    } else if (mode == LoadStatus.failed) {
+                      body = Text("Load Failed!Click retry!");
+                    } else {
+                      body = Text("No more Data");
+                    }
+                    return Container(
+                      height: 60.0,
+                      child: Center(child: body),
+                    );
+                  },
+                ),
+                onLoading: () async {
+                  // monitor network fetch
+                  await Future.delayed(Duration(milliseconds: 2000));
+                  // if failed,use loadFailed(),if no data return,use LoadNodata()
+                  if (mounted)
+                    setState(() {
+                      news.addAll(temp);
+                    });
+                  _refreshController.loadComplete();
+                },
+                child: ListView(
+                  children: <Widget>[
+                    Container(
+                      height: width / 640 * 260,
+                      child: Swiper(
+                        autoplay: true,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Stack(
+                            fit: StackFit.expand,
+                            children: <Widget>[
+                              new Image.asset(
+                                "images/${banner[index]['img']}.jpg",
+                                fit: BoxFit.fill,
+                              ),
+                              Positioned(
+                                  bottom: 24,
+                                  left: 10,
+                                  width: width - 20,
+                                  child: Text(
+                                    banner[index]['title'],
+                                    style: TextStyle(
+                                        color: Color(0xffF5DA9C),
+                                        fontSize: ScreenUtil.getInstance().setSp(30),
+                                        fontFamily: 'SourceHanSansCN'),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ))
+                            ],
+                          );
+                        },
+                        itemCount: banner.length,
+                        pagination: new SwiperPagination(
+                            builder: RectSwiperPaginationBuilder(
+                                size: const Size(22.0, 10.0),
+                                activeSize: const Size(22.0, 10.0),
+                                activeColor: Color(0xffF5DA9C),
+                                color: Color(0x91908C87))),
+//                  control: new SwiperControl(),
+                      ),
+                    ),
+                    NewsList(news)
+                  ],
+                ),
+              ),
+      ),
     );
   }
 }

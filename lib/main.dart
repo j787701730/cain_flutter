@@ -181,6 +181,7 @@ class _MyHomePageState extends State<MyHomePage> {
     double height = MediaQuery.of(context).size.height;
     return Container(
       decoration: BoxDecoration(
+          color: Color(0xffE8DAC5),
           image: DecorationImage(
               alignment: Alignment.topCenter,
               image: AssetImage('images/${Provider.of<ProviderModel>(context).topBackground}'))),

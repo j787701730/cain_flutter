@@ -169,9 +169,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _pageChanged(int index) {
 //    print('_pageChanged');
-    setState(() {
-      if (_tabIndex != index) _tabIndex = index;
-    });
+    if (mounted)
+      setState(() {
+        if (_tabIndex != index) _tabIndex = index;
+      });
   }
 
   @override
@@ -341,9 +342,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     ],
                     currentIndex: _tabIndex,
                     onTap: (index) {
-                      setState(() {
-                        _tabIndex = index;
-                      });
+                      if (mounted)
+                        setState(() {
+                          _tabIndex = index;
+                        });
                       _pageController.jumpToPage(index);
                       if (index == 3) {
                         Provider.of<ProviderModel>(context)

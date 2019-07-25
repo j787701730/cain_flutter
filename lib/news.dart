@@ -138,10 +138,10 @@ class _NewsState extends State<News> with AutomaticKeepAliveClientMixin, TickerP
 
   _ajax() async {
     await Future.delayed(Duration(seconds: 2), () {
-      setState(() {
-        flag = false;
-      });
-      print('_ajax');
+      if (mounted)
+        setState(() {
+          flag = false;
+        });
     });
   }
 
@@ -163,7 +163,7 @@ class _NewsState extends State<News> with AutomaticKeepAliveClientMixin, TickerP
     animationLoading = Tween(begin: 0.0, end: 1.0).animate(animationLoadingController);
     animationLoadingController.addListener(() {
 //      print((animationLoadingController.value * (7 - 1 + 1) + 1).toInt());
-      setState(() {});
+      if (mounted) setState(() {});
     });
 
     animationLoadingController.addStatusListener((AnimationStatus status) {

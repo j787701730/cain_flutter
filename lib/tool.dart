@@ -96,7 +96,9 @@ class _ToolState extends State<Tool> with AutomaticKeepAliveClientMixin, TickerP
         backgroundColor: Colors.transparent,
         elevation: 0,
         titleSpacing: 0,
-        title: Text('工具'),
+        title: Text('工具',style: TextStyle(
+          color: Color(0xffFFDF8E)
+        ),),
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -191,9 +193,10 @@ class _ToolState extends State<Tool> with AutomaticKeepAliveClientMixin, TickerP
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Image.asset('images/tools_add_icon.png'),
+                          Image.asset('images/tools_add_icon.png',
+                          width: ScreenUtil.getInstance().setWidth(84),),
                           Text(
-                            '   登录并绑定英雄，即可查看天梯成绩',
+                            '  登录并绑定英雄，即可查看天梯成绩',
                             style: TextStyle(
                                 fontSize: ScreenUtil.getInstance().setSp(26),
                                 color: Color(0xff3D2F1B)),
@@ -241,9 +244,10 @@ class _ToolState extends State<Tool> with AutomaticKeepAliveClientMixin, TickerP
                                 child: Row(
                                   children: <Widget>[
                                     Image.asset(
-                                        'images/tools_${(strongest.indexOf(item) + 1)}_ic.png'),
+                                        'images/tools_${(strongest.indexOf(item) + 1)}_ic.png',
+                                    width: ScreenUtil.getInstance().setWidth(24),),
                                     Text(
-                                      '  ${item['type']}',
+                                      ' ${item['type']}',
                                       style: TextStyle(
                                           fontSize: ScreenUtil.getInstance().setSp(26),
                                           color: Color(0xff6A5C41)),
@@ -307,7 +311,8 @@ class _ToolState extends State<Tool> with AutomaticKeepAliveClientMixin, TickerP
                             children: <Widget>[
                               Row(
                                 children: <Widget>[
-                                  Image.asset('images/${item['icon']}.png'),
+                                  Image.asset('images/${item['icon']}.png',
+                                  width: ScreenUtil.getInstance().setWidth(72),),
                                   Text(
                                     item['name'],
                                     style: TextStyle(

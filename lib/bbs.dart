@@ -119,7 +119,7 @@ class _BbsState extends State<Bbs> with AutomaticKeepAliveClientMixin, TickerPro
           decoration: BoxDecoration(
               image: DecorationImage(
             image: AssetImage('images/img_search.png'),
-            fit: BoxFit.contain,
+            fit: BoxFit.fill,
           )),
           child: Row(
             children: <Widget>[

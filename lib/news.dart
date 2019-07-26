@@ -1,11 +1,14 @@
 import 'dart:convert';
 
+import 'package:cain_flutter/ProviderModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+import 'news_content.dart';
 import 'news_list.dart';
 
 class News extends StatefulWidget {
@@ -204,7 +207,7 @@ class _NewsState extends State<News> with AutomaticKeepAliveClientMixin, TickerP
           decoration: BoxDecoration(
               image: DecorationImage(
             image: AssetImage('images/img_search.png'),
-            fit: BoxFit.contain,
+            fit: BoxFit.fill,
           )),
           child: Row(
             children: <Widget>[
@@ -305,9 +308,20 @@ class _NewsState extends State<News> with AutomaticKeepAliveClientMixin, TickerP
                           return Stack(
                             fit: StackFit.expand,
                             children: <Widget>[
-                              new Image.asset(
-                                "images/${banner[index]['img']}.jpg",
-                                fit: BoxFit.fill,
+                              GestureDetector(
+                                onTap: () {
+                                  Provider.of<ProviderModel>(context)
+                                      .changeTopBackground();
+                                  Navigator.push(
+                                    context,
+                                    new MaterialPageRoute(
+                                        builder: (context) => new NewsContent({'type': '1'})),
+                                  );
+                                },
+                                child: Image.asset(
+                                  "images/${banner[index]['img']}.jpg",
+                                  fit: BoxFit.fill,
+                                ),
                               ),
                               Positioned(
                                   bottom: 24,

@@ -133,7 +133,7 @@ class _NewsState extends State<News> with AutomaticKeepAliveClientMixin, TickerP
 
   @override
   void initState() {
-    // TODO: implement initState
+
     super.initState();
     news = jsonDecode(jsonEncode(temp));
     _ajax();
@@ -150,7 +150,6 @@ class _NewsState extends State<News> with AutomaticKeepAliveClientMixin, TickerP
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _refreshController.dispose();
     if (animationLoadingController != null) {

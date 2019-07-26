@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+
+import 'sky_ladder_ist.dart';
 
 class Tool extends StatefulWidget {
   @override
@@ -36,7 +37,6 @@ class _ToolState extends State<Tool> with AutomaticKeepAliveClientMixin, TickerP
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _ajax();
   }
@@ -52,7 +52,6 @@ class _ToolState extends State<Tool> with AutomaticKeepAliveClientMixin, TickerP
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _refreshController.dispose();
     if (animationLoadingController != null) {
@@ -96,9 +95,10 @@ class _ToolState extends State<Tool> with AutomaticKeepAliveClientMixin, TickerP
         backgroundColor: Colors.transparent,
         elevation: 0,
         titleSpacing: 0,
-        title: Text('工具',style: TextStyle(
-          color: Color(0xffFFDF8E)
-        ),),
+        title: Text(
+          '工具',
+          style: TextStyle(color: Color(0xffFFDF8E)),
+        ),
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -137,48 +137,56 @@ class _ToolState extends State<Tool> with AutomaticKeepAliveClientMixin, TickerP
                 ),
                 child: ListView(
                   children: <Widget>[
-                    Container(
-                      padding: EdgeInsets.only(
-                          left: ScreenUtil.getInstance().setWidth(24),
-                          right: ScreenUtil.getInstance().setWidth(24),
-                          top: ScreenUtil.getInstance().setHeight(30),
-                          bottom: ScreenUtil.getInstance().setHeight(30)),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Container(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Image.asset(
-                                  'images/tools_user_time.png',
-                                  width: ScreenUtil.getInstance().setWidth(24),
-                                ),
-                                Text(
-                                  '  更新时间:  ${now.year}/${now.month}/${now.day} ${now.hour}:${now.minute}',
-                                  style: TextStyle(
-                                      fontSize: ScreenUtil.getInstance().setSp(22),
-                                      color: Color(0xff6F6146)),
-                                )
-                              ],
-                            ),
-                          ),
-                          Container(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Text('天梯榜详情',
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          new MaterialPageRoute(builder: (context) => new SkyLadderList({})),
+                        );
+                      },
+                      child: Container(
+                        padding: EdgeInsets.only(
+                            left: ScreenUtil.getInstance().setWidth(24),
+                            right: ScreenUtil.getInstance().setWidth(24),
+                            top: ScreenUtil.getInstance().setHeight(30),
+                            bottom: ScreenUtil.getInstance().setHeight(30)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Container(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Image.asset(
+                                    'images/tools_user_time.png',
+                                    width: ScreenUtil.getInstance().setWidth(24),
+                                  ),
+                                  Text(
+                                    '  更新时间:  ${now.year}/${now.month}/${now.day} ${now.hour}:${now.minute}',
                                     style: TextStyle(
                                         fontSize: ScreenUtil.getInstance().setSp(22),
-                                        color: Color(0xffB51610))),
-                                Image.asset(
-                                  'images/tools_next.png',
-                                  width: ScreenUtil.getInstance().setWidth(22),
-                                )
-                              ],
+                                        color: Color(0xff6F6146)),
+                                  )
+                                ],
+                              ),
                             ),
-                          )
-                        ],
+                            Container(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Text('天梯榜详情',
+                                      style: TextStyle(
+                                          fontSize: ScreenUtil.getInstance().setSp(22),
+                                          color: Color(0xffB51610))),
+                                  Image.asset(
+                                    'images/tools_next.png',
+                                    width: ScreenUtil.getInstance().setWidth(22),
+                                  )
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                     Container(
@@ -193,8 +201,10 @@ class _ToolState extends State<Tool> with AutomaticKeepAliveClientMixin, TickerP
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Image.asset('images/tools_add_icon.png',
-                          width: ScreenUtil.getInstance().setWidth(84),),
+                          Image.asset(
+                            'images/tools_add_icon.png',
+                            width: ScreenUtil.getInstance().setWidth(84),
+                          ),
                           Text(
                             '  登录并绑定英雄，即可查看天梯成绩',
                             style: TextStyle(
@@ -244,8 +254,9 @@ class _ToolState extends State<Tool> with AutomaticKeepAliveClientMixin, TickerP
                                 child: Row(
                                   children: <Widget>[
                                     Image.asset(
-                                        'images/tools_${(strongest.indexOf(item) + 1)}_ic.png',
-                                    width: ScreenUtil.getInstance().setWidth(24),),
+                                      'images/tools_${(strongest.indexOf(item) + 1)}_ic.png',
+                                      width: ScreenUtil.getInstance().setWidth(24),
+                                    ),
                                     Text(
                                       ' ${item['type']}',
                                       style: TextStyle(
@@ -311,8 +322,10 @@ class _ToolState extends State<Tool> with AutomaticKeepAliveClientMixin, TickerP
                             children: <Widget>[
                               Row(
                                 children: <Widget>[
-                                  Image.asset('images/${item['icon']}.png',
-                                  width: ScreenUtil.getInstance().setWidth(72),),
+                                  Image.asset(
+                                    'images/${item['icon']}.png',
+                                    width: ScreenUtil.getInstance().setWidth(72),
+                                  ),
                                   Text(
                                     item['name'],
                                     style: TextStyle(

@@ -1,8 +1,6 @@
-import 'package:cain_flutter/ProviderModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class NewsContent extends StatefulWidget {
@@ -47,7 +45,6 @@ class _NewsContentState extends State<NewsContent> with TickerProviderStateMixin
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _ajax();
     _listController.addListener(() {
@@ -68,7 +65,6 @@ class _NewsContentState extends State<NewsContent> with TickerProviderStateMixin
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _refreshController.dispose();
     _listController.dispose();
@@ -111,17 +107,15 @@ class _NewsContentState extends State<NewsContent> with TickerProviderStateMixin
           color: Color(0xffE8DAC5),
           image: DecorationImage(
               alignment: Alignment.topCenter,
-              image: AssetImage('images/${Provider.of<ProviderModel>(context).topBackground}'))),
+              image: AssetImage('images/title_bar_bg.jpg'))),
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          // type: 1=> 帖子 0 => 其他
           backgroundColor: Colors.transparent,
           elevation: 0,
           titleSpacing: 0,
           leading: GestureDetector(
             onTap: () {
-              Provider.of<ProviderModel>(context).changeTopBackground();
               Navigator.of(context).pop();
             },
             child: Container(
@@ -157,6 +151,42 @@ class _NewsContentState extends State<NewsContent> with TickerProviderStateMixin
             )
                 : Text(''),
           ),
+          // type: 1=> 帖子 0 => 其他
+          actions: <Widget>[
+            widget.props['type'] == '1'
+                ? Row(
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.only(
+                      left: ScreenUtil.getInstance().setWidth(8),
+                      right: ScreenUtil.getInstance().setWidth(8),
+                      top: ScreenUtil.getInstance().setHeight(0),
+                      bottom: ScreenUtil.getInstance().setHeight(2)),
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                          color: Color(0xffF4DA9C),
+                          width: ScreenUtil.getInstance().setWidth(1)),
+                      borderRadius: BorderRadius.all(Radius.circular(6))),
+                  child: Text(
+                    '只看楼主',
+                    style: TextStyle(
+                      color: Color(0xffF4DA9C),
+                      fontSize: ScreenUtil.getInstance().setSp(22),
+                    ),
+                  ),
+                ),
+                Container(
+                    padding: EdgeInsets.only(
+                        left: ScreenUtil.getInstance().setWidth(20),
+                        right: ScreenUtil.getInstance().setWidth(20)),
+                    child: Image.asset(
+                      'images/icon_title_more.png',
+                      width: ScreenUtil.getInstance().setWidth(56),
+                    ))
+              ],
+            )
+                : SizedBox()
+          ],
         ),
         body: Stack(
           fit: StackFit.expand,

@@ -64,13 +64,11 @@ class _BbsState extends State<Bbs> with AutomaticKeepAliveClientMixin, TickerPro
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _refreshController.dispose();
     if (animationLoadingController != null) {

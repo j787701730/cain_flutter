@@ -36,7 +36,6 @@ class _SplashPage extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     precacheImage(AssetImage("images/head_loading1.png"), context);
-    // TODO: implement build
     return new GestureDetector(
       onTap: goToHomePage, //设置页面点击事件
 //      child: Image.asset(
@@ -162,7 +161,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _pageController.dispose();
   }

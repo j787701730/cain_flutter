@@ -15,14 +15,7 @@ class NewsList extends StatefulWidget {
 class _NewsListState extends State<NewsList> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-  }
-
-  @override
-  void didUpdateWidget(NewsList oldWidget) {
-    // TODO: implement didUpdateWidget
-    super.didUpdateWidget(oldWidget);
   }
 
   _title(item) {

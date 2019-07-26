@@ -557,7 +557,10 @@ class _NewsContentState extends State<NewsContent> with TickerProviderStateMixin
                                       fontSize: ScreenUtil.getInstance().setSp(22)),
                                 ),
                               ),
-                              commentsLayout()
+                              commentsLayout(),
+                              Container(
+                                height: ScreenUtil.getInstance().setHeight(24),
+                              )
                             ],
                           ),
                         ),

@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'sky_ladder_list.dart';
+import 'simulator.dart';
 
 class Tool extends StatefulWidget {
   @override
@@ -107,7 +108,10 @@ class _ToolState extends State<Tool> with AutomaticKeepAliveClientMixin, TickerP
                 image: AssetImage('images/fragment_tools_bg.jpg'), fit: BoxFit.cover)),
         child: flag
             ? Center(
-                child: Image.asset('images/head_loading1.png',width: ScreenUtil.getInstance().setWidth(78),),
+                child: Image.asset(
+                  'images/head_loading1.png',
+                  width: ScreenUtil.getInstance().setWidth(78),
+                ),
               )
             : SmartRefresher(
                 controller: _refreshController,
@@ -238,7 +242,7 @@ class _ToolState extends State<Tool> with AutomaticKeepAliveClientMixin, TickerP
                       runSpacing: ScreenUtil.getInstance().setWidth(20),
                       children: strongest.map<Widget>((item) {
                         return GestureDetector(
-                          onTap: (){
+                          onTap: () {
                             Navigator.push(
                               context,
                               new MaterialPageRoute(builder: (context) => new SkyLadderList({})),
@@ -308,61 +312,71 @@ class _ToolState extends State<Tool> with AutomaticKeepAliveClientMixin, TickerP
                     ),
                     Column(
                       children: tools.map<Widget>((item) {
-                        return Container(
-                          margin: EdgeInsets.only(
-                            bottom: ScreenUtil.getInstance().setHeight(20),
-                            left: ScreenUtil.getInstance().setHeight(24),
-                            right: ScreenUtil.getInstance().setHeight(24),
-                          ),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                                color: Color(0xffB5A88E),
-                                width: ScreenUtil.getInstance().setWidth(1)),
-                            color: Color(0xffD0C4AC),
-                          ),
-                          padding: EdgeInsets.only(
-                              left: ScreenUtil.getInstance().setWidth(14),
-                              right: ScreenUtil.getInstance().setWidth(14),
-                              top: ScreenUtil.getInstance().setWidth(8),
-                              bottom: ScreenUtil.getInstance().setWidth(8)),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Row(
-                                children: <Widget>[
-                                  Image.asset(
-                                    'images/${item['icon']}.png',
-                                    width: ScreenUtil.getInstance().setWidth(72),
-                                  ),
-                                  Text(
-                                    item['name'],
-                                    style: TextStyle(
-                                        fontSize: ScreenUtil.getInstance().setSp(26),
-                                        color: Color(0xff6A5C41)),
-                                  )
-                                ],
-                              ),
-                              Row(
-                                children: <Widget>[
-                                  Text(
-                                    '${item['desc']}',
-                                    style: TextStyle(
-                                        fontSize: ScreenUtil.getInstance().setSp(22),
-                                        color: Color(0xff998C72)),
-                                  ),
-                                  item['state'] == '1'
-                                      ? Container(
-                                          margin: EdgeInsets.only(
-                                              left: ScreenUtil.getInstance().setWidth(10)),
-                                          child: Image.asset(
-                                            'images/btn_pgbbs_details_page2.png',
-                                            width: ScreenUtil.getInstance().setWidth(14),
-                                          ),
-                                        )
-                                      : SizedBox()
-                                ],
-                              )
-                            ],
+                        return GestureDetector(
+                          onTap: () {
+                            if (tools.indexOf(item) == 0) {
+                              Navigator.push(
+                                context,
+                                new MaterialPageRoute(builder: (context) => new Simulator({})),
+                              );
+                            }
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(
+                              bottom: ScreenUtil.getInstance().setHeight(20),
+                              left: ScreenUtil.getInstance().setHeight(24),
+                              right: ScreenUtil.getInstance().setHeight(24),
+                            ),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: Color(0xffB5A88E),
+                                  width: ScreenUtil.getInstance().setWidth(1)),
+                              color: Color(0xffD0C4AC),
+                            ),
+                            padding: EdgeInsets.only(
+                                left: ScreenUtil.getInstance().setWidth(14),
+                                right: ScreenUtil.getInstance().setWidth(14),
+                                top: ScreenUtil.getInstance().setWidth(8),
+                                bottom: ScreenUtil.getInstance().setWidth(8)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Row(
+                                  children: <Widget>[
+                                    Image.asset(
+                                      'images/${item['icon']}.png',
+                                      width: ScreenUtil.getInstance().setWidth(72),
+                                    ),
+                                    Text(
+                                      item['name'],
+                                      style: TextStyle(
+                                          fontSize: ScreenUtil.getInstance().setSp(26),
+                                          color: Color(0xff6A5C41)),
+                                    )
+                                  ],
+                                ),
+                                Row(
+                                  children: <Widget>[
+                                    Text(
+                                      '${item['desc']}',
+                                      style: TextStyle(
+                                          fontSize: ScreenUtil.getInstance().setSp(22),
+                                          color: Color(0xff998C72)),
+                                    ),
+                                    item['state'] == '1'
+                                        ? Container(
+                                            margin: EdgeInsets.only(
+                                                left: ScreenUtil.getInstance().setWidth(10)),
+                                            child: Image.asset(
+                                              'images/btn_pgbbs_details_page2.png',
+                                              width: ScreenUtil.getInstance().setWidth(14),
+                                            ),
+                                          )
+                                        : SizedBox()
+                                  ],
+                                )
+                              ],
+                            ),
                           ),
                         );
                       }).toList(),

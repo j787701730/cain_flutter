@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'news_content.dart';
 
 class BbsContent extends StatefulWidget {
   final props;
@@ -156,116 +157,124 @@ class _BbsContentState extends State<BbsContent> with TickerProviderStateMixin {
   ];
 
   _contentCon(item) {
-    return Container(
-      padding: EdgeInsets.only(
-          left: ScreenUtil.getInstance().setWidth(24),
-          right: ScreenUtil.getInstance().setWidth(24),
-          top: ScreenUtil.getInstance().setHeight(24),
-          bottom: ScreenUtil.getInstance().setHeight(24)),
-      decoration: BoxDecoration(
-          border: Border(
-              bottom: BorderSide(
-                  color: Color(0xffC9BBA4), width: ScreenUtil.getInstance().setWidth(1)))),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          RichText(
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            text: TextSpan(children: <TextSpan>[
-              item['is_hot'] == 1
-                  ? TextSpan(
-                      text: ' 热 ',
-                      style: TextStyle(
-                          color: Color(0xffF4DA9C),
-                          backgroundColor: Color(0xffB51610),
-                          fontSize: ScreenUtil.getInstance().setSp(22),
-                          fontFamily: 'SourceHanSansCN'))
-                  : TextSpan(text: ''),
-              item['is_hot'] == 1 ? TextSpan(text: '  ') : TextSpan(text: ''),
-              item['is_essence'] == 1
-                  ? TextSpan(
-                      text: ' 精 ',
-                      style: TextStyle(
-                          color: Color(0xffF4DA9C),
-                          backgroundColor: Color(0xffE79222),
-                          fontSize: ScreenUtil.getInstance().setSp(22),
-                          fontFamily: 'SourceHanSansCN'))
-                  : TextSpan(),
-              item['is_essence'] == 1 ? TextSpan(text: '  ') : TextSpan(text: ''),
-              TextSpan(
-                text: '${item['title']}',
-                style: TextStyle(
-                  color: Color(0xff3F311D),
-                  fontSize: ScreenUtil.getInstance().setSp(30),
-                  fontFamily: 'SourceHanSansCN',
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          new MaterialPageRoute(builder: (context) => new NewsContent({})),
+        );
+      },
+      child: Container(
+        padding: EdgeInsets.only(
+            left: ScreenUtil.getInstance().setWidth(24),
+            right: ScreenUtil.getInstance().setWidth(24),
+            top: ScreenUtil.getInstance().setHeight(24),
+            bottom: ScreenUtil.getInstance().setHeight(24)),
+        decoration: BoxDecoration(
+            border: Border(
+                bottom: BorderSide(
+                    color: Color(0xffC9BBA4), width: ScreenUtil.getInstance().setWidth(1)))),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            RichText(
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              text: TextSpan(children: <TextSpan>[
+                item['is_hot'] == 1
+                    ? TextSpan(
+                        text: ' 热 ',
+                        style: TextStyle(
+                            color: Color(0xffF4DA9C),
+                            backgroundColor: Color(0xffB51610),
+                            fontSize: ScreenUtil.getInstance().setSp(22),
+                            fontFamily: 'SourceHanSansCN'))
+                    : TextSpan(text: ''),
+                item['is_hot'] == 1 ? TextSpan(text: '  ') : TextSpan(text: ''),
+                item['is_essence'] == 1
+                    ? TextSpan(
+                        text: ' 精 ',
+                        style: TextStyle(
+                            color: Color(0xffF4DA9C),
+                            backgroundColor: Color(0xffE79222),
+                            fontSize: ScreenUtil.getInstance().setSp(22),
+                            fontFamily: 'SourceHanSansCN'))
+                    : TextSpan(),
+                item['is_essence'] == 1 ? TextSpan(text: '  ') : TextSpan(text: ''),
+                TextSpan(
+                  text: '${item['title']}',
+                  style: TextStyle(
+                    color: Color(0xff3F311D),
+                    fontSize: ScreenUtil.getInstance().setSp(30),
+                    fontFamily: 'SourceHanSansCN',
+                  ),
+                )
+              ]),
+            ),
+            Container(
+              height: ScreenUtil.getInstance().setHeight(46),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Expanded(
+                  child: Row(
+                    children: <Widget>[
+                      Image.asset(
+                        'images/ic_editor.png',
+                        width: ScreenUtil.getInstance().setWidth(24),
+                      ),
+                      Container(
+                        width: ScreenUtil.getInstance().setWidth(6),
+                      ),
+                      Text(
+                        item['author'],
+                        style: TextStyle(
+                            color: Color(0xff6A5C41), fontSize: ScreenUtil.getInstance().setSp(22)),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      )
+                    ],
+                  ),
                 ),
-              )
-            ]),
-          ),
-          Container(
-            height: ScreenUtil.getInstance().setHeight(46),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Expanded(
-                child: Row(
-                  children: <Widget>[
-                    Image.asset(
-                      'images/ic_editor.png',
-                      width: ScreenUtil.getInstance().setWidth(24),
-                    ),
-                    Container(
-                      width: ScreenUtil.getInstance().setWidth(6),
-                    ),
-                    Text(
-                      item['author'],
-                      style: TextStyle(
-                          color: Color(0xff6A5C41), fontSize: ScreenUtil.getInstance().setSp(22)),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                child: Row(
-                  children: <Widget>[
-                    Image.asset(
-                      'images/icon_bbs_time.png',
-                      width: ScreenUtil.getInstance().setWidth(24),
-                    ),
-                    Container(
-                      width: ScreenUtil.getInstance().setWidth(6),
-                    ),
-                    Text(
-                      item['create_date'],
-                      style: TextStyle(
-                          color: Color(0xffB5A88E), fontSize: ScreenUtil.getInstance().setSp(22)),
-                    ),
-                    Container(
-                      width: ScreenUtil.getInstance().setWidth(60),
-                    ),
-                    Image.asset(
-                      'images/ic_news_list_comment.png',
-                      width: ScreenUtil.getInstance().setWidth(24),
-                    ),
-                    Container(
-                      width: ScreenUtil.getInstance().setWidth(6),
-                    ),
-                    Text(
-                      '${item['visits']}',
-                      style: TextStyle(
-                          color: Color(0xffB5A88E), fontSize: ScreenUtil.getInstance().setSp(22)),
-                    )
-                  ],
-                ),
-              )
-            ],
-          )
-        ],
+                Container(
+                  child: Row(
+                    children: <Widget>[
+                      Image.asset(
+                        'images/icon_bbs_time.png',
+                        width: ScreenUtil.getInstance().setWidth(24),
+                      ),
+                      Container(
+                        width: ScreenUtil.getInstance().setWidth(6),
+                      ),
+                      Text(
+                        item['create_date'],
+                        style: TextStyle(
+                            color: Color(0xffB5A88E), fontSize: ScreenUtil.getInstance().setSp(22)),
+                      ),
+                      Container(
+                        width: ScreenUtil.getInstance().setWidth(60),
+                      ),
+                      Image.asset(
+                        'images/ic_news_list_comment.png',
+                        width: ScreenUtil.getInstance().setWidth(24),
+                      ),
+                      Container(
+                        width: ScreenUtil.getInstance().setWidth(6),
+                      ),
+                      Text(
+                        '${item['visits']}',
+                        style: TextStyle(
+                            color: Color(0xffB5A88E), fontSize: ScreenUtil.getInstance().setSp(22)),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
@@ -781,7 +790,7 @@ class _BbsContentState extends State<BbsContent> with TickerProviderStateMixin {
               : Positioned(
                   left: 0,
                   top: 0,
-                  height: MediaQuery.of(context).padding.top+56,
+                  height: MediaQuery.of(context).padding.top + 56,
                   width: width,
                   child: Container(
                     decoration: BoxDecoration(

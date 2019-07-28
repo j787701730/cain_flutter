@@ -237,53 +237,61 @@ class _ToolState extends State<Tool> with AutomaticKeepAliveClientMixin, TickerP
                     Wrap(
                       runSpacing: ScreenUtil.getInstance().setWidth(20),
                       children: strongest.map<Widget>((item) {
-                        return Container(
-                          width: (width - ScreenUtil.getInstance().setWidth(72)) / 2,
-                          margin: EdgeInsets.only(left: ScreenUtil.getInstance().setWidth(24)),
-                          padding: EdgeInsets.all(
-                            ScreenUtil.getInstance().setWidth(15),
-                          ),
-                          decoration: BoxDecoration(
-                              border: Border.all(color: Color(0xffB5A88E)),
-                              borderRadius: BorderRadius.all(Radius.circular(6))),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Container(
-                                child: Row(
-                                  children: <Widget>[
-                                    Image.asset(
-                                      'images/tools_${(strongest.indexOf(item) + 1)}_ic.png',
-                                      width: ScreenUtil.getInstance().setWidth(24),
-                                    ),
-                                    Text(
-                                      ' ${item['type']}',
-                                      style: TextStyle(
-                                          fontSize: ScreenUtil.getInstance().setSp(26),
-                                          color: Color(0xff6A5C41)),
-                                    )
-                                  ],
+                        return GestureDetector(
+                          onTap: (){
+                            Navigator.push(
+                              context,
+                              new MaterialPageRoute(builder: (context) => new SkyLadderList({})),
+                            );
+                          },
+                          child: Container(
+                            width: (width - ScreenUtil.getInstance().setWidth(72)) / 2,
+                            margin: EdgeInsets.only(left: ScreenUtil.getInstance().setWidth(24)),
+                            padding: EdgeInsets.all(
+                              ScreenUtil.getInstance().setWidth(15),
+                            ),
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Color(0xffB5A88E)),
+                                borderRadius: BorderRadius.all(Radius.circular(6))),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Container(
+                                  child: Row(
+                                    children: <Widget>[
+                                      Image.asset(
+                                        'images/tools_${(strongest.indexOf(item) + 1)}_ic.png',
+                                        width: ScreenUtil.getInstance().setWidth(24),
+                                      ),
+                                      Text(
+                                        ' ${item['type']}',
+                                        style: TextStyle(
+                                            fontSize: ScreenUtil.getInstance().setSp(26),
+                                            color: Color(0xff6A5C41)),
+                                      )
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              Container(
-                                height: ScreenUtil.getInstance().setHeight(24.0 * 3 + 30),
-                                child: Text(
-                                  item['role'],
-                                  style: TextStyle(
-                                      color: Color(0xff96886E),
-                                      fontSize: ScreenUtil.getInstance().setSp(24)),
+                                Container(
+                                  height: ScreenUtil.getInstance().setHeight(24.0 * 3 + 30),
+                                  child: Text(
+                                    item['role'],
+                                    style: TextStyle(
+                                        color: Color(0xff96886E),
+                                        fontSize: ScreenUtil.getInstance().setSp(24)),
+                                  ),
                                 ),
-                              ),
-                              Container(
-                                child: Text(
-                                  '${item['floor']}层',
-                                  style: TextStyle(
-                                      color: Color(0xffB51610),
-                                      fontSize: ScreenUtil.getInstance().setSp(36)),
-                                ),
-                              )
-                            ],
+                                Container(
+                                  child: Text(
+                                    '${item['floor']}层',
+                                    style: TextStyle(
+                                        color: Color(0xffB51610),
+                                        fontSize: ScreenUtil.getInstance().setSp(36)),
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         );
                       }).toList(),

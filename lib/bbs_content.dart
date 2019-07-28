@@ -21,25 +21,254 @@ class _BbsContentState extends State<BbsContent> with TickerProviderStateMixin {
   ScrollController _listController = ScrollController();
 
   bool flag = true;
-  Map content = {
-    'title': 'App 1.6.2版本上线：模拟器迭代与太古装备展示',
-    'author': '秋仲琉璃子不语',
-    'create_date': '5个小时前',
-    'avatar': 'default_avatar.png',
-    'level': '',
-    'visits': 9527,
-    'imgs': [
-      'new1_1',
-      'new1_2',
-      'new1_3',
-      'new2',
-      'new3_1',
-      'new3_2',
-      'new3_3',
-      'new4',
-      'new5',
-    ],
-  };
+  bool fixed = true;
+  int _tabIndex = 0;
+  List content = [
+    {
+      'title': '打假，这是个假的',
+      'author': '秋仲琉璃子不语',
+      'create_date': '5个小时前',
+      'avatar': 'default_avatar.png',
+      'visits': 9527,
+      'is_hot': 1,
+      'is_essence': 0
+    },
+    {
+      'title': '填坑完毕：精英怪及秘境守卫技能伤害查询表2.4.1版（4月27日小更新）',
+      'author': '秋仲琉璃子不语',
+      'create_date': '5个小时前',
+      'avatar': 'default_avatar.png',
+      'visits': 9527,
+      'is_hot': 1,
+      'is_essence': 1
+    },
+    {
+      'title': '耐玩，让暗黑3找到自己的游戏灵魂------写在暗黑3夺魂之镰资料片前',
+      'author': '秋仲琉璃子不语',
+      'create_date': '5个小时前',
+      'avatar': 'default_avatar.png',
+      'visits': 9527,
+      'is_hot': 0,
+      'is_essence': 1
+    },
+    {
+      'title': '［新手试水］［独家翻译］凯恩之书 全卷',
+      'author': '秋仲琉璃子不语',
+      'create_date': '5个小时前',
+      'avatar': 'default_avatar.png',
+      'visits': 9527,
+      'is_hot': 0,
+      'is_essence': 0
+    },
+    {
+      'title': '打假，这是个假的',
+      'author': '秋仲琉璃子不语',
+      'create_date': '5个小时前',
+      'avatar': 'default_avatar.png',
+      'visits': 9527,
+      'is_hot': 1,
+      'is_essence': 0
+    },
+    {
+      'title': '填坑完毕：精英怪及秘境守卫技能伤害查询表2.4.1版（4月27日小更新）',
+      'author': '秋仲琉璃子不语',
+      'create_date': '5个小时前',
+      'avatar': 'default_avatar.png',
+      'visits': 9527,
+      'is_hot': 1,
+      'is_essence': 1
+    },
+    {
+      'title': '耐玩，让暗黑3找到自己的游戏灵魂------写在暗黑3夺魂之镰资料片前',
+      'author': '秋仲琉璃子不语',
+      'create_date': '5个小时前',
+      'avatar': 'default_avatar.png',
+      'visits': 9527,
+      'is_hot': 0,
+      'is_essence': 1
+    },
+    {
+      'title': '［新手试水］［独家翻译］凯恩之书 全卷',
+      'author': '秋仲琉璃子不语',
+      'create_date': '5个小时前',
+      'avatar': 'default_avatar.png',
+      'visits': 9527,
+      'is_hot': 0,
+      'is_essence': 0
+    },
+  ];
+
+  List content2 = [
+    {
+      'title': '你可能还不知道的暗黑3常用小技巧，多年经验和大部分人都不知道的冷知识大百科',
+      'author': '秋仲琉璃子不语',
+      'create_date': '5个小时前',
+      'avatar': 'default_avatar.png',
+      'visits': 9527,
+      'is_hot': 1,
+      'is_essence': 0
+    },
+    {
+      'title': '献给那些准备传奇幻化的朋友，传奇造型独特性调查（多图）已更新',
+      'author': '秋仲琉璃子不语',
+      'create_date': '5个小时前',
+      'avatar': 'default_avatar.png',
+      'visits': 9527,
+      'is_hot': 1,
+      'is_essence': 1
+    },
+    {
+      'title': '事了拂衣，挥手兹去，网路无声，吾思有痕。',
+      'author': '秋仲琉璃子不语',
+      'create_date': '5个小时前',
+      'avatar': 'default_avatar.png',
+      'visits': 9527,
+      'is_hot': 0,
+      'is_essence': 1
+    },
+    {
+      'title': '你可能还不知道的暗黑3常用小技巧，多年经验和大部分人都不知道的冷知识大百科',
+      'author': '秋仲琉璃子不语',
+      'create_date': '5个小时前',
+      'avatar': 'default_avatar.png',
+      'visits': 9527,
+      'is_hot': 1,
+      'is_essence': 0
+    },
+    {
+      'title': '献给那些准备传奇幻化的朋友，传奇造型独特性调查（多图）已更新',
+      'author': '秋仲琉璃子不语',
+      'create_date': '5个小时前',
+      'avatar': 'default_avatar.png',
+      'visits': 9527,
+      'is_hot': 1,
+      'is_essence': 1
+    },
+    {
+      'title': '事了拂衣，挥手兹去，网路无声，吾思有痕。',
+      'author': '秋仲琉璃子不语',
+      'create_date': '5个小时前',
+      'avatar': 'default_avatar.png',
+      'visits': 9527,
+      'is_hot': 0,
+      'is_essence': 1
+    },
+  ];
+
+  _contentCon(item) {
+    return Container(
+      padding: EdgeInsets.only(
+          left: ScreenUtil.getInstance().setWidth(24),
+          right: ScreenUtil.getInstance().setWidth(24),
+          top: ScreenUtil.getInstance().setHeight(24),
+          bottom: ScreenUtil.getInstance().setHeight(24)),
+      decoration: BoxDecoration(
+          border: Border(
+              bottom: BorderSide(
+                  color: Color(0xffC9BBA4), width: ScreenUtil.getInstance().setWidth(1)))),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          RichText(
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            text: TextSpan(children: <TextSpan>[
+              item['is_hot'] == 1
+                  ? TextSpan(
+                      text: ' 热 ',
+                      style: TextStyle(
+                          color: Color(0xffF4DA9C),
+                          backgroundColor: Color(0xffB51610),
+                          fontSize: ScreenUtil.getInstance().setSp(22),
+                          fontFamily: 'SourceHanSansCN'))
+                  : TextSpan(text: ''),
+              item['is_hot'] == 1 ? TextSpan(text: '  ') : TextSpan(text: ''),
+              item['is_essence'] == 1
+                  ? TextSpan(
+                      text: ' 精 ',
+                      style: TextStyle(
+                          color: Color(0xffF4DA9C),
+                          backgroundColor: Color(0xffE79222),
+                          fontSize: ScreenUtil.getInstance().setSp(22),
+                          fontFamily: 'SourceHanSansCN'))
+                  : TextSpan(),
+              item['is_essence'] == 1 ? TextSpan(text: '  ') : TextSpan(text: ''),
+              TextSpan(
+                text: '${item['title']}',
+                style: TextStyle(
+                  color: Color(0xff3F311D),
+                  fontSize: ScreenUtil.getInstance().setSp(30),
+                  fontFamily: 'SourceHanSansCN',
+                ),
+              )
+            ]),
+          ),
+          Container(
+            height: ScreenUtil.getInstance().setHeight(46),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Expanded(
+                child: Row(
+                  children: <Widget>[
+                    Image.asset(
+                      'images/ic_editor.png',
+                      width: ScreenUtil.getInstance().setWidth(24),
+                    ),
+                    Container(
+                      width: ScreenUtil.getInstance().setWidth(6),
+                    ),
+                    Text(
+                      item['author'],
+                      style: TextStyle(
+                          color: Color(0xff6A5C41), fontSize: ScreenUtil.getInstance().setSp(22)),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    )
+                  ],
+                ),
+              ),
+              Container(
+                child: Row(
+                  children: <Widget>[
+                    Image.asset(
+                      'images/icon_bbs_time.png',
+                      width: ScreenUtil.getInstance().setWidth(24),
+                    ),
+                    Container(
+                      width: ScreenUtil.getInstance().setWidth(6),
+                    ),
+                    Text(
+                      item['create_date'],
+                      style: TextStyle(
+                          color: Color(0xffB5A88E), fontSize: ScreenUtil.getInstance().setSp(22)),
+                    ),
+                    Container(
+                      width: ScreenUtil.getInstance().setWidth(60),
+                    ),
+                    Image.asset(
+                      'images/ic_news_list_comment.png',
+                      width: ScreenUtil.getInstance().setWidth(24),
+                    ),
+                    Container(
+                      width: ScreenUtil.getInstance().setWidth(6),
+                    ),
+                    Text(
+                      '${item['visits']}',
+                      style: TextStyle(
+                          color: Color(0xffB5A88E), fontSize: ScreenUtil.getInstance().setSp(22)),
+                    )
+                  ],
+                ),
+              )
+            ],
+          )
+        ],
+      ),
+    );
+  }
 
   List topList = [
     {
@@ -60,6 +289,7 @@ class _BbsContentState extends State<BbsContent> with TickerProviderStateMixin {
 
   bool show = false;
   double top;
+  double fixedHeight;
 
   @override
   void initState() {
@@ -68,6 +298,7 @@ class _BbsContentState extends State<BbsContent> with TickerProviderStateMixin {
     _listController.addListener(() {
       setState(() {
         show = (top < _listController.offset) ? true : false;
+        fixed = (fixedHeight > _listController.offset) ? true : false;
       });
     });
   }
@@ -121,6 +352,10 @@ class _BbsContentState extends State<BbsContent> with TickerProviderStateMixin {
     double height = MediaQuery.of(context).size.height;
     ScreenUtil.instance = ScreenUtil(width: 640, height: 1136)..init(context);
     top = width / 912 * 480 - MediaQuery.of(context).padding.top - 56;
+    fixedHeight = width / 912 * 480 -
+        MediaQuery.of(context).padding.top -
+        56 +
+        ScreenUtil.getInstance().setHeight(84.0 + 60 * topListLength);
     return Container(
       child: Stack(
         children: <Widget>[
@@ -130,6 +365,15 @@ class _BbsContentState extends State<BbsContent> with TickerProviderStateMixin {
             ),
             child: flag
                 ? Scaffold(
+                    floatingActionButton: FloatingActionButton(
+                      onPressed: () {},
+                      elevation: 0,
+                      child: Image.asset(
+                        'images/btn_pgbbs_list_write.png',
+                        width: ScreenUtil.getInstance().setWidth(90),
+                      ),
+                      backgroundColor: Colors.transparent,
+                    ),
                     backgroundColor: Colors.transparent,
                     body: Container(
                       decoration: BoxDecoration(
@@ -158,6 +402,15 @@ class _BbsContentState extends State<BbsContent> with TickerProviderStateMixin {
                       )),
                     ))
                 : Scaffold(
+                    floatingActionButton: FloatingActionButton(
+                      onPressed: () {},
+                      elevation: 0,
+                      child: Image.asset(
+                        'images/btn_pgbbs_list_write.png',
+                        width: ScreenUtil.getInstance().setWidth(90),
+                      ),
+                      backgroundColor: Colors.transparent,
+                    ),
                     backgroundColor: Colors.transparent,
                     body: SmartRefresher(
                       controller: _refreshController,
@@ -206,6 +459,7 @@ class _BbsContentState extends State<BbsContent> with TickerProviderStateMixin {
                           }
                           return Container(
                             height: 60.0,
+                            color: Color(0xffE8DAC5),
                             child: Center(child: body),
                           );
                         },
@@ -367,83 +621,153 @@ class _BbsContentState extends State<BbsContent> with TickerProviderStateMixin {
                             ),
                           ),
                           Container(
-                            decoration: BoxDecoration(
-                                border: Border(
-                              top: BorderSide(
-                                  color: Color(0xffA99B83),
-                                  width: ScreenUtil.getInstance().setWidth(2)),
-                              bottom: BorderSide(
-                                  color: Color(0xffA99B83),
-                                  width: ScreenUtil.getInstance().setWidth(2)),
-                            )),
+                            height: ScreenUtil.getInstance().setWidth(15),
+                            color: Color(0xffE0D3BD),
+                          ),
+                          Container(
+                            color: Color(0xffE8DAC5),
                             padding: EdgeInsets.only(
-                                top: ScreenUtil.getInstance().setHeight(12),
-                                bottom: ScreenUtil.getInstance().setHeight(12)),
-                            margin: EdgeInsets.only(bottom: ScreenUtil.getInstance().setWidth(12)),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Container(
-                                  child: Image.asset(
-                                    'images/${content['avatar']}',
-                                    width: ScreenUtil.getInstance().setWidth(60),
+                                left: ScreenUtil.getInstance().setWidth(24),
+                                right: ScreenUtil.getInstance().setWidth(24)),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  border: Border(
+                                      bottom: BorderSide(
+                                          color: Color(0xffA99B83),
+                                          width: ScreenUtil.getInstance().setWidth(1)))),
+                              child: Row(
+                                children: <Widget>[
+                                  Container(
+                                    width: ScreenUtil.getInstance().setWidth(12),
                                   ),
-                                ),
-                                Expanded(
-                                    child: Container(
-                                  padding:
-                                      EdgeInsets.only(left: ScreenUtil.getInstance().setWidth(12)),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text(
-                                        content['author'],
-                                        style: TextStyle(
-                                            color: Color(0xffE79425),
-                                            fontSize: ScreenUtil.getInstance().setSp(26)),
-                                      ),
-                                      Container(
-                                        padding: EdgeInsets.only(
-                                            top: ScreenUtil.getInstance().setHeight(6)),
-                                        child: Text(content['create_date'],
-                                            style: TextStyle(
-                                                color: Color(0xffB5A88E),
-                                                fontSize: ScreenUtil.getInstance().setSp(26))),
-                                      ),
-                                    ],
-                                  ),
-                                )),
-                                Container(
-                                  child: Row(
-                                    children: <Widget>[
-                                      Icon(
-                                        Icons.remove_red_eye,
-                                        color: Color(0xffB5A88E),
-                                      ),
-                                      Text(
-                                        '  ${content['visits']}',
-                                        style: TextStyle(
-                                          color: Color(0xffB5A88E),
+                                  Expanded(
+                                      flex: 1,
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            _tabIndex = 0;
+                                          });
+                                        },
+                                        child: Container(
+                                          padding: EdgeInsets.only(
+                                              top: ScreenUtil.getInstance().setWidth(18),
+                                              bottom: ScreenUtil.getInstance().setWidth(18)),
+                                          decoration: BoxDecoration(
+                                              border: Border(
+                                                  bottom: BorderSide(
+                                                      color: _tabIndex == 0
+                                                          ? Color(0xffB51610)
+                                                          : Colors.transparent,
+                                                      width:
+                                                          ScreenUtil.getInstance().setWidth(4)))),
+                                          child: Center(
+                                            child: Text(
+                                              '全部',
+                                              style: TextStyle(
+                                                  fontSize: ScreenUtil.getInstance().setSp(30),
+                                                  color: Color(
+                                                      _tabIndex == 0 ? 0xffB51610 : 0xff6A5C41)),
+                                            ),
+                                          ),
                                         ),
-                                      )
-                                    ],
+                                      )),
+                                  Container(
+                                    width: ScreenUtil.getInstance().setHeight(32),
                                   ),
-                                )
-                              ],
+                                  Expanded(
+                                      flex: 1,
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            _tabIndex = 1;
+                                          });
+                                        },
+                                        child: Container(
+                                          padding: EdgeInsets.only(
+                                              top: ScreenUtil.getInstance().setWidth(18),
+                                              bottom: ScreenUtil.getInstance().setWidth(18)),
+                                          decoration: BoxDecoration(
+                                              border: Border(
+                                                  bottom: BorderSide(
+                                                      color: _tabIndex == 1
+                                                          ? Color(0xffB51610)
+                                                          : Colors.transparent,
+                                                      width:
+                                                          ScreenUtil.getInstance().setWidth(4)))),
+                                          child: Center(
+                                            child: Text(
+                                              '精华',
+                                              style: TextStyle(
+                                                  fontSize: ScreenUtil.getInstance().setSp(30),
+                                                  color: Color(
+                                                      _tabIndex == 1 ? 0xffB51610 : 0xff6A5C41)),
+                                            ),
+                                          ),
+                                        ),
+                                      )),
+                                  Container(
+                                    margin: EdgeInsets.only(
+                                        left: ScreenUtil.getInstance().setWidth(32)),
+                                    height: ScreenUtil.getInstance().setHeight(36),
+                                    color: Color(0xffA99B83),
+                                    width: ScreenUtil.getInstance().setWidth(1),
+                                  ),
+                                  Expanded(
+                                      flex: 1,
+                                      child: Container(
+                                        padding: EdgeInsets.only(
+                                            left: ScreenUtil.getInstance().setWidth(24)),
+                                        child: Center(
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
+                                              Text(
+                                                '回复时间',
+                                                style: TextStyle(
+                                                    fontSize: ScreenUtil.getInstance().setSp(22),
+                                                    color: Color(0xffB5A88E)),
+                                              ),
+                                              Image.asset(
+                                                'images/community_sort.png',
+                                                width: ScreenUtil.getInstance().setWidth(24),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ))
+                                ],
+                              ),
                             ),
                           ),
-                          Column(
-                            children: content['imgs'].map<Widget>((item) {
-                              return Container(
-                                margin:
-                                    EdgeInsets.only(bottom: ScreenUtil.getInstance().setWidth(24)),
-                                width: width - ScreenUtil.getInstance().setWidth(48),
-                                child: Image.asset(
-                                  'images/$item.jpg',
-                                  fit: BoxFit.cover,
-                                ),
-                              );
-                            }).toList(),
+                          Offstage(
+                            offstage: _tabIndex == 1,
+                            child: Container(
+                              color: Color(0xffE8DAC5),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: content.map<Widget>((item) {
+                                  return _contentCon(item);
+                                }).toList(),
+                              ),
+                            ),
+                          ),
+                          Offstage(
+                            offstage: _tabIndex == 0,
+                            child: Container(
+                              color: Color(0xffE8DAC5),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: content2.map<Widget>((item) {
+                                  return _contentCon(item);
+                                }).toList(),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            color: Color(0xffE8DAC5),
+                            height: ScreenUtil.getInstance().setHeight(24),
                           )
                         ],
                       ),
@@ -457,7 +781,7 @@ class _BbsContentState extends State<BbsContent> with TickerProviderStateMixin {
               : Positioned(
                   left: 0,
                   top: 0,
-                  height: 56,
+                  height: MediaQuery.of(context).padding.top+56,
                   width: width,
                   child: Container(
                     decoration: BoxDecoration(
@@ -510,6 +834,131 @@ class _BbsContentState extends State<BbsContent> with TickerProviderStateMixin {
                             )
                           ],
                         ),
+                      ),
+                    ),
+                  )),
+          fixed
+              ? Positioned(
+                  child: SizedBox(),
+                )
+              : Positioned(
+                  left: 0,
+                  top: MediaQuery.of(context).padding.top + 56,
+                  height: 56,
+                  width: width,
+                  child: Container(
+                    color: Color(0xffE8DAC5),
+                    padding: EdgeInsets.only(
+                        left: ScreenUtil.getInstance().setWidth(24),
+                        right: ScreenUtil.getInstance().setWidth(24)),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          border: Border(
+                              bottom: BorderSide(
+                                  color: Color(0xffA99B83),
+                                  width: ScreenUtil.getInstance().setWidth(1)))),
+                      child: Row(
+                        children: <Widget>[
+                          Container(
+                            width: ScreenUtil.getInstance().setWidth(12),
+                          ),
+                          Expanded(
+                              flex: 1,
+                              child: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _tabIndex = 0;
+                                  });
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.only(
+                                      top: ScreenUtil.getInstance().setWidth(18),
+                                      bottom: ScreenUtil.getInstance().setWidth(18)),
+                                  decoration: BoxDecoration(
+                                      border: Border(
+                                          bottom: BorderSide(
+                                              color: _tabIndex == 0
+                                                  ? Color(0xffB51610)
+                                                  : Colors.transparent,
+                                              width: ScreenUtil.getInstance().setWidth(4)))),
+                                  child: Center(
+                                    child: Text(
+                                      '全部',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.normal,
+                                          decoration: TextDecoration.none,
+                                          fontSize: ScreenUtil.getInstance().setSp(30),
+                                          color: Color(_tabIndex == 0 ? 0xffB51610 : 0xff6A5C41)),
+                                    ),
+                                  ),
+                                ),
+                              )),
+                          Container(
+                            width: ScreenUtil.getInstance().setHeight(32),
+                          ),
+                          Expanded(
+                              flex: 1,
+                              child: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _tabIndex = 1;
+                                  });
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.only(
+                                      top: ScreenUtil.getInstance().setWidth(18),
+                                      bottom: ScreenUtil.getInstance().setWidth(18)),
+                                  decoration: BoxDecoration(
+                                      border: Border(
+                                          bottom: BorderSide(
+                                              color: _tabIndex == 1
+                                                  ? Color(0xffB51610)
+                                                  : Colors.transparent,
+                                              width: ScreenUtil.getInstance().setWidth(4)))),
+                                  child: Center(
+                                    child: Text(
+                                      '精华',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.normal,
+                                          decoration: TextDecoration.none,
+                                          fontSize: ScreenUtil.getInstance().setSp(30),
+                                          color: Color(_tabIndex == 1 ? 0xffB51610 : 0xff6A5C41)),
+                                    ),
+                                  ),
+                                ),
+                              )),
+                          Container(
+                            margin: EdgeInsets.only(left: ScreenUtil.getInstance().setWidth(32)),
+                            height: ScreenUtil.getInstance().setHeight(36),
+                            color: Color(0xffA99B83),
+                            width: ScreenUtil.getInstance().setWidth(1),
+                          ),
+                          Expanded(
+                              flex: 1,
+                              child: Container(
+                                padding:
+                                    EdgeInsets.only(left: ScreenUtil.getInstance().setWidth(24)),
+                                child: Center(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Text(
+                                        '回复时间',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.normal,
+                                            decoration: TextDecoration.none,
+                                            fontSize: ScreenUtil.getInstance().setSp(22),
+                                            color: Color(0xffB5A88E)),
+                                      ),
+                                      Image.asset(
+                                        'images/community_sort.png',
+                                        width: ScreenUtil.getInstance().setWidth(24),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ))
+                        ],
                       ),
                     ),
                   ))

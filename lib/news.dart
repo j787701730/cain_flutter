@@ -231,7 +231,7 @@ class _NewsState extends State<News> with AutomaticKeepAliveClientMixin, TickerP
         color: Color(0xffE8DAC5),
         child: flag
             ? Center(
-                child: Image.asset('images/head_loading1.png'),
+                child: Image.asset('images/head_loading1.png',width: ScreenUtil.getInstance().setWidth(78),),
               )
             : SmartRefresher(
                 controller: _refreshController,

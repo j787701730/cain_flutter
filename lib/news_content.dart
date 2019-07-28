@@ -334,7 +334,7 @@ class _NewsContentState extends State<NewsContent> with TickerProviderStateMixin
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            Image.asset('images/head_loading1.png'),
+                            Image.asset('images/head_loading1.png',width: ScreenUtil.getInstance().setWidth(78),),
                             Container(
                               height: ScreenUtil.getInstance().setWidth(10),
                             ),

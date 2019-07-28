@@ -107,7 +107,7 @@ class _ToolState extends State<Tool> with AutomaticKeepAliveClientMixin, TickerP
                 image: AssetImage('images/fragment_tools_bg.jpg'), fit: BoxFit.cover)),
         child: flag
             ? Center(
-                child: Image.asset('images/head_loading1.png'),
+                child: Image.asset('images/head_loading1.png',width: ScreenUtil.getInstance().setWidth(78),),
               )
             : SmartRefresher(
                 controller: _refreshController,

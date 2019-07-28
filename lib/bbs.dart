@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'bbs_content.dart';
 
 class Bbs extends StatefulWidget {
   @override
@@ -209,68 +210,78 @@ class _BbsState extends State<Bbs> with AutomaticKeepAliveClientMixin, TickerPro
                       Wrap(
                         runSpacing: ScreenUtil.getInstance().setWidth(24),
                         children: item['list'].map<Widget>((list) {
-                          return Container(
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: Color(0xffB5A88E),
-                                    width: ScreenUtil.getInstance().setWidth(1)),
-                                borderRadius: BorderRadius.all(Radius.circular(6))),
-                            padding: EdgeInsets.only(
-                                top: ScreenUtil.getInstance().setHeight(20),
-                                bottom: ScreenUtil.getInstance().setHeight(20),
-                                left: ScreenUtil.getInstance().setWidth(16),
-                                right: ScreenUtil.getInstance().setWidth(16)),
-                            margin: EdgeInsets.only(left: ScreenUtil.getInstance().setWidth(24)),
-                            width: (width - ScreenUtil.getInstance().setWidth(72)) / 2,
-                            child: Row(
-                              children: <Widget>[
-                                Container(
-                                  child: Image.asset(
-                                    'bbs/${list['icon']}',
-                                    width: ScreenUtil.getInstance().setWidth(60),
-                                    height: ScreenUtil.getInstance().setHeight(60),
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                new MaterialPageRoute(
+                                    builder: (context) => new BbsContent({'title': list['title']})),
+                              );
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: Color(0xffB5A88E),
+                                      width: ScreenUtil.getInstance().setWidth(1)),
+                                  borderRadius: BorderRadius.all(Radius.circular(6))),
+                              padding: EdgeInsets.only(
+                                  top: ScreenUtil.getInstance().setHeight(20),
+                                  bottom: ScreenUtil.getInstance().setHeight(20),
+                                  left: ScreenUtil.getInstance().setWidth(16),
+                                  right: ScreenUtil.getInstance().setWidth(16)),
+                              margin: EdgeInsets.only(left: ScreenUtil.getInstance().setWidth(24)),
+                              width: (width - ScreenUtil.getInstance().setWidth(72)) / 2,
+                              child: Row(
+                                children: <Widget>[
+                                  Container(
+                                    child: Image.asset(
+                                      'bbs/${list['icon']}',
+                                      width: ScreenUtil.getInstance().setWidth(60),
+                                      height: ScreenUtil.getInstance().setHeight(60),
+                                    ),
+                                    margin: EdgeInsets.only(
+                                        right: ScreenUtil.getInstance().setWidth(10)),
                                   ),
-                                  margin:
-                                      EdgeInsets.only(right: ScreenUtil.getInstance().setWidth(10)),
-                                ),
-                                Expanded(
-                                    flex: 1,
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Row(
-                                          children: <Widget>[
-                                            Expanded(
-                                                flex: 1,
+                                  Expanded(
+                                      flex: 1,
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Row(
+                                            children: <Widget>[
+                                              Expanded(
+                                                  flex: 1,
+                                                  child: Text(
+                                                    list['title'],
+                                                    maxLines: 1,
+                                                    overflow: TextOverflow.ellipsis,
+                                                    style: TextStyle(
+                                                        fontSize:
+                                                            ScreenUtil.getInstance().setSp(25),
+                                                        color: Color(0xff3D2F1B)),
+                                                  )),
+                                              Container(
                                                 child: Text(
-                                                  list['title'],
-                                                  maxLines: 1,
-                                                  overflow: TextOverflow.ellipsis,
+                                                  '${list['count']}',
                                                   style: TextStyle(
-                                                      fontSize: ScreenUtil.getInstance().setSp(25),
-                                                      color: Color(0xff3D2F1B)),
-                                                )),
-                                            Container(
-                                              child: Text(
-                                                '${list['count']}',
-                                                style: TextStyle(
-                                                    fontSize: ScreenUtil.getInstance().setSp(18),
-                                                    color: Color(0xffB51610)),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                        Container(
-                                          child: Text(
-                                            list['desc'],
-                                            style: TextStyle(
-                                                fontSize: ScreenUtil.getInstance().setSp(22),
-                                                color: Color(0xff74664B)),
+                                                      fontSize: ScreenUtil.getInstance().setSp(18),
+                                                      color: Color(0xffB51610)),
+                                                ),
+                                              )
+                                            ],
                                           ),
-                                        )
-                                      ],
-                                    ))
-                              ],
+                                          Container(
+                                            child: Text(
+                                              list['desc'],
+                                              style: TextStyle(
+                                                  fontSize: ScreenUtil.getInstance().setSp(22),
+                                                  color: Color(0xff74664B)),
+                                            ),
+                                          )
+                                        ],
+                                      ))
+                                ],
+                              ),
                             ),
                           );
                         }).toList(),

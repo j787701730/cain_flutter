@@ -151,13 +151,13 @@ class _SimulatorState extends State<Simulator> with TickerProviderStateMixin {
                         ),
                       )),
                   Positioned(
-                      top: ScreenUtil.getInstance().setHeight(44),
+                      top: ScreenUtil.getInstance().setHeight(0), // 44
                       left: 0,
                       width: width,
                       height: height -
                           MediaQuery.of(context).padding.top -
                           56 -
-                          ScreenUtil.getInstance().setHeight(44),
+                          ScreenUtil.getInstance().setHeight(0), // 44
                       child: Offstage(
                         offstage: type == 'skill',
                         child: Container(
@@ -361,7 +361,7 @@ class _SimulatorState extends State<Simulator> with TickerProviderStateMixin {
                         ),
                       )),
                   Positioned(
-                      top: ScreenUtil.getInstance().setHeight(210),
+                      top: ScreenUtil.getInstance().setHeight(190),
                       left: 0,
                       width: width,
                       height: height -
@@ -911,7 +911,7 @@ class _SimulatorState extends State<Simulator> with TickerProviderStateMixin {
                                               border: Border.all(
                                                   color: Color(0xffB5A78D),
                                                   width: ScreenUtil.getInstance().setWidth(1)),
-                                              borderRadius: BorderRadius.all(Radius.circular(10))),
+                                              borderRadius: BorderRadius.all(Radius.circular(4))),
                                           padding: EdgeInsets.only(
                                             left: ScreenUtil.getInstance().setWidth(8),
                                             right: ScreenUtil.getInstance().setWidth(8),

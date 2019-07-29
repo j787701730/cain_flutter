@@ -953,6 +953,8 @@ class _SimulatorState extends State<Simulator> with TickerProviderStateMixin {
                                           child: Row(
                                             children: <Widget>[
                                               Container(
+                                                height:ScreenUtil.getInstance().setHeight(72),
+                                                width: ScreenUtil.getInstance().setWidth(72),
                                                 child: Image.asset(
                                                   'images/${roles[_roleIndex]['img']}',
                                                   width: ScreenUtil.getInstance().setWidth(72),

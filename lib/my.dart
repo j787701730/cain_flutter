@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'login.dart';
+
 class My extends StatefulWidget {
   @override
   _MyState createState() => _MyState();
@@ -60,10 +62,19 @@ class _MyState extends State<My> with AutomaticKeepAliveClientMixin {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(
-                        '点击登录',
-                        style: TextStyle(
-                            color: Color(0xffF5DA9C), fontSize: ScreenUtil.getInstance().setSp(34)),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            new MaterialPageRoute(builder: (context) => new Login()),
+                          );
+                        },
+                        child: Text(
+                          '点击登录',
+                          style: TextStyle(
+                              color: Color(0xffF5DA9C),
+                              fontSize: ScreenUtil.getInstance().setSp(34)),
+                        ),
                       ),
                       Container(
                         height: ScreenUtil.getInstance().setWidth(30),
@@ -107,23 +118,33 @@ class _MyState extends State<My> with AutomaticKeepAliveClientMixin {
                           color: Color(0xff3D2F1B), fontSize: ScreenUtil.getInstance().setSp(26)),
                     ),
                   ),
-                  Container(
-                    padding: EdgeInsets.only(right: ScreenUtil.getInstance().setWidth(54)),
-                    child: Row(
-                      children: <Widget>[
-                        Text(
-                          '请先登录   ',
-                          style: TextStyle(
-                              fontSize: ScreenUtil.getInstance().setWidth(22),
-                              color: Color(0xffB5A88E)),
+                  GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          new MaterialPageRoute(builder: (context) => new Login()),
+                        );
+                      },
+                      child: Container(
+                        padding: EdgeInsets.only(right: ScreenUtil.getInstance().setWidth(54)),
+                        child: Row(
+                          children: <Widget>[
+                            Text(
+                              '请先登录',
+                              style: TextStyle(
+                                  fontSize: ScreenUtil.getInstance().setWidth(22),
+                                  color: Color(0xffB5A88E)),
+                            ),
+                            Container(
+                              width: ScreenUtil.getInstance().setWidth(12),
+                            ),
+                            Image.asset(
+                              'images/next_right.png',
+                              width: ScreenUtil.getInstance().setWidth(30),
+                            )
+                          ],
                         ),
-                        Image.asset(
-                          'images/next_right.png',
-                          width: ScreenUtil.getInstance().setWidth(30),
-                        )
-                      ],
-                    ),
-                  )
+                      ))
                 ],
               ),
             ),

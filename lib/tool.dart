@@ -5,6 +5,8 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'sky_ladder_list.dart';
 import 'simulator.dart';
+import 'data_base.dart';
+import 'lifting_artifact.dart';
 
 class Tool extends StatefulWidget {
   @override
@@ -318,6 +320,16 @@ class _ToolState extends State<Tool> with AutomaticKeepAliveClientMixin, TickerP
                               Navigator.push(
                                 context,
                                 new MaterialPageRoute(builder: (context) => new Simulator({})),
+                              );
+                            } else if (tools.indexOf(item) == 1) {
+                              Navigator.push(
+                                context,
+                                new MaterialPageRoute(builder: (context) => new DataBase()),
+                              );
+                            } else if (tools.indexOf(item) == 2) {
+                              Navigator.push(
+                                context,
+                                new MaterialPageRoute(builder: (context) => new LiftingArtifacts()),
                               );
                             }
                           },

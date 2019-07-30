@@ -29,6 +29,7 @@ class _SimulatorState extends State<Simulator> with TickerProviderStateMixin {
     {'name': '巫医', 'img': 'witchdoctor_man.png'},
     {'name': '死灵法师', 'img': 'necromancer_man.png'},
     {'name': '魔法师', 'img': 'mage_man.png'},
+    {'name': '取消', 'img': ''},
   ];
 
   @override
@@ -38,7 +39,7 @@ class _SimulatorState extends State<Simulator> with TickerProviderStateMixin {
   }
 
   _ajax() async {
-    await Future.delayed(Duration(seconds: 2), () {
+    await Future.delayed(Duration(seconds: 1), () {
       if (mounted)
         setState(() {
           flag = false;
@@ -52,6 +53,84 @@ class _SimulatorState extends State<Simulator> with TickerProviderStateMixin {
     {'name': '导入'},
     {'name': '重置'},
   ];
+
+  activeSkill() {
+    return Container(
+      child: Row(
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.only(
+                left: ScreenUtil.getInstance().setWidth(6),
+                right: ScreenUtil.getInstance().setWidth(6),
+                top: ScreenUtil.getInstance().setHeight(9),
+                bottom: ScreenUtil.getInstance().setHeight(9)),
+            width: ScreenUtil.getInstance().setWidth(101),
+            height: ScreenUtil.getInstance().setHeight(114),
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage('images/simulator_skill_detail_bg.png'), fit: BoxFit.fill)),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Color(0xff100E09),
+              ),
+            ),
+          ),
+          Container(
+            width: ScreenUtil.getInstance().setWidth(205),
+            height: ScreenUtil.getInstance().setHeight(93),
+            decoration: BoxDecoration(
+                image: DecorationImage(image: AssetImage('images/simulator_skill_right_bg.png'))),
+            child: Container(
+              padding: EdgeInsets.only(
+                  left: ScreenUtil.getInstance().setWidth(12),
+                  top: ScreenUtil.getInstance().setHeight(10)),
+              child: Text(
+                '选择技能',
+                style: TextStyle(
+                    color: Color(0xffF5DA9C), fontSize: ScreenUtil.getInstance().setSp(28)),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  // 被动技能
+  passiveSkill() {
+    return Container(
+      child: Column(
+        children: <Widget>[
+          Container(
+            width: ScreenUtil.getInstance().setWidth(134),
+            height: ScreenUtil.getInstance().setWidth(134),
+            padding: EdgeInsets.only(
+              top: ScreenUtil.getInstance().setWidth(20),
+              right: ScreenUtil.getInstance().setWidth(24),
+              left: ScreenUtil.getInstance().setWidth(24),
+              bottom: ScreenUtil.getInstance().setWidth(28),
+            ),
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage('images/simulator_skill_passive.png'), fit: BoxFit.fill)),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(100)),
+                color: Color(0xff100E09),
+              ),
+            ),
+          ),
+          Container(
+            child: Text(
+              '选择技能',
+              style:
+                  TextStyle(color: Color(0xffF5DA9C), fontSize: ScreenUtil.getInstance().setSp(28)),
+            ),
+          )
+        ],
+      ),
+    );
+  }
 
   @override
   void dispose() {
@@ -151,13 +230,15 @@ class _SimulatorState extends State<Simulator> with TickerProviderStateMixin {
                         ),
                       )),
                   Positioned(
-                      top: ScreenUtil.getInstance().setHeight(0), // 44
+                      top: ScreenUtil.getInstance().setHeight(0),
+                      // 44
                       left: 0,
                       width: width,
                       height: height -
                           MediaQuery.of(context).padding.top -
                           56 -
-                          ScreenUtil.getInstance().setHeight(0), // 44
+                          ScreenUtil.getInstance().setHeight(0),
+                      // 44
                       child: Offstage(
                         offstage: type == 'skill',
                         child: Container(
@@ -267,7 +348,7 @@ class _SimulatorState extends State<Simulator> with TickerProviderStateMixin {
                                   child: Container(
                                     color: Color(0x44000000),
                                     width: ScreenUtil.getInstance().setWidth(100),
-                                    height: ScreenUtil.getInstance().setHeight(180),
+                                    height: ScreenUtil.getInstance().setHeight(190),
                                   )),
                               // 鞋子
                               Positioned(
@@ -276,7 +357,7 @@ class _SimulatorState extends State<Simulator> with TickerProviderStateMixin {
                                   child: Container(
                                     color: Color(0x44000000),
                                     width: ScreenUtil.getInstance().setWidth(100),
-                                    height: ScreenUtil.getInstance().setHeight(110),
+                                    height: ScreenUtil.getInstance().setHeight(130),
                                   )),
                               // 副武器
                               Positioned(
@@ -285,7 +366,7 @@ class _SimulatorState extends State<Simulator> with TickerProviderStateMixin {
                                   child: Container(
                                     color: Color(0x44000000),
                                     width: ScreenUtil.getInstance().setWidth(100),
-                                    height: ScreenUtil.getInstance().setHeight(180),
+                                    height: ScreenUtil.getInstance().setHeight(190),
                                   )),
                               Positioned(
                                   width: width,
@@ -398,94 +479,8 @@ class _SimulatorState extends State<Simulator> with TickerProviderStateMixin {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
-                                      Container(
-                                        child: Row(
-                                          children: <Widget>[
-                                            Container(
-                                              padding: EdgeInsets.only(
-                                                  left: ScreenUtil.getInstance().setWidth(6),
-                                                  right: ScreenUtil.getInstance().setWidth(6),
-                                                  top: ScreenUtil.getInstance().setHeight(9),
-                                                  bottom: ScreenUtil.getInstance().setHeight(9)),
-                                              width: ScreenUtil.getInstance().setWidth(101),
-                                              height: ScreenUtil.getInstance().setHeight(114),
-                                              decoration: BoxDecoration(
-                                                  image: DecorationImage(
-                                                      image: AssetImage(
-                                                          'images/simulator_skill_detail_bg.png'),
-                                                      fit: BoxFit.fill)),
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                  color: Color(0xff100E09),
-                                                ),
-                                              ),
-                                            ),
-                                            Container(
-                                              width: ScreenUtil.getInstance().setWidth(205),
-                                              height: ScreenUtil.getInstance().setHeight(93),
-                                              decoration: BoxDecoration(
-                                                  image: DecorationImage(
-                                                      image: AssetImage(
-                                                          'images/simulator_skill_right_bg.png'))),
-                                              child: Container(
-                                                padding: EdgeInsets.only(
-                                                    left: ScreenUtil.getInstance().setWidth(12),
-                                                    top: ScreenUtil.getInstance().setHeight(10)),
-                                                child: Text(
-                                                  '选择技能',
-                                                  style: TextStyle(
-                                                      color: Color(0xffF5DA9C),
-                                                      fontSize: ScreenUtil.getInstance().setSp(28)),
-                                                ),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                        child: Row(
-                                          children: <Widget>[
-                                            Container(
-                                              padding: EdgeInsets.only(
-                                                  left: ScreenUtil.getInstance().setWidth(6),
-                                                  right: ScreenUtil.getInstance().setWidth(6),
-                                                  top: ScreenUtil.getInstance().setHeight(9),
-                                                  bottom: ScreenUtil.getInstance().setHeight(9)),
-                                              width: ScreenUtil.getInstance().setWidth(101),
-                                              height: ScreenUtil.getInstance().setHeight(114),
-                                              decoration: BoxDecoration(
-                                                  image: DecorationImage(
-                                                      image: AssetImage(
-                                                          'images/simulator_skill_detail_bg.png'),
-                                                      fit: BoxFit.fill)),
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                  color: Color(0xff100E09),
-                                                ),
-                                              ),
-                                            ),
-                                            Container(
-                                              width: ScreenUtil.getInstance().setWidth(205),
-                                              height: ScreenUtil.getInstance().setHeight(93),
-                                              decoration: BoxDecoration(
-                                                  image: DecorationImage(
-                                                      image: AssetImage(
-                                                          'images/simulator_skill_right_bg.png'))),
-                                              child: Container(
-                                                padding: EdgeInsets.only(
-                                                    left: ScreenUtil.getInstance().setWidth(12),
-                                                    top: ScreenUtil.getInstance().setHeight(10)),
-                                                child: Text(
-                                                  '选择技能',
-                                                  style: TextStyle(
-                                                      color: Color(0xffF5DA9C),
-                                                      fontSize: ScreenUtil.getInstance().setSp(28)),
-                                                ),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      )
+                                      activeSkill(),
+                                      activeSkill(),
                                     ],
                                   ),
                                 ),
@@ -515,94 +510,8 @@ class _SimulatorState extends State<Simulator> with TickerProviderStateMixin {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
-                                      Container(
-                                        child: Row(
-                                          children: <Widget>[
-                                            Container(
-                                              padding: EdgeInsets.only(
-                                                  left: ScreenUtil.getInstance().setWidth(6),
-                                                  right: ScreenUtil.getInstance().setWidth(6),
-                                                  top: ScreenUtil.getInstance().setHeight(9),
-                                                  bottom: ScreenUtil.getInstance().setHeight(9)),
-                                              width: ScreenUtil.getInstance().setWidth(101),
-                                              height: ScreenUtil.getInstance().setHeight(114),
-                                              decoration: BoxDecoration(
-                                                  image: DecorationImage(
-                                                      image: AssetImage(
-                                                          'images/simulator_skill_detail_bg.png'),
-                                                      fit: BoxFit.fill)),
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                  color: Color(0xff100E09),
-                                                ),
-                                              ),
-                                            ),
-                                            Container(
-                                              width: ScreenUtil.getInstance().setWidth(205),
-                                              height: ScreenUtil.getInstance().setHeight(93),
-                                              decoration: BoxDecoration(
-                                                  image: DecorationImage(
-                                                      image: AssetImage(
-                                                          'images/simulator_skill_right_bg.png'))),
-                                              child: Container(
-                                                padding: EdgeInsets.only(
-                                                    left: ScreenUtil.getInstance().setWidth(12),
-                                                    top: ScreenUtil.getInstance().setHeight(10)),
-                                                child: Text(
-                                                  '选择技能',
-                                                  style: TextStyle(
-                                                      color: Color(0xffF5DA9C),
-                                                      fontSize: ScreenUtil.getInstance().setSp(28)),
-                                                ),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                        child: Row(
-                                          children: <Widget>[
-                                            Container(
-                                              padding: EdgeInsets.only(
-                                                  left: ScreenUtil.getInstance().setWidth(6),
-                                                  right: ScreenUtil.getInstance().setWidth(6),
-                                                  top: ScreenUtil.getInstance().setHeight(9),
-                                                  bottom: ScreenUtil.getInstance().setHeight(9)),
-                                              width: ScreenUtil.getInstance().setWidth(101),
-                                              height: ScreenUtil.getInstance().setHeight(114),
-                                              decoration: BoxDecoration(
-                                                  image: DecorationImage(
-                                                      image: AssetImage(
-                                                          'images/simulator_skill_detail_bg.png'),
-                                                      fit: BoxFit.fill)),
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                  color: Color(0xff100E09),
-                                                ),
-                                              ),
-                                            ),
-                                            Container(
-                                              width: ScreenUtil.getInstance().setWidth(205),
-                                              height: ScreenUtil.getInstance().setHeight(93),
-                                              decoration: BoxDecoration(
-                                                  image: DecorationImage(
-                                                      image: AssetImage(
-                                                          'images/simulator_skill_right_bg.png'))),
-                                              child: Container(
-                                                padding: EdgeInsets.only(
-                                                    left: ScreenUtil.getInstance().setWidth(12),
-                                                    top: ScreenUtil.getInstance().setHeight(10)),
-                                                child: Text(
-                                                  '选择技能',
-                                                  style: TextStyle(
-                                                      color: Color(0xffF5DA9C),
-                                                      fontSize: ScreenUtil.getInstance().setSp(28)),
-                                                ),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      )
+                                      activeSkill(),
+                                      activeSkill(),
                                     ],
                                   ),
                                 ),
@@ -616,94 +525,8 @@ class _SimulatorState extends State<Simulator> with TickerProviderStateMixin {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
-                                      Container(
-                                        child: Row(
-                                          children: <Widget>[
-                                            Container(
-                                              padding: EdgeInsets.only(
-                                                  left: ScreenUtil.getInstance().setWidth(6),
-                                                  right: ScreenUtil.getInstance().setWidth(6),
-                                                  top: ScreenUtil.getInstance().setHeight(9),
-                                                  bottom: ScreenUtil.getInstance().setHeight(9)),
-                                              width: ScreenUtil.getInstance().setWidth(101),
-                                              height: ScreenUtil.getInstance().setHeight(114),
-                                              decoration: BoxDecoration(
-                                                  image: DecorationImage(
-                                                      image: AssetImage(
-                                                          'images/simulator_skill_detail_bg.png'),
-                                                      fit: BoxFit.fill)),
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                  color: Color(0xff100E09),
-                                                ),
-                                              ),
-                                            ),
-                                            Container(
-                                              width: ScreenUtil.getInstance().setWidth(205),
-                                              height: ScreenUtil.getInstance().setHeight(93),
-                                              decoration: BoxDecoration(
-                                                  image: DecorationImage(
-                                                      image: AssetImage(
-                                                          'images/simulator_skill_right_bg.png'))),
-                                              child: Container(
-                                                padding: EdgeInsets.only(
-                                                    left: ScreenUtil.getInstance().setWidth(12),
-                                                    top: ScreenUtil.getInstance().setHeight(10)),
-                                                child: Text(
-                                                  '选择技能',
-                                                  style: TextStyle(
-                                                      color: Color(0xffF5DA9C),
-                                                      fontSize: ScreenUtil.getInstance().setSp(28)),
-                                                ),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                        child: Row(
-                                          children: <Widget>[
-                                            Container(
-                                              padding: EdgeInsets.only(
-                                                  left: ScreenUtil.getInstance().setWidth(6),
-                                                  right: ScreenUtil.getInstance().setWidth(6),
-                                                  top: ScreenUtil.getInstance().setHeight(9),
-                                                  bottom: ScreenUtil.getInstance().setHeight(9)),
-                                              width: ScreenUtil.getInstance().setWidth(101),
-                                              height: ScreenUtil.getInstance().setHeight(114),
-                                              decoration: BoxDecoration(
-                                                  image: DecorationImage(
-                                                      image: AssetImage(
-                                                          'images/simulator_skill_detail_bg.png'),
-                                                      fit: BoxFit.fill)),
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                  color: Color(0xff100E09),
-                                                ),
-                                              ),
-                                            ),
-                                            Container(
-                                              width: ScreenUtil.getInstance().setWidth(205),
-                                              height: ScreenUtil.getInstance().setHeight(93),
-                                              decoration: BoxDecoration(
-                                                  image: DecorationImage(
-                                                      image: AssetImage(
-                                                          'images/simulator_skill_right_bg.png'))),
-                                              child: Container(
-                                                padding: EdgeInsets.only(
-                                                    left: ScreenUtil.getInstance().setWidth(12),
-                                                    top: ScreenUtil.getInstance().setHeight(10)),
-                                                child: Text(
-                                                  '选择技能',
-                                                  style: TextStyle(
-                                                      color: Color(0xffF5DA9C),
-                                                      fontSize: ScreenUtil.getInstance().setSp(28)),
-                                                ),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      )
+                                      activeSkill(),
+                                      activeSkill(),
                                     ],
                                   ),
                                 ),
@@ -729,150 +552,10 @@ class _SimulatorState extends State<Simulator> with TickerProviderStateMixin {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                                     children: <Widget>[
-                                      Container(
-                                        child: Column(
-                                          children: <Widget>[
-                                            Container(
-                                              width: ScreenUtil.getInstance().setWidth(134),
-                                              height: ScreenUtil.getInstance().setWidth(134),
-                                              padding: EdgeInsets.only(
-                                                top: ScreenUtil.getInstance().setWidth(20),
-                                                right: ScreenUtil.getInstance().setWidth(24),
-                                                left: ScreenUtil.getInstance().setWidth(24),
-                                                bottom: ScreenUtil.getInstance().setWidth(28),
-                                              ),
-                                              decoration: BoxDecoration(
-                                                  image: DecorationImage(
-                                                      image: AssetImage(
-                                                          'images/simulator_skill_passive.png'),
-                                                      fit: BoxFit.fill)),
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.all(Radius.circular(100)),
-                                                  color: Color(0xff100E09),
-                                                ),
-                                              ),
-                                            ),
-                                            Container(
-                                              child: Text(
-                                                '选择技能',
-                                                style: TextStyle(
-                                                    color: Color(0xffF5DA9C),
-                                                    fontSize: ScreenUtil.getInstance().setSp(28)),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                        child: Column(
-                                          children: <Widget>[
-                                            Container(
-                                              width: ScreenUtil.getInstance().setWidth(134),
-                                              height: ScreenUtil.getInstance().setWidth(134),
-                                              padding: EdgeInsets.only(
-                                                top: ScreenUtil.getInstance().setWidth(20),
-                                                right: ScreenUtil.getInstance().setWidth(24),
-                                                left: ScreenUtil.getInstance().setWidth(24),
-                                                bottom: ScreenUtil.getInstance().setWidth(28),
-                                              ),
-                                              decoration: BoxDecoration(
-                                                  image: DecorationImage(
-                                                      image: AssetImage(
-                                                          'images/simulator_skill_passive.png'),
-                                                      fit: BoxFit.fill)),
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.all(Radius.circular(100)),
-                                                  color: Color(0xff100E09),
-                                                ),
-                                              ),
-                                            ),
-                                            Container(
-                                              child: Text(
-                                                '选择技能',
-                                                style: TextStyle(
-                                                    color: Color(0xffF5DA9C),
-                                                    fontSize: ScreenUtil.getInstance().setSp(28)),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                        child: Column(
-                                          children: <Widget>[
-                                            Container(
-                                              width: ScreenUtil.getInstance().setWidth(134),
-                                              height: ScreenUtil.getInstance().setWidth(134),
-                                              padding: EdgeInsets.only(
-                                                top: ScreenUtil.getInstance().setWidth(20),
-                                                right: ScreenUtil.getInstance().setWidth(24),
-                                                left: ScreenUtil.getInstance().setWidth(24),
-                                                bottom: ScreenUtil.getInstance().setWidth(28),
-                                              ),
-                                              decoration: BoxDecoration(
-                                                  image: DecorationImage(
-                                                      image: AssetImage(
-                                                          'images/simulator_skill_passive.png'),
-                                                      fit: BoxFit.fill)),
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.all(Radius.circular(100)),
-                                                  color: Color(0xff100E09),
-                                                ),
-                                              ),
-                                            ),
-                                            Container(
-                                              child: Text(
-                                                '选择技能',
-                                                style: TextStyle(
-                                                    color: Color(0xffF5DA9C),
-                                                    fontSize: ScreenUtil.getInstance().setSp(28)),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                        child: Column(
-                                          children: <Widget>[
-                                            Container(
-                                              width: ScreenUtil.getInstance().setWidth(134),
-                                              height: ScreenUtil.getInstance().setWidth(134),
-                                              padding: EdgeInsets.only(
-                                                top: ScreenUtil.getInstance().setWidth(20),
-                                                right: ScreenUtil.getInstance().setWidth(24),
-                                                left: ScreenUtil.getInstance().setWidth(24),
-                                                bottom: ScreenUtil.getInstance().setWidth(28),
-                                              ),
-                                              decoration: BoxDecoration(
-                                                  image: DecorationImage(
-                                                      image: AssetImage(
-                                                          'images/simulator_skill_passive.png'),
-                                                      fit: BoxFit.fill)),
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.all(Radius.circular(100)),
-                                                  color: Color(0xff100E09),
-                                                ),
-                                              ),
-                                            ),
-                                            Container(
-                                              child: Text(
-                                                '选择技能',
-                                                style: TextStyle(
-                                                    color: Color(0xffF5DA9C),
-                                                    fontSize: ScreenUtil.getInstance().setSp(28)),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
+                                      passiveSkill(),
+                                      passiveSkill(),
+                                      passiveSkill(),
+                                      passiveSkill(),
                                     ],
                                   ),
                                 )
@@ -953,7 +636,7 @@ class _SimulatorState extends State<Simulator> with TickerProviderStateMixin {
                                           child: Row(
                                             children: <Widget>[
                                               Container(
-                                                height:ScreenUtil.getInstance().setHeight(72),
+                                                height: ScreenUtil.getInstance().setHeight(72),
                                                 width: ScreenUtil.getInstance().setWidth(72),
                                                 child: Image.asset(
                                                   'images/${roles[_roleIndex]['img']}',
@@ -1066,194 +749,45 @@ class _SimulatorState extends State<Simulator> with TickerProviderStateMixin {
                                 right: ScreenUtil.getInstance().setWidth(24),
                                 bottom: ScreenUtil.getInstance().setHeight(24)),
                             child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
                               mainAxisAlignment: MainAxisAlignment.end,
-                              children: <Widget>[
-                                GestureDetector(
+                              children: roles.map<Widget>((item) {
+                                return GestureDetector(
                                   onTap: () {
-                                    setState(() {
-                                      _roleIndex = 0;
-                                      showRoleSelect = false;
-                                    });
-                                  },
-                                  child: Container(
-                                    height: ScreenUtil.getInstance().setHeight(104),
-                                    width: width - ScreenUtil.getInstance().setWidth(48),
-                                    decoration: BoxDecoration(
-                                      color: Color(0xffE8DAC5),
-                                        border:
-                                            Border(bottom: BorderSide(color: Color(0xffC9BBA4),
-                                            width: ScreenUtil.getInstance().setWidth(1)))),
-                                    child: Center(
-                                      child: Text('野蛮人',style: TextStyle(
-                                          color: Color(0xff3D2F1B),
-                                          fontSize: ScreenUtil.getInstance().setSp(30)
-                                      ),),
-                                    ),
-                                  ),
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      _roleIndex = 1;
-                                      showRoleSelect = false;
-                                    });
+                                    if (roles.indexOf(item) == roles.length - 1) {
+                                      setState(() {
+                                        showRoleSelect = false;
+                                      });
+                                    } else {
+                                      setState(() {
+                                        _roleIndex = roles.indexOf(item);
+                                        showRoleSelect = false;
+                                      });
+                                    }
                                   },
                                   child: Container(
                                     height: ScreenUtil.getInstance().setHeight(104),
                                     width: width - ScreenUtil.getInstance().setWidth(48),
                                     decoration: BoxDecoration(
                                         color: Color(0xffE8DAC5),
-                                        border:
-                                        Border(bottom: BorderSide(color: Color(0xffC9BBA4),
-                                            width: ScreenUtil.getInstance().setWidth(1)))),
+                                        border: Border(
+                                            bottom: BorderSide(
+                                                color: Color(roles.indexOf(item) == roles.length - 1
+                                                    ? 0xffE8DAC5
+                                                    : 0xffC9BBA4),
+                                                width: ScreenUtil.getInstance().setWidth(1)))),
                                     child: Center(
-                                      child: Text('圣教军',style: TextStyle(
-                                          color: Color(0xff3D2F1B),
-                                          fontSize: ScreenUtil.getInstance().setSp(30)
-                                      ),),
+                                      child: Text(
+                                        '${item['name']}',
+                                        style: TextStyle(
+                                            color: Color((roles.indexOf(item) == roles.length - 1)
+                                                ? 0xffB51610
+                                                : 0xff3D2F1B),
+                                            fontSize: ScreenUtil.getInstance().setSp(30)),
+                                      ),
                                     ),
                                   ),
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      _roleIndex = 2;
-                                      showRoleSelect = false;
-                                    });
-                                  },
-                                  child: Container(
-                                    height: ScreenUtil.getInstance().setHeight(104),
-                                    width: width - ScreenUtil.getInstance().setWidth(48),
-                                    decoration: BoxDecoration(
-                                        color: Color(0xffE8DAC5),
-                                        border:
-                                        Border(bottom: BorderSide(color: Color(0xffC9BBA4),
-                                            width: ScreenUtil.getInstance().setWidth(1)))),
-                                    child: Center(
-                                      child: Text('武僧',style: TextStyle(
-                                          color: Color(0xff3D2F1B),
-                                          fontSize: ScreenUtil.getInstance().setSp(30)
-                                      ),),
-                                    ),
-                                  ),
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      _roleIndex = 3;
-                                      showRoleSelect = false;
-                                    });
-                                  },
-                                  child: Container(
-                                    height: ScreenUtil.getInstance().setHeight(104),
-                                    width: width - ScreenUtil.getInstance().setWidth(48),
-                                    decoration: BoxDecoration(
-                                        color: Color(0xffE8DAC5),
-                                        border:
-                                        Border(bottom: BorderSide(color: Color(0xffC9BBA4),
-                                            width: ScreenUtil.getInstance().setWidth(1)))),
-                                    child: Center(
-                                      child: Text('猎魔人',style: TextStyle(
-                                          color: Color(0xff3D2F1B),
-                                          fontSize: ScreenUtil.getInstance().setSp(30)
-                                      ),),
-                                    ),
-                                  ),
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      _roleIndex = 4;
-                                      showRoleSelect = false;
-                                    });
-                                  },
-                                  child: Container(
-                                    height: ScreenUtil.getInstance().setHeight(104),
-                                    width: width - ScreenUtil.getInstance().setWidth(48),
-                                    decoration: BoxDecoration(
-                                        color: Color(0xffE8DAC5),
-                                        border:
-                                        Border(bottom: BorderSide(color: Color(0xffC9BBA4),
-                                            width: ScreenUtil.getInstance().setWidth(1)))),
-                                    child: Center(
-                                      child: Text('巫医',style: TextStyle(
-                                          color: Color(0xff3D2F1B),
-                                          fontSize: ScreenUtil.getInstance().setSp(30)
-                                      ),),
-                                    ),
-                                  ),
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      _roleIndex = 5;
-                                      showRoleSelect = false;
-                                    });
-                                  },
-                                  child: Container(
-                                    height: ScreenUtil.getInstance().setHeight(104),
-                                    width: width - ScreenUtil.getInstance().setWidth(48),
-                                    decoration: BoxDecoration(
-                                        color: Color(0xffE8DAC5),
-                                        border:
-                                        Border(bottom: BorderSide(color: Color(0xffC9BBA4),
-                                            width: ScreenUtil.getInstance().setWidth(1)))),
-                                    child: Center(
-                                      child: Text('死灵法师',style: TextStyle(
-                                          color: Color(0xff3D2F1B),
-                                          fontSize: ScreenUtil.getInstance().setSp(30)
-                                      ),),
-                                    ),
-                                  ),
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      _roleIndex = 6;
-                                      showRoleSelect = false;
-                                    });
-                                  },
-                                  child: Container(
-                                    height: ScreenUtil.getInstance().setHeight(104),
-                                    width: width - ScreenUtil.getInstance().setWidth(48),
-                                    decoration: BoxDecoration(
-                                        color: Color(0xffE8DAC5),
-                                        border:
-                                        Border(bottom: BorderSide(color: Color(0xffC9BBA4),
-                                            width: ScreenUtil.getInstance().setWidth(1)))),
-                                    child: Center(
-                                      child: Text('魔法师',style: TextStyle(
-                                          color: Color(0xff3D2F1B),
-                                          fontSize: ScreenUtil.getInstance().setSp(30)
-                                      ),),
-                                    ),
-                                  ),
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      showRoleSelect = false;
-                                    });
-                                  },
-                                  child: Container(
-                                    height: ScreenUtil.getInstance().setHeight(104),
-                                    width: width - ScreenUtil.getInstance().setWidth(48),
-                                    decoration: BoxDecoration(
-                                        color: Color(0xffE8DAC5),
-                                        border:
-                                        Border(bottom: BorderSide(color: Color(0xffC9BBA4),
-                                            width: ScreenUtil.getInstance().setWidth(1)))),
-                                    child: Center(
-                                      child: Text('取消',style: TextStyle(
-                                        color: Color(0xffB51610),
-                                        fontSize: ScreenUtil.getInstance().setSp(30)
-                                      ),),
-                                    ),
-                                  ),
-                                )
-
-                              ],
+                                );
+                              }).toList(),
                             ),
                           ),
                         ),

@@ -128,6 +128,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.0.3"
+  reorderables:
+    dependency: "direct main"
+    description:
+      name: reorderables
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.2.12"
   shared_preferences:
     dependency: "direct main"
     description:

@@ -57,7 +57,116 @@ class _DataBaseState extends State<DataBase> with TickerProviderStateMixin {
           ],
         ),
         body: Container(
-          color: Color(0xffE8DAC5),
+          decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage('images/fragment_tools_bg.jpg'), fit: BoxFit.fill),
+            color: Color(0xffE8DAC5),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              GestureDetector(
+                onTap: () {},
+                child: Container(
+                  width: ScreenUtil.getInstance().setWidth(470),
+                  height: ScreenUtil.getInstance().setHeight(84),
+                  decoration: BoxDecoration(
+                      color: Color(0xffB51610),
+                      border: Border.all(
+                          color: Color(0xffB5A88E), width: ScreenUtil.getInstance().setWidth(1)),
+                      borderRadius: BorderRadius.all(Radius.circular(4))),
+                  child: Center(
+                    child: Text(
+                      '装备数据库',
+                      style: TextStyle(
+                          color: Color(0xffF3D79A), fontSize: ScreenUtil.getInstance().setSp(34)),
+                    ),
+                  ),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.only(
+                    top: ScreenUtil.getInstance().setHeight(12),
+                    bottom: ScreenUtil.getInstance().setHeight(60)),
+                child: Text(
+                  '当前版本：2.6.5',
+                  style: TextStyle(
+                      color: Color(0xffB6A98F), fontSize: ScreenUtil.getInstance().setSp(22)),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(bottom: ScreenUtil.getInstance().setHeight(60)),
+                height: ScreenUtil.getInstance().setHeight(30),
+                decoration: BoxDecoration(
+                    image: DecorationImage(image: AssetImage('images/database_divider.png'))),
+              ),
+              GestureDetector(
+                onTap: () {},
+                child: Container(
+                  width: ScreenUtil.getInstance().setWidth(470),
+                  height: ScreenUtil.getInstance().setHeight(84),
+                  decoration: BoxDecoration(
+                      color: Color(0xffB51610),
+                      border: Border.all(
+                          color: Color(0xffB5A88E), width: ScreenUtil.getInstance().setWidth(1)),
+                      borderRadius: BorderRadius.all(Radius.circular(4))),
+                  child: Center(
+                    child: Text(
+                      '技能数据库',
+                      style: TextStyle(
+                          color: Color(0xffF3D79A), fontSize: ScreenUtil.getInstance().setSp(34)),
+                    ),
+                  ),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.only(
+                    top: ScreenUtil.getInstance().setHeight(12),
+                    bottom: ScreenUtil.getInstance().setHeight(60)),
+                child: Text(
+                  '当前版本：2.6.5',
+                  style: TextStyle(
+                      color: Color(0xffB6A98F), fontSize: ScreenUtil.getInstance().setSp(22)),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(bottom: ScreenUtil.getInstance().setHeight(60)),
+                height: ScreenUtil.getInstance().setHeight(30),
+                decoration: BoxDecoration(
+                    image: DecorationImage(image: AssetImage('images/database_divider.png'))),
+              ),
+              GestureDetector(
+                onTap: () {},
+                child: Container(
+                  width: ScreenUtil.getInstance().setWidth(470),
+                  height: ScreenUtil.getInstance().setHeight(84),
+                  decoration: BoxDecoration(
+                      color: Color(0xffB51610),
+                      border: Border.all(
+                          color: Color(0xffB5A88E), width: ScreenUtil.getInstance().setWidth(1)),
+                      borderRadius: BorderRadius.all(Radius.circular(4))),
+                  child: Center(
+                    child: Text(
+                      '传奇宝石',
+                      style: TextStyle(
+                          color: Color(0xffF3D79A), fontSize: ScreenUtil.getInstance().setSp(34)),
+                    ),
+                  ),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.only(
+                  top: ScreenUtil.getInstance().setHeight(12),
+                ),
+                child: Text(
+                  '当前版本：2.6.5',
+                  style: TextStyle(
+                      color: Color(0xffB6A98F), fontSize: ScreenUtil.getInstance().setSp(22)),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

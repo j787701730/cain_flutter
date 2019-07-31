@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'data_base_equipment.dart';
+
 class DataBase extends StatefulWidget {
   @override
   _DataBaseState createState() => _DataBaseState();
@@ -67,7 +69,12 @@ class _DataBaseState extends State<DataBase> with TickerProviderStateMixin {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    new MaterialPageRoute(builder: (context) => new DataBaseEquipment()),
+                  );
+                },
                 child: Container(
                   width: ScreenUtil.getInstance().setWidth(470),
                   height: ScreenUtil.getInstance().setHeight(84),

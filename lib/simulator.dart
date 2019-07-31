@@ -675,7 +675,6 @@ class _SimulatorState extends State<Simulator> with TickerProviderStateMixin {
                                           width: ScreenUtil.getInstance().setWidth(170),
                                           height: ScreenUtil.getInstance().setHeight(44),
                                           decoration: BoxDecoration(
-                                              color: Colors.blue,
                                               image: DecorationImage(
                                                   image: AssetImage(type == 'equipment'
                                                       ? 'images/simulator_title_bg_on.png'
@@ -704,7 +703,6 @@ class _SimulatorState extends State<Simulator> with TickerProviderStateMixin {
                                           width: ScreenUtil.getInstance().setWidth(170),
                                           height: ScreenUtil.getInstance().setHeight(44),
                                           decoration: BoxDecoration(
-                                              color: Colors.blue,
                                               image: DecorationImage(
                                                   image: AssetImage(type == 'skill'
                                                       ? 'images/simulator_title_bg_on.png'

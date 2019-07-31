@@ -53,6 +53,7 @@ flutter:
   assets:
     - images/
     - bbs/
+    - equipment/
 
   fonts:
     - family: SourceHanSansCN

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+
 import 'news_content.dart';
 
 class BbsContent extends StatefulWidget {
@@ -364,7 +365,7 @@ class _BbsContentState extends State<BbsContent> with TickerProviderStateMixin {
     fixedHeight = width / 912 * 480 -
         MediaQuery.of(context).padding.top -
         56 +
-        ScreenUtil.getInstance().setHeight(84.0 + 60 * topListLength);
+        ScreenUtil.getInstance().setHeight(84.0 + 84 + 60 * topListLength);
     return Container(
       child: Stack(
         children: <Widget>[
@@ -853,7 +854,6 @@ class _BbsContentState extends State<BbsContent> with TickerProviderStateMixin {
               : Positioned(
                   left: 0,
                   top: MediaQuery.of(context).padding.top + 56,
-                  height: 56,
                   width: width,
                   child: Container(
                     color: Color(0xffE8DAC5),

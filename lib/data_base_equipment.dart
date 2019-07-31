@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+import 'equipment.dart';
+
 class DataBaseEquipment extends StatefulWidget {
   @override
   _DataBaseEquipmentState createState() => _DataBaseEquipmentState();
@@ -192,38 +194,49 @@ class _DataBaseEquipmentState extends State<DataBaseEquipment>
               ),
               Wrap(
                 children: item['list'].map<Widget>((list) {
-                  return Container(
-                    width: width / 4,
-                    margin: EdgeInsets.only(bottom: ScreenUtil.getInstance().setHeight(48)),
-                    padding: EdgeInsets.only(
-                        left: ScreenUtil.getInstance().setWidth(24),
-                        right: ScreenUtil.getInstance().setWidth(24)),
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          width: ScreenUtil.getInstance().setWidth(width / 4 - 48),
-                          height: ScreenUtil.getInstance().setWidth(width / 4 - 48),
-                          padding: EdgeInsets.all(ScreenUtil.getInstance().setWidth(6)),
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image: AssetImage('images/equipment_weapon_bg.png'),
-                                  fit: BoxFit.fill)),
-                          child: Image.asset('equipment/${list['image']}',fit: BoxFit.contain,),
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(
-                            top: ScreenUtil.getInstance().setWidth(8)
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        new MaterialPageRoute(
+                            builder: (context) =>
+                                new Equipment({'use': true, 'title': item['type']})),
+                      );
+                    },
+                    child: Container(
+                      width: width / 4,
+                      margin: EdgeInsets.only(bottom: ScreenUtil.getInstance().setHeight(48)),
+                      padding: EdgeInsets.only(
+                          left: ScreenUtil.getInstance().setWidth(24),
+                          right: ScreenUtil.getInstance().setWidth(24)),
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                            width: ScreenUtil.getInstance().setWidth(width / 4 - 48),
+                            height: ScreenUtil.getInstance().setWidth(width / 4 - 48),
+                            padding: EdgeInsets.all(ScreenUtil.getInstance().setWidth(6)),
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: AssetImage('images/equipment_weapon_bg.png'),
+                                    fit: BoxFit.fill)),
+                            child: Image.asset(
+                              'equipment/${list['image']}',
+                              fit: BoxFit.contain,
+                            ),
                           ),
-                          child: Text(
-                            list['name'],
-                            style: TextStyle(
-                                color: Color(0xff3D2F1B),
-                                fontSize: ScreenUtil.getInstance().setSp(26)),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        )
-                      ],
+                          Container(
+                            padding: EdgeInsets.only(top: ScreenUtil.getInstance().setWidth(8)),
+                            child: Text(
+                              list['name'],
+                              style: TextStyle(
+                                  color: Color(0xff3D2F1B),
+                                  fontSize: ScreenUtil.getInstance().setSp(26)),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   );
                 }).toList(),
@@ -462,8 +475,8 @@ class _DataBaseEquipmentState extends State<DataBaseEquipment>
                                       TextStyle(fontSize: ScreenUtil.getInstance().setSp(32)),
                                   indicatorWeight: ScreenUtil.getInstance().setWidth(4),
                                   indicatorColor: Color(0xffB51610),
-                                indicatorPadding: EdgeInsets.only(
-                                    bottom: ScreenUtil.getInstance().setHeight(-2)),
+                                  indicatorPadding: EdgeInsets.only(
+                                      bottom: ScreenUtil.getInstance().setHeight(-2)),
                                   tabs: <Tab>[
                                     Tab(
                                       text: "武器",

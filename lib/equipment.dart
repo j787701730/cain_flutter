@@ -21,27 +21,94 @@ class _EquipmentState extends State<Equipment> with TickerProviderStateMixin {
   ScrollController _listController = ScrollController();
 
   bool flag = true;
-  Map content = {
-    'title': 'App 1.6.2版本上线：模拟器迭代与太古装备展示',
-    'author': '秋仲琉璃子不语',
-    'create_date': '5个小时前',
-    'avatar': 'default_avatar.png',
-    'level': '',
-    'visits': 9527,
-    'imgs': [
-      'new1_1',
-      'new1_2',
-      'new1_3',
-      'new2',
-      'new3_1',
-      'new3_2',
-      'new3_3',
-      'new4',
-      'new5',
-    ],
-  };
 
   bool show = false;
+
+  // type 0=>普通 equipment_normal , 1=>魔法 equipment_magic,
+  // 2=>稀有 equipment_rare, 3=>传奇 equipment_legendary , 4=>套装 equipment_set
+  Map dropType = {'0': '世界掉落', '1': '铁匠'};
+
+  Map data = {
+    'one-handed': [
+      {
+        'name': '斧头',
+        'image': 'diablo3db_49511_cn_items_axe_norm_base_01.png',
+        'type': 0,
+        'drop': 0,
+        'level': 70,
+        'equip_level': 70
+      },
+      {
+        'name': '匕首',
+        'image': 'diablo3db_49511_cn_items_dagger_norm_base_04_icon.png',
+        'type': 1,
+        'drop': 1,
+        'level': 70,
+        'equip_level': 70
+      },
+      {
+        'name': '钉锤',
+        'image': 'diablo3db_49511_cn_items_mace_normal_base_06.png',
+        'type': 2,
+        'drop': 0,
+        'level': 70,
+        'equip_level': 70
+      },
+      {
+        'name': '长矛',
+        'image': 'diablo3db_49511_cn_items_spear_norm_base_04_icon.png',
+        'type': 3,
+        'drop': 1,
+        'level': 70,
+        'equip_level': 70
+      },
+      {
+        'name': '剑',
+        'image': 'diablo3db_49511_cn_items_sword_norm_base_07.png',
+        'type': 4,
+        'drop': 1,
+        'level': 70,
+        'equip_level': 70
+      },
+      {
+        'name': '祭祀刀',
+        'image': 'diablo3db_49511_cn_items_ceremonialdagger_norm_base_01_icon.png',
+        'type': 0
+      },
+      {
+        'name': '拳套武器',
+        'image': 'diablo3db_49511_cn_items_fistweapons_norm_base_04_icon.png',
+        'type': 0,
+        'drop': 0,
+        'level': 70,
+        'equip_level': 70
+      },
+      {
+        'name': '重武器',
+        'image': 'diablo3db_49511_cn_items_mightyweapon_1h_normal_unique_06.png',
+        'type': 0,
+        'drop': 0,
+        'level': 70,
+        'equip_level': 70
+      },
+      {
+        'name': '连枷',
+        'image': 'diablo3db_49511_cn_items_x1_flail_1h_norm_base_01.png',
+        'type': 0,
+        'drop': 0,
+        'level': 70,
+        'equip_level': 70
+      },
+      {
+        'name': '镰刀',
+        'image': 'diablo3db_49511_cn_items_p6_scythe_norm_base_01_icon.png',
+        'type': 0,
+        'drop': 0,
+        'level': 70,
+        'equip_level': 70
+      },
+    ]
+  };
 
   @override
   void initState() {
@@ -106,8 +173,7 @@ class _EquipmentState extends State<Equipment> with TickerProviderStateMixin {
       decoration: BoxDecoration(
           color: Color(0xffE8DAC5),
           image: DecorationImage(
-              alignment: Alignment.topCenter,
-              image: AssetImage('images/title_bar_bg.jpg'))),
+              alignment: Alignment.topCenter, image: AssetImage('images/title_bar_bg.jpg'))),
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -122,7 +188,7 @@ class _EquipmentState extends State<Equipment> with TickerProviderStateMixin {
               padding: EdgeInsets.only(
 //                left: ScreenUtil.getInstance().setWidth(24),
 //                right: ScreenUtil.getInstance().setWidth(24),
-              ),
+                  ),
               child: Center(
                 child: Image.asset(
                   'images/back.png',
@@ -131,324 +197,234 @@ class _EquipmentState extends State<Equipment> with TickerProviderStateMixin {
               ),
             ),
           ),
-          title: Container(
-            child: show
-                ? Row(
-              children: <Widget>[
-                Image.asset(
-                  'images/${content['avatar']}',
-                  width: ScreenUtil.getInstance().setWidth(40),
-                ),
-                Container(
-                  width: ScreenUtil.getInstance().setWidth(12),
-                ),
-                Text(
-                  content['author'],
-                  style: TextStyle(
-                      color: Color(0xffF5DA9C), fontSize: ScreenUtil.getInstance().setSp(28)),
-                )
-              ],
-            )
-                : Text(''),
-          ),
-          // type: 1=> 帖子 0 => 其他
+          title: Text('${widget.props['title']}',
+              style: TextStyle(
+                color: Color(0xffFFDF8E),
+              )),
           actions: <Widget>[
-            widget.props['type'] == '1'
-                ? Row(
-              children: <Widget>[
-                Container(
-                  padding: EdgeInsets.only(
-                      left: ScreenUtil.getInstance().setWidth(8),
-                      right: ScreenUtil.getInstance().setWidth(8),
-                      top: ScreenUtil.getInstance().setHeight(0),
-                      bottom: ScreenUtil.getInstance().setHeight(2)),
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                          color: Color(0xffF4DA9C),
-                          width: ScreenUtil.getInstance().setWidth(1)),
-                      borderRadius: BorderRadius.all(Radius.circular(6))),
-                  child: Text(
-                    '只看楼主',
-                    style: TextStyle(
-                      color: Color(0xffF4DA9C),
-                      fontSize: ScreenUtil.getInstance().setSp(22),
-                    ),
-                  ),
-                ),
-                Container(
-                    padding: EdgeInsets.only(
-                        left: ScreenUtil.getInstance().setWidth(20),
-                        right: ScreenUtil.getInstance().setWidth(20)),
-                    child: Image.asset(
-                      'images/icon_title_more.png',
-                      width: ScreenUtil.getInstance().setWidth(56),
-                    ))
-              ],
-            )
-                : SizedBox()
+            Container(
+                padding: EdgeInsets.only(
+                    left: ScreenUtil.getInstance().setWidth(20),
+                    right: ScreenUtil.getInstance().setWidth(20)),
+                child: Center(
+                  child: Text('搜索', style: TextStyle(color: Color(0xffFFDF8E), fontSize: 20)),
+                ))
           ],
         ),
-        body: Stack(
-          fit: StackFit.expand,
-          children: <Widget>[
-            Positioned(
-                left: 0,
-                top: 0,
-                height: height -
-                    ScreenUtil.getInstance().setHeight(96) -
-                    MediaQuery.of(context).padding.top -
-                    56,
-                width: width,
-                child: Container(
-                  color: Color(0xffE8DAC5),
-                  child: flag
-                      ? Center(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Image.asset('images/head_loading1.png',width: ScreenUtil.getInstance().setWidth(78),),
-                          Container(
-                            height: ScreenUtil.getInstance().setWidth(10),
-                          ),
-                          Text(
-                            '正在前往大秘境...',
-                            style: TextStyle(
-                                color: Color(0xff938373),
-                                fontSize: ScreenUtil.getInstance().setSp(23)),
-                          )
-                        ],
-                      ))
-                      : SmartRefresher(
-                    controller: _refreshController,
-//          onOffsetChange: _onOffsetChange,
-                    onRefresh: () async {
-                      _loading();
-                      await Future.delayed(Duration(milliseconds: 2000));
-                      if (mounted) setState(() {});
-                      animationLoadingController.reset();
-                      animationLoadingController.stop();
-                      _refreshController.refreshCompleted();
-                    },
-                    enablePullUp: true,
-                    header: CustomHeader(
-                      refreshStyle: RefreshStyle.Behind,
-                      builder: (c, m) {
-                        return Container(
-                          child: Center(
-                            child: Image.asset(
-                              'images/head_loading${animationLoadingController == null ? 1 : (animationLoadingController.value * (8 - 1.01 + 1) + 1).toInt()}.png',
-                              width: ScreenUtil.getInstance().setWidth(78),
-                              height: ScreenUtil.getInstance().setWidth(84),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                    footer: CustomFooter(
-                      loadStyle: LoadStyle.ShowWhenLoading,
-                      builder: (BuildContext context, LoadStatus mode) {
-                        Widget body;
-                        if (mode == LoadStatus.idle) {
-                          body = Row(
+        body: Container(
+          decoration: BoxDecoration(
+              color: Color(0xffE8DAC5),
+              image: DecorationImage(
+                  image: AssetImage('images/fragment_tools_bg.jpg'), fit: BoxFit.fill)),
+          child: Stack(
+            fit: StackFit.expand,
+            children: <Widget>[
+              Positioned(
+                  left: 0,
+                  top: ScreenUtil.getInstance().setWidth(126),
+                  height: height -
+                      MediaQuery.of(context).padding.top -
+                      56 -
+                      ScreenUtil.getInstance().setWidth(126),
+                  width: width,
+                  child: Container(
+                    child: flag
+                        ? Center(
+                            child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              CupertinoActivityIndicator(),
-                              Text('   载入中...')
-                            ],
-                          );
-                        } else if (mode == LoadStatus.loading) {
-                          body = Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              CupertinoActivityIndicator(),
-                              Text('   载入中...')
-                            ],
-                          );
-                        } else if (mode == LoadStatus.failed) {
-                          body = Text("Load Failed!Click retry!");
-                        } else {
-                          body = Text("No more Data");
-                        }
-                        return Container(
-                          height: 60.0,
-                          child: Center(child: body),
-                        );
-                      },
-                    ),
-                    onLoading: () async {
-                      // monitor network fetch
-                      print('onLoading');
-                      await Future.delayed(Duration(milliseconds: 2000));
-                      // if failed,use loadFailed(),if no data return,use LoadNodata()
-                      if (mounted) setState(() {});
-                      _refreshController.loadComplete();
-                    },
-                    child: ListView(
-                      controller: _listController,
-                      padding: EdgeInsets.only(
-                          left: ScreenUtil.getInstance().setWidth(24),
-                          right: ScreenUtil.getInstance().setWidth(24)),
-                      children: <Widget>[
-                        Container(
-                          padding: EdgeInsets.only(
-                              top: ScreenUtil.getInstance().setWidth(30),
-                              bottom: ScreenUtil.getInstance().setHeight(30)),
-                          child: Text(
-                            content['title'],
-                            style: TextStyle(
-                                fontSize: ScreenUtil.getInstance().setSp(30),
-                                color: Color(0xff000000)),
-                          ),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                              border: Border(
-                                top: BorderSide(
-                                    color: Color(0xffA99B83),
-                                    width: ScreenUtil.getInstance().setWidth(2)),
-                                bottom: BorderSide(
-                                    color: Color(0xffA99B83),
-                                    width: ScreenUtil.getInstance().setWidth(2)),
-                              )),
-                          padding: EdgeInsets.only(
-                              top: ScreenUtil.getInstance().setHeight(12),
-                              bottom: ScreenUtil.getInstance().setHeight(12)),
-                          margin:
-                          EdgeInsets.only(bottom: ScreenUtil.getInstance().setWidth(12)),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Container(
-                                child: Image.asset(
-                                  'images/${content['avatar']}',
-                                  width: ScreenUtil.getInstance().setWidth(60),
-                                ),
+                              Image.asset(
+                                'images/head_loading1.png',
+                                width: ScreenUtil.getInstance().setWidth(78),
                               ),
-                              Expanded(
-                                  child: Container(
-                                    padding: EdgeInsets.only(
-                                        left: ScreenUtil.getInstance().setWidth(12)),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Text(
-                                          content['author'],
-                                          style: TextStyle(
-                                              color: Color(0xffE79425),
-                                              fontSize: ScreenUtil.getInstance().setSp(26)),
-                                        ),
-                                        Container(
-                                          padding: EdgeInsets.only(
-                                              top: ScreenUtil.getInstance().setHeight(6)),
-                                          child: Text(content['create_date'],
-                                              style: TextStyle(
-                                                  color: Color(0xffB5A88E),
-                                                  fontSize: ScreenUtil.getInstance().setSp(26))),
-                                        ),
-                                      ],
-                                    ),
-                                  )),
                               Container(
-                                child: Row(
-                                  children: <Widget>[
-                                    Icon(
-                                      Icons.remove_red_eye,
-                                      color: Color(0xffB5A88E),
-                                    ),
-                                    Text(
-                                      '  ${content['visits']}',
-                                      style: TextStyle(
-                                        color: Color(0xffB5A88E),
-                                      ),
-                                    )
-                                  ],
-                                ),
+                                height: ScreenUtil.getInstance().setWidth(10),
+                              ),
+                              Text(
+                                '正在前往大秘境...',
+                                style: TextStyle(
+                                    color: Color(0xff938373),
+                                    fontSize: ScreenUtil.getInstance().setSp(23)),
                               )
                             ],
+                          ))
+                        : SmartRefresher(
+                            controller: _refreshController,
+//          onOffsetChange: _onOffsetChange,
+                            onRefresh: () async {
+                              _loading();
+                              await Future.delayed(Duration(milliseconds: 2000));
+                              if (mounted) setState(() {});
+                              animationLoadingController.reset();
+                              animationLoadingController.stop();
+                              _refreshController.refreshCompleted();
+                            },
+                            enablePullUp: true,
+                            header: CustomHeader(
+                              refreshStyle: RefreshStyle.Behind,
+                              builder: (c, m) {
+                                return Container(
+                                  child: Center(
+                                    child: Image.asset(
+                                      'images/head_loading${animationLoadingController == null ? 1 : (animationLoadingController.value * (8 - 1.01 + 1) + 1).toInt()}.png',
+                                      width: ScreenUtil.getInstance().setWidth(78),
+                                      height: ScreenUtil.getInstance().setWidth(84),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                            footer: CustomFooter(
+                              loadStyle: LoadStyle.ShowWhenLoading,
+                              builder: (BuildContext context, LoadStatus mode) {
+                                Widget body;
+                                if (mode == LoadStatus.idle) {
+                                  body = Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      CupertinoActivityIndicator(),
+                                      Text('   载入中...')
+                                    ],
+                                  );
+                                } else if (mode == LoadStatus.loading) {
+                                  body = Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      CupertinoActivityIndicator(),
+                                      Text('   载入中...')
+                                    ],
+                                  );
+                                } else if (mode == LoadStatus.failed) {
+                                  body = Text("Load Failed!Click retry!");
+                                } else {
+                                  body = Text("No more Data");
+                                }
+                                return Container(
+                                  height: 60.0,
+                                  child: Center(child: body),
+                                );
+                              },
+                            ),
+                            onLoading: () async {
+                              // monitor network fetch
+                              print('onLoading');
+                              await Future.delayed(Duration(milliseconds: 2000));
+                              // if failed,use loadFailed(),if no data return,use LoadNodata()
+                              if (mounted) setState(() {});
+                              _refreshController.loadComplete();
+                            },
+                            child: ListView(
+                              controller: _listController,
+                              padding: EdgeInsets.only(
+                                  left: ScreenUtil.getInstance().setWidth(24),
+                                  right: ScreenUtil.getInstance().setWidth(24)),
+                              children: data['one-handed'].map<Widget>((item) {
+                                String bg = '';
+                                // type 0=>普通 equipment_normal , 1=>魔法 equipment_magic,
+                                // 2=>稀有 equipment_rare, 3=>传奇 equipment_legendary , 4=>套装 equipment_set
+                                switch (item['type']) {
+                                  case 0:
+                                    bg = 'equipment_normal';
+                                    break;
+                                  case 1:
+                                    bg = 'equipment_magic';
+                                    break;
+                                  case 2:
+                                    bg = 'equipment_rare';
+                                    break;
+                                  case 3:
+                                    bg = 'equipment_legendary';
+                                    break;
+                                  case 4:
+                                    bg = 'equipment_set';
+                                    break;
+                                }
+                                return Container(
+                                  padding: EdgeInsets.only(
+                                    left: ScreenUtil.getInstance().setWidth(18),
+                                    right: ScreenUtil.getInstance().setWidth(18),
+                                    top: ScreenUtil.getInstance().setHeight(24),
+                                    bottom: ScreenUtil.getInstance().setHeight(24)
+                                  ),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.all(Radius.circular(6)),
+                                    border: Border.all(
+                                      color: Color(0xffB5A88E),
+                                      width: ScreenUtil.getInstance().setWidth(1)
+                                    ),
+                                    color: Color(0xffE3D4BF)
+                                  ),
+                                  margin: EdgeInsets.only(
+                                    bottom: ScreenUtil.getInstance().setHeight(24)
+                                  ),
+                                  child: Row(
+                                    children: <Widget>[
+                                      Container(
+                                        width: ScreenUtil.getInstance().setWidth(84),
+                                        height: ScreenUtil.getInstance().setWidth(84),
+                                        decoration: BoxDecoration(
+                                            image:
+                                                DecorationImage(image: AssetImage('images/$bg.png'))),
+                                        padding: EdgeInsets.all(4),
+                                        child: Image.asset('equipment/${item['image']}'),
+                                      ),
+                                      Expanded(
+                                          child: Column(
+                                        children: <Widget>[
+                                          Row(
+                                            children: <Widget>[
+                                              Text(item['name']),
+                                              Container(width: ScreenUtil.getInstance().setWidth(20),),
+                                              Text('${dropType[item['drop']]}')
+                                            ],
+                                          ),
+                                          Row(
+                                            children: <Widget>[],
+                                          )
+                                        ],
+                                      ))
+                                    ],
+                                  ),
+                                );
+                              }).toList(),
+                            ),
                           ),
-                        ),
-                        Column(
-                          children: content['imgs'].map<Widget>((item) {
-                            return Container(
-                              margin: EdgeInsets.only(
-                                  bottom: ScreenUtil.getInstance().setWidth(24)),
-                              width: width - ScreenUtil.getInstance().setWidth(48),
-                              child: Image.asset(
-                                'images/$item.jpg',
-                                fit: BoxFit.cover,
-                              ),
-                            );
-                          }).toList(),
-                        )
-                      ],
-                    ),
-                  ),
-                )),
-            Positioned(
-                left: 0,
-                bottom: 0,
-                width: width,
-                child: Container(
-                  height: ScreenUtil.getInstance().setHeight(96),
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage('images/rank_bottom_bg.jpg'), fit: BoxFit.cover)),
+                  )),
+              Positioned(
+                  left: 0,
+                  top: 0,
+                  width: width,
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Expanded(
-                          flex: 1,
-                          child: Container(
-                            padding: EdgeInsets.only(
-                                left: ScreenUtil.getInstance().setWidth(30),
-                                top: ScreenUtil.getInstance().setWidth(2)),
-                            height: ScreenUtil.getInstance().setHeight(70),
-                            width: width / 3 * 2,
-                            decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image: AssetImage('images/bg_comment_edit_text.png'),
-                                    fit: BoxFit.fill)),
-                            child: TextField(
-                              decoration: InputDecoration(
-                                  hintText: '已有168条回复',
-                                  hintStyle: TextStyle(
-                                      color: Color(0xff766D5A),
-                                      fontSize: ScreenUtil.getInstance().setSp(28))),
-                            ),
-                          )),
                       Container(
+                        height: ScreenUtil.getInstance().setHeight(40),
+                        margin: EdgeInsets.only(
+                            top: ScreenUtil.getInstance().setHeight(36),
+                            bottom: ScreenUtil.getInstance().setHeight(50)),
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                color: Color(0xffB51610),
+                                width: ScreenUtil.getInstance().setWidth(1)),
+                            borderRadius: BorderRadius.all(Radius.circular(4))),
                         padding: EdgeInsets.only(
-                            left: ScreenUtil.getInstance().setWidth(24),
-                            right: ScreenUtil.getInstance().setWidth(24)),
-                        child: Row(
-                          children: <Widget>[
-                            Container(
-                              child: Image.asset(
-                                'images/icon_bottom_flow.png',
-                                width: ScreenUtil.getInstance().setWidth(56),
-                              ),
-                              margin: EdgeInsets.only(right: ScreenUtil.getInstance().setWidth(24)),
-                            ),
-                            Container(
-                              child: Image.asset(
-                                'images/icon_detail_share.png',
-                                width: ScreenUtil.getInstance().setWidth(56),
-                              ),
-                              margin: EdgeInsets.only(right: ScreenUtil.getInstance().setWidth(24)),
-                            ),
-                            Container(
-                              child: Image.asset(
-                                'images/icon_detail_collect.png',
-                                width: ScreenUtil.getInstance().setWidth(56),
-                              ),
-                            )
-                          ],
+                          left: ScreenUtil.getInstance().setWidth(24),
+                          right: ScreenUtil.getInstance().setWidth(24),
+                        ),
+                        child: Center(
+                          child: Text(
+                            '筛选',
+                            style: TextStyle(
+                                color: Color(0xffB51610),
+                                fontSize: ScreenUtil.getInstance().setSp(23)),
+                          ),
                         ),
                       )
                     ],
-                  ),
-                ))
-          ],
+                  ))
+            ],
+          ),
         ),
       ),
     );

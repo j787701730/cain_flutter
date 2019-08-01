@@ -200,7 +200,7 @@ class _DataBaseEquipmentState extends State<DataBaseEquipment>
                         context,
                         new MaterialPageRoute(
                             builder: (context) =>
-                                new Equipment({'use': true, 'title': item['type']})),
+                                new Equipment({'use': true, 'title': list['name']})),
                       );
                     },
                     child: Container(

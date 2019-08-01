@@ -54,6 +54,7 @@ flutter:
     - images/
     - bbs/
     - equipment/
+    - skills/berserker_man/
 
   fonts:
     - family: SourceHanSansCN

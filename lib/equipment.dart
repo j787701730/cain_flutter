@@ -23,11 +23,35 @@ class _EquipmentState extends State<Equipment> with TickerProviderStateMixin {
   bool flag = true;
 
   bool show = false;
+  bool showEquip = true;
+
+  Map equipMsg = {
+    'name': '斧头',
+    'image': 'diablo3db_49511_cn_items_axe_norm_base_01.png',
+    'type': 1,
+    'drop': 0,
+    'level': 70,
+    'equip_level': 70,
+    'equip_type': '单手',
+    'dps': '2345.0-2756.0', // 秒伤
+    'dph': '(2345.0-2445.0)-(2756.0-2879.0)', // 伤害
+    'attack_speed': '1.1',
+    'dph2': '(2345.0-2445.0)-(2756.0-2879.0)',
+    'magic': '4',
+    'durable': '25-45',
+    'legeffects': '攻击时有一定几率召唤出一名堕落者勇士的鬼魂。',
+    'legeffects_value': 30,
+    'story': '“在堕落一族的语言中，‘根扎尼库’意为人类屠杀者。”—迪卡德·凯恩'
+  };
 
   // type 0=>普通 equipment_normal , 1=>魔法 equipment_magic,
   // 2=>稀有 equipment_rare, 3=>传奇 equipment_legendary , 4=>套装 equipment_set
-  Map dropType = {'0': '世界掉落', '1': '铁匠'};
+  Map dropType = {0: '世界掉落', 1: '铁匠'};
+  List colors = [0xffffffff, 0xff6969ff, 0xffffff00, 0xffff8000, 0xff00ff00];
 
+  // type 0=>普通 equipment_normal , 1=>魔法 equipment_magic,
+  // 2=>稀有 equipment_rare, 3=>传奇 equipment_legendary , 4=>套装 equipment_set
+  List equipType = ['普通', '魔法', '稀有', '传奇', '套装'];
   Map data = {
     'one-handed': [
       {
@@ -73,7 +97,10 @@ class _EquipmentState extends State<Equipment> with TickerProviderStateMixin {
       {
         'name': '祭祀刀',
         'image': 'diablo3db_49511_cn_items_ceremonialdagger_norm_base_01_icon.png',
-        'type': 0
+        'type': 0,
+        'drop': 1,
+        'level': 70,
+        'equip_level': 70
       },
       {
         'name': '拳套武器',
@@ -122,11 +149,18 @@ class _EquipmentState extends State<Equipment> with TickerProviderStateMixin {
   }
 
   _ajax() async {
-    await Future.delayed(Duration(seconds: 2), () {
+    await Future.delayed(Duration(seconds: 1), () {
       if (mounted)
         setState(() {
           flag = false;
         });
+    });
+  }
+
+  seeEquipMsg(item) {
+    setState(() {
+      showEquip = false;
+      equipMsg.addAll(item);
     });
   }
 
@@ -340,51 +374,83 @@ class _EquipmentState extends State<Equipment> with TickerProviderStateMixin {
                                     bg = 'equipment_set';
                                     break;
                                 }
-                                return Container(
-                                  padding: EdgeInsets.only(
-                                    left: ScreenUtil.getInstance().setWidth(18),
-                                    right: ScreenUtil.getInstance().setWidth(18),
-                                    top: ScreenUtil.getInstance().setHeight(24),
-                                    bottom: ScreenUtil.getInstance().setHeight(24)
-                                  ),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.all(Radius.circular(6)),
-                                    border: Border.all(
-                                      color: Color(0xffB5A88E),
-                                      width: ScreenUtil.getInstance().setWidth(1)
+                                return GestureDetector(
+                                  onTap: () {
+                                    seeEquipMsg(item);
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.only(
+                                        left: ScreenUtil.getInstance().setWidth(18),
+                                        right: ScreenUtil.getInstance().setWidth(18),
+                                        top: ScreenUtil.getInstance().setHeight(24),
+                                        bottom: ScreenUtil.getInstance().setHeight(24)),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.all(Radius.circular(6)),
+                                        border: Border.all(
+                                            color: Color(0xffB5A88E),
+                                            width: ScreenUtil.getInstance().setWidth(1)),
+                                        color: Color(0xffE3D4BF)),
+                                    margin: EdgeInsets.only(
+                                        bottom: ScreenUtil.getInstance().setHeight(24)),
+                                    child: Row(
+                                      children: <Widget>[
+                                        Container(
+                                          margin: EdgeInsets.only(
+                                              right: ScreenUtil.getInstance().setWidth(10)),
+                                          width: ScreenUtil.getInstance().setWidth(84),
+                                          height: ScreenUtil.getInstance().setWidth(84),
+                                          decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                  image: AssetImage('images/$bg.png'))),
+                                          padding: EdgeInsets.all(4),
+                                          child: Image.asset('equipment/${item['image']}'),
+                                        ),
+                                        Expanded(
+                                            child: Column(
+                                          children: <Widget>[
+                                            Row(
+                                              children: <Widget>[
+                                                Text(
+                                                  item['name'],
+                                                  style: TextStyle(
+                                                      fontSize: ScreenUtil.getInstance().setSp(30),
+                                                      color: Color(0xff3D2F1B)),
+                                                ),
+                                                Container(
+                                                  width: ScreenUtil.getInstance().setWidth(20),
+                                                ),
+                                                Text(
+                                                  '${dropType[item['drop']]}',
+                                                  style: TextStyle(
+                                                      color: Color(0xff9B8C73),
+                                                      fontSize: ScreenUtil.getInstance().setSp(26)),
+                                                )
+                                              ],
+                                            ),
+                                            Container(
+                                              height: ScreenUtil.getInstance().setHeight(6),
+                                            ),
+                                            Row(
+                                              children: <Widget>[
+                                                Text('物品等级·${item['level']}',
+                                                    style: TextStyle(
+                                                        color: Color(0xff9B8C73),
+                                                        fontSize:
+                                                            ScreenUtil.getInstance().setSp(26))),
+                                                Container(
+                                                  width: ScreenUtil.getInstance().setWidth(20),
+                                                ),
+                                                Text('装备等级·${item['equip_level']}',
+                                                    style: TextStyle(
+                                                        color: Color(0xff9B8C73),
+                                                        fontSize:
+                                                            ScreenUtil.getInstance().setSp(26)))
+                                              ],
+                                            )
+                                          ],
+                                        ))
+                                      ],
                                     ),
-                                    color: Color(0xffE3D4BF)
-                                  ),
-                                  margin: EdgeInsets.only(
-                                    bottom: ScreenUtil.getInstance().setHeight(24)
-                                  ),
-                                  child: Row(
-                                    children: <Widget>[
-                                      Container(
-                                        width: ScreenUtil.getInstance().setWidth(84),
-                                        height: ScreenUtil.getInstance().setWidth(84),
-                                        decoration: BoxDecoration(
-                                            image:
-                                                DecorationImage(image: AssetImage('images/$bg.png'))),
-                                        padding: EdgeInsets.all(4),
-                                        child: Image.asset('equipment/${item['image']}'),
-                                      ),
-                                      Expanded(
-                                          child: Column(
-                                        children: <Widget>[
-                                          Row(
-                                            children: <Widget>[
-                                              Text(item['name']),
-                                              Container(width: ScreenUtil.getInstance().setWidth(20),),
-                                              Text('${dropType[item['drop']]}')
-                                            ],
-                                          ),
-                                          Row(
-                                            children: <Widget>[],
-                                          )
-                                        ],
-                                      ))
-                                    ],
                                   ),
                                 );
                               }).toList(),
@@ -422,6 +488,332 @@ class _EquipmentState extends State<Equipment> with TickerProviderStateMixin {
                         ),
                       )
                     ],
+                  )),
+              Positioned(
+                  left: 0,
+                  top: 0,
+                  width: width,
+                  height: height - MediaQuery.of(context).padding.top - 56,
+                  child: Offstage(
+                    offstage: showEquip,
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          showEquip = true;
+                        });
+                      },
+                      child: Container(
+                        color: Color(0x99000000),
+                        child: Container(
+                          margin: EdgeInsets.only(
+                              top: 56 + ScreenUtil.getInstance().setHeight(20),
+                              bottom: ScreenUtil.getInstance().setHeight(146),
+                              left: ScreenUtil.getInstance().setWidth(70),
+                              right: ScreenUtil.getInstance().setWidth(70)),
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: Color(0xff1C1B19),
+                                  width: ScreenUtil.getInstance().setWidth(1)),
+                              color: Color(0xff000000)),
+                          child: Column(
+                            children: <Widget>[
+                              Container(
+                                height: ScreenUtil.getInstance().setHeight(52),
+                                decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        fit: BoxFit.fill,
+                                        image: AssetImage(
+                                            'images/tooltip-title${equipMsg['type']}.png'))),
+                                child: Stack(
+                                  children: <Widget>[
+                                    Container(
+                                      child: Center(
+                                        child: Text(
+                                          equipMsg['name'],
+                                          style: TextStyle(
+                                              color: Color(colors[equipMsg['type']]),
+                                              fontSize: ScreenUtil.getInstance().setSp(24)),
+                                        ),
+                                      ),
+                                    ),
+                                    Positioned(
+                                        right: ScreenUtil.getInstance().setWidth(24),
+                                        top: ScreenUtil.getInstance().setHeight(10),
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              showEquip = true;
+                                            });
+                                          },
+                                          child: Image.asset(
+                                            'images/equipment_detail_close.png',
+                                            width: ScreenUtil.getInstance().setWidth(32),
+                                          ),
+                                        ))
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                  child: ListView(
+                                children: <Widget>[
+                                  Container(
+                                    padding: EdgeInsets.all(ScreenUtil.getInstance().setWidth(20)),
+                                    child: Row(
+                                      children: <Widget>[
+                                        Container(
+                                          width: ScreenUtil.getInstance().setWidth(87),
+                                          height: ScreenUtil.getInstance().setWidth(166),
+                                          margin: EdgeInsets.only(
+                                              right: ScreenUtil.getInstance().setWidth(12)),
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color: Color(colors[equipMsg['type']])),
+                                              image: DecorationImage(
+                                                  image: AssetImage(
+                                                      'images/bg${equipMsg['type']}.png'))),
+                                          child: Image.asset('equipment/${equipMsg['image']}'),
+                                        ),
+                                        Expanded(
+                                            child: Container(
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              Text(
+                                                '${equipType[equipMsg['type']]}  ${widget.props['title']}',
+                                                style: TextStyle(
+                                                    color: Color(colors[equipMsg['type']]),
+                                                    fontSize: ScreenUtil.getInstance().setSp(16)),
+                                              ),
+                                              Container(
+                                                height: ScreenUtil.getInstance().setHeight(24),
+                                              ),
+                                              RichText(
+                                                  text: TextSpan(children: <TextSpan>[
+                                                TextSpan(
+                                                  text: '${equipMsg['dps']}',
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: ScreenUtil.getInstance().setSp(16)),
+                                                ),
+                                                TextSpan(
+                                                  text: '伤害/秒',
+                                                  style: TextStyle(
+                                                      color: Color(0xff8A8A8A),
+                                                      fontSize: ScreenUtil.getInstance().setSp(16)),
+                                                ),
+                                              ])),
+                                              Container(
+                                                height: ScreenUtil.getInstance().setHeight(20),
+                                              ),
+                                              RichText(
+                                                  text: TextSpan(children: <TextSpan>[
+                                                TextSpan(
+                                                  text: '${equipMsg['dph']}',
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: ScreenUtil.getInstance().setSp(16)),
+                                                ),
+                                                TextSpan(
+                                                  text: '伤害',
+                                                  style: TextStyle(
+                                                      color: Color(0xff8A8A8A),
+                                                      fontSize: ScreenUtil.getInstance().setSp(16)),
+                                                ),
+                                              ])),
+                                              Container(
+                                                height: ScreenUtil.getInstance().setHeight(20),
+                                              ),
+                                              RichText(
+                                                  text: TextSpan(children: <TextSpan>[
+                                                TextSpan(
+                                                  text: '${equipMsg['attack_speed']}',
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: ScreenUtil.getInstance().setSp(16)),
+                                                ),
+                                                TextSpan(
+                                                  text: '攻击速度',
+                                                  style: TextStyle(
+                                                      color: Color(0xff8A8A8A),
+                                                      fontSize: ScreenUtil.getInstance().setSp(16)),
+                                                ),
+                                              ])),
+                                            ],
+                                          ),
+                                        )),
+                                        Container(
+                                          child: Text(
+                                            equipMsg['equip_type'],
+                                            style: TextStyle(
+                                                color: Color(0xff8A8A8A),
+                                                fontSize: ScreenUtil.getInstance().setSp(16)),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.only(
+                                      bottom: ScreenUtil.getInstance().setWidth(12),
+                                      left: ScreenUtil.getInstance().setWidth(20),
+                                      right: ScreenUtil.getInstance().setWidth(20),
+                                    ),
+                                    child: Row(
+                                      children: <Widget>[
+                                        Image.asset(
+                                          'images/icons_primary.gif',
+                                          width: ScreenUtil.getInstance().setWidth(12),
+                                        ),
+                                        Container(
+                                          width: ScreenUtil.getInstance().setWidth(12),
+                                        ),
+                                        Text(
+                                          '${equipMsg['legeffects']}',
+                                          style: TextStyle(
+                                              color: Color(colors[equipMsg['type']]),
+                                              fontSize: ScreenUtil.getInstance().setSp(16)),
+                                        ),
+                                        Text(
+                                          '(${equipMsg['legeffects_value']}%)',
+                                          style: TextStyle(
+                                              color: Color(colors[equipMsg['type']]),
+                                              fontSize: ScreenUtil.getInstance().setSp(16)),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.only(
+                                        left: ScreenUtil.getInstance().setWidth(20),
+                                        right: ScreenUtil.getInstance().setWidth(20),
+                                        bottom: ScreenUtil.getInstance().setHeight(12)),
+                                    child: Row(
+                                      children: <Widget>[
+                                        Image.asset(
+                                          'images/icons_primary.gif',
+                                          width: ScreenUtil.getInstance().setWidth(12),
+                                        ),
+                                        Container(
+                                          width: ScreenUtil.getInstance().setWidth(12),
+                                        ),
+                                        Text(
+                                          '可能有以下7个魔法属性中的一个',
+                                          style: TextStyle(
+                                              color: Color(colors[equipMsg['type']]),
+                                              fontSize: ScreenUtil.getInstance().setSp(16)),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: ['伤害', '奥术伤害', '毒性伤害', '圣神伤害', '闪电伤害', '火焰伤害', '冰霜伤害']
+                                        .map<Widget>((item) {
+                                      return Container(
+                                        margin: EdgeInsets.only(
+                                            left: ScreenUtil.getInstance().setWidth(22)),
+                                        padding: EdgeInsets.only(
+                                            left: ScreenUtil.getInstance().setWidth(20),
+                                            right: ScreenUtil.getInstance().setWidth(20),
+                                            bottom: ScreenUtil.getInstance().setHeight(12)),
+                                        child: Row(
+                                          children: <Widget>[
+                                            Image.asset(
+                                              'images/icons_primary.gif',
+                                              width: ScreenUtil.getInstance().setWidth(12),
+                                            ),
+                                            Container(
+                                              width: ScreenUtil.getInstance().setWidth(12),
+                                            ),
+                                            Text(
+                                              '${equipMsg['dph2']}点$item',
+                                              style: TextStyle(
+                                                  color: Color(colors[equipMsg['type']]),
+                                                  fontSize: ScreenUtil.getInstance().setSp(16)),
+                                            )
+                                          ],
+                                        ),
+                                      );
+                                    }).toList(),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.only(
+                                        left: ScreenUtil.getInstance().setWidth(20),
+                                        right: ScreenUtil.getInstance().setWidth(20),
+                                        bottom: ScreenUtil.getInstance().setHeight(12)),
+                                    child: Row(
+                                      children: <Widget>[
+                                        Image.asset(
+                                          'images/icons_primary.gif',
+                                          width: ScreenUtil.getInstance().setWidth(12),
+                                        ),
+                                        Container(
+                                          width: ScreenUtil.getInstance().setWidth(12),
+                                        ),
+                                        Text(
+                                          '+${equipMsg['magic']}随机魔法属性',
+                                          style: TextStyle(
+                                              color: Color(colors[equipMsg['type']]),
+                                              fontSize: ScreenUtil.getInstance().setSp(16)),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.only(
+                                        left: ScreenUtil.getInstance().setWidth(20),
+                                        right: ScreenUtil.getInstance().setWidth(20),
+                                        bottom: ScreenUtil.getInstance().setHeight(12)),
+                                    child: Text(
+                                      '需要等级 ${equipMsg['level']}',
+                                      style: TextStyle(
+                                          color: Color(0xffC7B377),
+                                          fontSize: ScreenUtil.getInstance().setSp(16)),
+                                    ),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.only(
+                                        left: ScreenUtil.getInstance().setWidth(20),
+                                        right: ScreenUtil.getInstance().setWidth(20),
+                                        bottom: ScreenUtil.getInstance().setHeight(12)),
+                                    child: Text(
+                                      'ilvl ${equipMsg['level']}',
+                                      style: TextStyle(
+                                          color: Color(0xffC7B377),
+                                          fontSize: ScreenUtil.getInstance().setSp(16)),
+                                    ),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.only(
+                                        left: ScreenUtil.getInstance().setWidth(20),
+                                        right: ScreenUtil.getInstance().setWidth(20),
+                                        bottom: ScreenUtil.getInstance().setHeight(12)),
+                                    child: Text(
+                                      '耐久：${equipMsg['durable']}',
+                                      style: TextStyle(
+                                          color: Color(0xffC7B377),
+                                          fontSize: ScreenUtil.getInstance().setSp(16)),
+                                    ),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.only(
+                                        left: ScreenUtil.getInstance().setWidth(20),
+                                        right: ScreenUtil.getInstance().setWidth(20),
+                                        bottom: ScreenUtil.getInstance().setHeight(12)),
+                                    child: Text(
+                                      '${equipMsg['story']}',
+                                      style: TextStyle(
+                                          color: Color(0xffC7B377),
+                                          fontSize: ScreenUtil.getInstance().setSp(16)),
+                                    ),
+                                  ),
+                                ],
+                              ))
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                   ))
             ],
           ),

@@ -20,6 +20,9 @@ class _DataBaseSkillState extends State<DataBaseSkill>
   bool flag = true;
   bool showRoles = true;
 
+  bool activeSkillsShow = true;
+  bool passiveSkillsShow = true;
+
   List colors = [
     0xff6B83BD,
     0xff936AB0,
@@ -383,75 +386,83 @@ class _DataBaseSkillState extends State<DataBaseSkill>
               left: ScreenUtil.getInstance().setWidth(24),
               right: ScreenUtil.getInstance().setWidth(24)),
           children: activeSkills.map<Widget>((item) {
-            return Container(
-              margin: EdgeInsets.only(top: ScreenUtil.getInstance().setHeight(24)),
-              decoration: BoxDecoration(
-                  color: Color(0xffE3D4BF),
-                  border: Border.all(
-                      color: Color(0xffB5A88E), width: ScreenUtil.getInstance().setWidth(1)),
-                  borderRadius: BorderRadius.all(Radius.circular(6))),
-              padding: EdgeInsets.only(
-                  left: ScreenUtil.getInstance().setWidth(24),
-                  top: ScreenUtil.getInstance().setWidth(24),
-                  right: ScreenUtil.getInstance().setWidth(24),
-                  bottom: ScreenUtil.getInstance().setWidth(24)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.only(right: ScreenUtil.getInstance().setWidth(12)),
-                    width: ScreenUtil.getInstance().setWidth(84),
-                    height: ScreenUtil.getInstance().setHeight(84),
-                    child: Image.asset(
-                      'skills/${item['image']}',
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                  Expanded(
-                      child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Wrap(
-                        children: <Widget>[
-                          Text(
-                            '${item['name']}',
-                            style: TextStyle(
-                                color: Color(0xff3D2F1B),
-                                fontSize: ScreenUtil.getInstance().setSp(30)),
-                          ),
-                          Container(
-                            width: ScreenUtil.getInstance().setWidth(10),
-                          ),
-                          Text('属性·${attributes[item['attributes']]}',
-                              style: TextStyle(
-                                  color: Color(0xff9B8C73),
-                                  fontSize: ScreenUtil.getInstance().setSp(26))),
-                          Container(
-                            width: ScreenUtil.getInstance().setWidth(10),
-                          ),
-                          Text('等级·${item['level']}',
-                              style: TextStyle(
-                                  color: Color(0xff9B8C73),
-                                  fontSize: ScreenUtil.getInstance().setSp(26))),
-                        ],
+            return GestureDetector(
+              onTap: () {
+                setState(() {
+                  activeSkillsShow = false;
+                });
+              },
+              child: Container(
+                margin: EdgeInsets.only(top: ScreenUtil.getInstance().setHeight(24)),
+                decoration: BoxDecoration(
+                    color: Color(0xffE3D4BF),
+                    border: Border.all(
+                        color: Color(0xffB5A88E), width: ScreenUtil.getInstance().setWidth(1)),
+                    borderRadius: BorderRadius.all(Radius.circular(6))),
+                padding: EdgeInsets.only(
+                    left: ScreenUtil.getInstance().setWidth(24),
+                    top: ScreenUtil.getInstance().setWidth(24),
+                    right: ScreenUtil.getInstance().setWidth(24),
+                    bottom: ScreenUtil.getInstance().setWidth(24)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.only(right: ScreenUtil.getInstance().setWidth(12)),
+                      width: ScreenUtil.getInstance().setWidth(84),
+                      height: ScreenUtil.getInstance().setHeight(84),
+                      child: Image.asset(
+                        'skills/${item['image']}',
+                        fit: BoxFit.fill,
                       ),
-                      Wrap(
-                        children: item['rune'].map<Widget>((rune) {
-                          return Container(
-                            width: ScreenUtil.getInstance().setWidth(40),
-                            height: ScreenUtil.getInstance().setHeight(40),
-                            child: Image.asset(
-                              'images/$rune',
-                              fit: BoxFit.fill,
+                    ),
+                    Expanded(
+                        flex: 1,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Wrap(
+                              crossAxisAlignment: WrapCrossAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  '${item['name']}',
+                                  style: TextStyle(
+                                      color: Color(0xff3D2F1B),
+                                      fontSize: ScreenUtil.getInstance().setSp(30)),
+                                ),
+                                Container(
+                                  width: ScreenUtil.getInstance().setWidth(10),
+                                ),
+                                Text('属性·${attributes[item['attributes']]}',
+                                    style: TextStyle(
+                                        color: Color(0xff9B8C73),
+                                        fontSize: ScreenUtil.getInstance().setSp(26))),
+                                Container(
+                                  width: ScreenUtil.getInstance().setWidth(10),
+                                ),
+                                Text('等级·${item['level']}',
+                                    style: TextStyle(
+                                        color: Color(0xff9B8C73),
+                                        fontSize: ScreenUtil.getInstance().setSp(26))),
+                              ],
                             ),
-                          );
-                        }).toList(),
-                      )
-                    ],
-                  ))
-                ],
+                            Wrap(
+                              children: item['rune'].map<Widget>((rune) {
+                                return Container(
+                                  width: ScreenUtil.getInstance().setWidth(40),
+                                  height: ScreenUtil.getInstance().setHeight(40),
+                                  child: Image.asset(
+                                    'images/$rune',
+                                    fit: BoxFit.fill,
+                                  ),
+                                );
+                              }).toList(),
+                            )
+                          ],
+                        ))
+                  ],
+                ),
               ),
             );
           }).toList(),
@@ -523,60 +534,67 @@ class _DataBaseSkillState extends State<DataBaseSkill>
               left: ScreenUtil.getInstance().setWidth(24),
               right: ScreenUtil.getInstance().setWidth(24)),
           children: passiveSkills.map<Widget>((item) {
-            return Container(
-              margin: EdgeInsets.only(top: ScreenUtil.getInstance().setHeight(24)),
-              decoration: BoxDecoration(
-                  color: Color(0xffE3D4BF),
-                  border: Border.all(
-                      color: Color(0xffB5A88E), width: ScreenUtil.getInstance().setWidth(1)),
-                  borderRadius: BorderRadius.all(Radius.circular(6))),
-              padding: EdgeInsets.only(
-                  left: ScreenUtil.getInstance().setWidth(24),
-                  top: ScreenUtil.getInstance().setWidth(24),
-                  right: ScreenUtil.getInstance().setWidth(24),
-                  bottom: ScreenUtil.getInstance().setWidth(24)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.only(right: ScreenUtil.getInstance().setWidth(12)),
-                    width: ScreenUtil.getInstance().setWidth(84),
-                    height: ScreenUtil.getInstance().setHeight(84),
-                    child: Image.asset(
-                      'skills/${item['image']}',
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                  Expanded(
-                      child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Wrap(
-                        children: <Widget>[
-                          Text(
-                            '${item['name']}',
-                            style: TextStyle(
-                                color: Color(0xff3D2F1B),
-                                fontSize: ScreenUtil.getInstance().setSp(30)),
-                          ),
-                          Container(
-                            width: ScreenUtil.getInstance().setWidth(10),
-                          ),
-                          Text('属性·${attributes[item['attributes']]}',
-                              style: TextStyle(
-                                  color: Color(0xff9B8C73),
-                                  fontSize: ScreenUtil.getInstance().setSp(26))),
-                          Container(
-                            width: ScreenUtil.getInstance().setWidth(10),
-                          ),
-                          Text('等级·${item['level']}',
-                              style: TextStyle(
-                                  color: Color(0xff9B8C73),
-                                  fontSize: ScreenUtil.getInstance().setSp(26))),
-                        ],
+            return GestureDetector(
+              onTap: () {
+                setState(() {
+                  passiveSkillsShow = false;
+                });
+              },
+              child: Container(
+                margin: EdgeInsets.only(top: ScreenUtil.getInstance().setHeight(24)),
+                decoration: BoxDecoration(
+                    color: Color(0xffE3D4BF),
+                    border: Border.all(
+                        color: Color(0xffB5A88E), width: ScreenUtil.getInstance().setWidth(1)),
+                    borderRadius: BorderRadius.all(Radius.circular(6))),
+                padding: EdgeInsets.only(
+                    left: ScreenUtil.getInstance().setWidth(24),
+                    top: ScreenUtil.getInstance().setWidth(24),
+                    right: ScreenUtil.getInstance().setWidth(24),
+                    bottom: ScreenUtil.getInstance().setWidth(24)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.only(right: ScreenUtil.getInstance().setWidth(12)),
+                      width: ScreenUtil.getInstance().setWidth(84),
+                      height: ScreenUtil.getInstance().setHeight(84),
+                      child: Image.asset(
+                        'skills/${item['image']}',
+                        fit: BoxFit.fill,
                       ),
+                    ),
+                    Expanded(
+                        child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Wrap(
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          children: <Widget>[
+                            Text(
+                              '${item['name']}',
+                              style: TextStyle(
+                                  color: Color(0xff3D2F1B),
+                                  fontSize: ScreenUtil.getInstance().setSp(30)),
+                            ),
+                            Container(
+                              width: ScreenUtil.getInstance().setWidth(10),
+                            ),
+                            Text('属性·${attributes[item['attributes']]}',
+                                style: TextStyle(
+                                    color: Color(0xff9B8C73),
+                                    fontSize: ScreenUtil.getInstance().setSp(26))),
+                            Container(
+                              width: ScreenUtil.getInstance().setWidth(10),
+                            ),
+                            Text('等级·${item['level']}',
+                                style: TextStyle(
+                                    color: Color(0xff9B8C73),
+                                    fontSize: ScreenUtil.getInstance().setSp(26))),
+                          ],
+                        ),
 //                          Wrap(
 //                            children: item['rune'].map<Widget>((rune) {
 //                              return Container(
@@ -586,9 +604,10 @@ class _DataBaseSkillState extends State<DataBaseSkill>
 //                              );
 //                            }).toList(),
 //                          )
-                    ],
-                  ))
-                ],
+                      ],
+                    ))
+                  ],
+                ),
               ),
             );
           }).toList(),
@@ -753,198 +772,350 @@ class _DataBaseSkillState extends State<DataBaseSkill>
                 color: Color(0xffFFDF8E),
               )),
         ),
-        body: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage('images/fragment_tools_bg.jpg'), fit: BoxFit.fill),
-            color: Color(0xffE8DAC5),
-          ),
-          child: Column(
-            children: <Widget>[
-              Container(
-                height: ScreenUtil.getInstance().setHeight(120),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                        child: ListView(
-                      padding: EdgeInsets.only(
-                          top: ScreenUtil.getInstance().setHeight(36),
-                          left: ScreenUtil.getInstance().setWidth(24),
-                          bottom: ScreenUtil.getInstance().setHeight(36)),
-                      scrollDirection: Axis.horizontal,
-                      children: roles.map<Widget>((item) {
-                        int id = item['id'];
-                        return GestureDetector(
+        body: Stack(
+          children: <Widget>[
+            Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage('images/fragment_tools_bg.jpg'), fit: BoxFit.fill),
+                color: Color(0xffE8DAC5),
+              ),
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    height: ScreenUtil.getInstance().setHeight(120),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                            child: ListView(
+                          padding: EdgeInsets.only(
+                              top: ScreenUtil.getInstance().setHeight(36),
+                              left: ScreenUtil.getInstance().setWidth(24),
+                              bottom: ScreenUtil.getInstance().setHeight(36)),
+                          scrollDirection: Axis.horizontal,
+                          children: roles.map<Widget>((item) {
+                            int id = item['id'];
+                            return GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  roleIndex = id;
+                                });
+                              },
+                              child: Container(
+                                margin:
+                                    EdgeInsets.only(right: ScreenUtil.getInstance().setWidth(24)),
+                                decoration: BoxDecoration(
+                                    color: id == roleIndex ? Color(0xffB51610) : Colors.transparent,
+                                    borderRadius: BorderRadius.all(Radius.circular(4)),
+                                    border: Border.all(
+                                      width: ScreenUtil.getInstance().setWidth(1),
+                                      color:
+                                          id == roleIndex ? Color(0xffB51610) : Color(0xff6A5C41),
+                                    )),
+                                width: ScreenUtil.getInstance()
+                                    .setWidth(item['name'].length * 28 + 48.0),
+                                child: Center(
+                                  child: Text(
+                                    item['name'],
+                                    style: TextStyle(
+                                        color:
+                                            id == roleIndex ? Color(0xffF3D699) : Color(0xff6A5C41),
+                                        fontSize: ScreenUtil.getInstance().setSp(26)),
+                                  ),
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                        )),
+                        GestureDetector(
                           onTap: () {
+                            if (showRoles) {
+                              overlayEntry = createSelectPopupWindow(
+                                  width, height, MediaQuery.of(context).padding.top);
+                              Overlay.of(context).insert(overlayEntry);
+                            } else {
+                              overlayEntry.remove();
+                            }
                             setState(() {
-                              roleIndex = id;
+                              showRoles = !showRoles;
                             });
                           },
                           child: Container(
-                            margin: EdgeInsets.only(right: ScreenUtil.getInstance().setWidth(24)),
-                            decoration: BoxDecoration(
-                                color: id == roleIndex ? Color(0xffB51610) : Colors.transparent,
-                                borderRadius: BorderRadius.all(Radius.circular(4)),
-                                border: Border.all(
-                                  width: ScreenUtil.getInstance().setWidth(1),
-                                  color: id == roleIndex ? Color(0xffB51610) : Color(0xff6A5C41),
-                                )),
-                            width:
-                                ScreenUtil.getInstance().setWidth(item['name'].length * 28 + 48.0),
-                            child: Center(
-                              child: Text(
-                                item['name'],
-                                style: TextStyle(
-                                    color: id == roleIndex ? Color(0xffF3D699) : Color(0xff6A5C41),
-                                    fontSize: ScreenUtil.getInstance().setSp(26)),
-                              ),
+                            padding: EdgeInsets.only(
+                                left: ScreenUtil.getInstance().setWidth(20),
+                                right: ScreenUtil.getInstance().setWidth(20)),
+                            child: Image.asset(
+                              showRoles
+                                  ? 'images/community_top_list_arr.png'
+                                  : 'images/community_top_list_arr_up.png',
+                              width: ScreenUtil.getInstance().setWidth(44),
                             ),
                           ),
-                        );
-                      }).toList(),
-                    )),
-                    GestureDetector(
-                      onTap: () {
-                        if (showRoles) {
-                          overlayEntry = createSelectPopupWindow(
-                              width, height, MediaQuery.of(context).padding.top);
-                          Overlay.of(context).insert(overlayEntry);
-                        } else {
-                          overlayEntry.remove();
-                        }
-                        setState(() {
-                          showRoles = !showRoles;
-                        });
-                      },
-                      child: Container(
-                        padding: EdgeInsets.only(
-                            left: ScreenUtil.getInstance().setWidth(20),
-                            right: ScreenUtil.getInstance().setWidth(20)),
-                        child: Image.asset(
-                          showRoles
-                              ? 'images/community_top_list_arr.png'
-                              : 'images/community_top_list_arr_up.png',
-                          width: ScreenUtil.getInstance().setWidth(44),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Container(
+                    width: width,
+                    height: height -
+                        56 -
+                        MediaQuery.of(context).padding.top -
+                        ScreenUtil.getInstance().setHeight(120),
+                    child: flag
+                        ? Center(
+                            child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Image.asset(
+                                'images/head_loading1.png',
+                                width: ScreenUtil.getInstance().setWidth(78),
+                              ),
+                              Container(
+                                height: ScreenUtil.getInstance().setWidth(10),
+                              ),
+                              Text(
+                                '正在前往大秘境...',
+                                style: TextStyle(
+                                    color: Color(0xff938373),
+                                    fontSize: ScreenUtil.getInstance().setSp(23)),
+                              )
+                            ],
+                          ))
+                        : Container(
+                            height: 400,
+                            width: width,
+                            child: Column(
+                              children: <Widget>[
+                                Container(
+                                  padding:
+                                      EdgeInsets.only(bottom: ScreenUtil.getInstance().setWidth(7)),
+                                  height: ScreenUtil.getInstance().setHeight(80),
+                                  decoration: BoxDecoration(
+                                      border: Border(
+                                          top: BorderSide(
+                                              color: Color(0xffC5B7A1),
+                                              width: ScreenUtil.getInstance().setWidth(1)),
+                                          bottom: BorderSide(
+                                              color: Color(0xffC5B7A1),
+                                              width: ScreenUtil.getInstance().setWidth(1)))),
+                                  child: Row(
+                                    children: <Widget>[
+                                      Expanded(
+                                          flex: 1,
+                                          child: Container(
+                                              padding: EdgeInsets.only(
+                                                  left: ScreenUtil.getInstance().setWidth(14),
+                                                  right: ScreenUtil.getInstance().setWidth(14)),
+                                              child: TabBar(
+                                                  controller: _tabController,
+                                                  labelColor: Color(0xffB51610),
+                                                  unselectedLabelColor: Color(0xff6A5C41),
+                                                  labelStyle: TextStyle(
+                                                      fontSize: ScreenUtil.getInstance().setSp(32)),
+                                                  indicatorWeight:
+                                                      ScreenUtil.getInstance().setWidth(4),
+                                                  indicatorColor: Color(0xffB51610),
+                                                  indicatorPadding: EdgeInsets.only(
+                                                      bottom:
+                                                          ScreenUtil.getInstance().setHeight(-2)),
+                                                  tabs: <Tab>[
+                                                    Tab(
+                                                      text: "主动",
+                                                    ),
+                                                    Tab(
+                                                      text: "被动",
+                                                    ),
+                                                  ]))),
+                                      Container(
+                                        height: ScreenUtil.getInstance().setHeight(36),
+                                        width: ScreenUtil.getInstance().setWidth(1),
+                                        color: Color(0xffC7B9A2),
+                                      ),
+                                      Container(
+                                        margin: EdgeInsets.only(
+                                            left: ScreenUtil.getInstance().setWidth(40),
+                                            right: ScreenUtil.getInstance().setWidth(40)),
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: Color(0xffB51610),
+                                                width: ScreenUtil.getInstance().setWidth(1)),
+                                            borderRadius: BorderRadius.all(Radius.circular(4))),
+                                        padding: EdgeInsets.only(
+                                            left: ScreenUtil.getInstance().setWidth(24),
+                                            right: ScreenUtil.getInstance().setWidth(24),
+                                            top: ScreenUtil.getInstance().setHeight(4),
+                                            bottom: ScreenUtil.getInstance().setHeight(4)),
+                                        child: Text(
+                                          '全部',
+                                          style: TextStyle(
+                                              color: Color(0xffB51610),
+                                              fontSize: ScreenUtil.getInstance().setSp(23)),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                    child: Container(
+                                  height: 300,
+                                  child: TabBarView(
+                                    physics: NeverScrollableScrollPhysics(),
+                                    controller: _tabController,
+                                    children: <Widget>[
+                                      activeSkillsBox(width),
+                                      passiveSkillsBox(width)
+                                    ],
+                                  ),
+                                ))
+                              ],
+                            ),
+                          ),
+                  ),
+                ],
               ),
-              Container(
+            ),
+            Positioned(
+                left: 0,
+                top: 0,
                 width: width,
-                height: height -
-                    56 -
-                    MediaQuery.of(context).padding.top -
-                    ScreenUtil.getInstance().setHeight(120),
-                child: flag
-                    ? Center(
-                        child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Image.asset(
-                            'images/head_loading1.png',
-                            width: ScreenUtil.getInstance().setWidth(78),
-                          ),
-                          Container(
-                            height: ScreenUtil.getInstance().setWidth(10),
-                          ),
-                          Text(
-                            '正在前往大秘境...',
-                            style: TextStyle(
-                                color: Color(0xff938373),
-                                fontSize: ScreenUtil.getInstance().setSp(23)),
-                          )
-                        ],
-                      ))
-                    : Container(
-                        height: 400,
-                        width: width,
+                height: height - MediaQuery.of(context).padding.top - 56,
+                child: Offstage(
+                  offstage: activeSkillsShow,
+                  child: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        activeSkillsShow = true;
+                      });
+                    },
+                    child: Container(
+                      color: Color(0x99000000),
+                      child: Container(
+                        margin: EdgeInsets.only(
+                            top: 56 + ScreenUtil.getInstance().setHeight(20),
+                            bottom: ScreenUtil.getInstance().setHeight(146),
+                            left: ScreenUtil.getInstance().setWidth(70),
+                            right: ScreenUtil.getInstance().setWidth(70)),
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                color: Color(0xff1C1B19),
+                                width: ScreenUtil.getInstance().setWidth(1)),
+                            color: Color(0xff000000)),
                         child: Column(
                           children: <Widget>[
                             Container(
-                              padding:
-                                  EdgeInsets.only(bottom: ScreenUtil.getInstance().setWidth(7)),
-                              height: ScreenUtil.getInstance().setHeight(80),
+                              height: ScreenUtil.getInstance().setHeight(52),
                               decoration: BoxDecoration(
-                                  border: Border(
-                                      top: BorderSide(
-                                          color: Color(0xffC5B7A1),
-                                          width: ScreenUtil.getInstance().setWidth(1)),
-                                      bottom: BorderSide(
-                                          color: Color(0xffC5B7A1),
-                                          width: ScreenUtil.getInstance().setWidth(1)))),
-                              child: Row(
+                                  image: DecorationImage(
+                                      fit: BoxFit.fill,
+                                      image: AssetImage('images/tooltip-title5.png'))),
+                              child: Stack(
                                 children: <Widget>[
-                                  Expanded(
-                                      flex: 1,
-                                      child: Container(
-                                          padding: EdgeInsets.only(
-                                              left: ScreenUtil.getInstance().setWidth(14),
-                                              right: ScreenUtil.getInstance().setWidth(14)),
-                                          child: TabBar(
-                                              controller: _tabController,
-                                              labelColor: Color(0xffB51610),
-                                              unselectedLabelColor: Color(0xff6A5C41),
-                                              labelStyle: TextStyle(
-                                                  fontSize: ScreenUtil.getInstance().setSp(32)),
-                                              indicatorWeight: ScreenUtil.getInstance().setWidth(4),
-                                              indicatorColor: Color(0xffB51610),
-                                              indicatorPadding: EdgeInsets.only(
-                                                  bottom: ScreenUtil.getInstance().setHeight(-2)),
-                                              tabs: <Tab>[
-                                                Tab(
-                                                  text: "主动",
-                                                ),
-                                                Tab(
-                                                  text: "被动",
-                                                ),
-                                              ]))),
                                   Container(
-                                    height: ScreenUtil.getInstance().setHeight(36),
-                                    width: ScreenUtil.getInstance().setWidth(1),
-                                    color: Color(0xffC7B9A2),
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.only(
-                                        left: ScreenUtil.getInstance().setWidth(40),
-                                        right: ScreenUtil.getInstance().setWidth(40)),
-                                    decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: Color(0xffB51610),
-                                            width: ScreenUtil.getInstance().setWidth(1)),
-                                        borderRadius: BorderRadius.all(Radius.circular(4))),
-                                    padding: EdgeInsets.only(
-                                        left: ScreenUtil.getInstance().setWidth(24),
-                                        right: ScreenUtil.getInstance().setWidth(24),
-                                        top: ScreenUtil.getInstance().setHeight(4),
-                                        bottom: ScreenUtil.getInstance().setHeight(4)),
-                                    child: Text(
-                                      '全部',
-                                      style: TextStyle(
-                                          color: Color(0xffB51610),
-                                          fontSize: ScreenUtil.getInstance().setSp(23)),
+                                    child: Center(
+                                      child: Text(
+                                        '主动技能',
+                                        style: TextStyle(
+                                            color: Color(0xffD1C5B2),
+                                            fontSize: ScreenUtil.getInstance().setSp(24)),
+                                      ),
                                     ),
                                   ),
+                                  Positioned(
+                                      right: ScreenUtil.getInstance().setWidth(24),
+                                      top: ScreenUtil.getInstance().setHeight(10),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            activeSkillsShow = true;
+                                          });
+                                        },
+                                        child: Image.asset(
+                                          'images/equipment_detail_close.png',
+                                          width: ScreenUtil.getInstance().setWidth(32),
+                                        ),
+                                      ))
                                 ],
                               ),
                             ),
-                            Expanded(
-                                child: Container(
-                              height: 300,
-                              child: TabBarView(
-                                physics: NeverScrollableScrollPhysics(),
-                                controller: _tabController,
-                                children: <Widget>[activeSkillsBox(width), passiveSkillsBox(width)],
-                              ),
-                            ))
+                            Expanded(child: ListView())
                           ],
                         ),
                       ),
-              ),
-            ],
-          ),
+                    ),
+                  ),
+                )),
+            Positioned(
+                left: 0,
+                top: 0,
+                width: width,
+                height: height - MediaQuery.of(context).padding.top - 56,
+                child: Offstage(
+                  offstage: passiveSkillsShow,
+                  child: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        passiveSkillsShow = true;
+                      });
+                    },
+                    child: Container(
+                      color: Color(0x99000000),
+                      child: Container(
+                        margin: EdgeInsets.only(
+                            top: 56 + ScreenUtil.getInstance().setHeight(20),
+                            bottom: ScreenUtil.getInstance().setHeight(146),
+                            left: ScreenUtil.getInstance().setWidth(70),
+                            right: ScreenUtil.getInstance().setWidth(70)),
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                color: Color(0xff1C1B19),
+                                width: ScreenUtil.getInstance().setWidth(1)),
+                            color: Color(0xff000000)),
+                        child: Column(
+                          children: <Widget>[
+                            Container(
+                              height: ScreenUtil.getInstance().setHeight(52),
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      fit: BoxFit.fill,
+                                      image: AssetImage('images/tooltip-title5.png'))),
+                              child: Stack(
+                                children: <Widget>[
+                                  Container(
+                                    child: Center(
+                                      child: Text(
+                                        '被动技能',
+                                        style: TextStyle(
+                                            color: Color(0xffD1C5B2),
+                                            fontSize: ScreenUtil.getInstance().setSp(24)),
+                                      ),
+                                    ),
+                                  ),
+                                  Positioned(
+                                      right: ScreenUtil.getInstance().setWidth(24),
+                                      top: ScreenUtil.getInstance().setHeight(10),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            passiveSkillsShow = true;
+                                          });
+                                        },
+                                        child: Image.asset(
+                                          'images/equipment_detail_close.png',
+                                          width: ScreenUtil.getInstance().setWidth(32),
+                                        ),
+                                      ))
+                                ],
+                              ),
+                            ),
+                            Expanded(child: ListView())
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ))
+          ],
         ),
       ),
     );

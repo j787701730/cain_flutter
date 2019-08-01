@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'data_base_equipment.dart';
+import 'data_base_legendary_gem.dart';
 import 'data_base_skill.dart';
 
 class DataBase extends StatefulWidget {
@@ -112,8 +113,8 @@ class _DataBaseState extends State<DataBase> with TickerProviderStateMixin {
               GestureDetector(
                 onTap: () {
                   Navigator.push(
-                  context,
-                      new MaterialPageRoute(builder: (context) => new DataBaseSkill()),
+                    context,
+                    new MaterialPageRoute(builder: (context) => new DataBaseSkill()),
                   );
                 },
                 child: Container(
@@ -150,7 +151,12 @@ class _DataBaseState extends State<DataBase> with TickerProviderStateMixin {
                     image: DecorationImage(image: AssetImage('images/database_divider.png'))),
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    new MaterialPageRoute(builder: (context) => new DataBaseLegendaryGem({})),
+                  );
+                },
                 child: Container(
                   width: ScreenUtil.getInstance().setWidth(470),
                   height: ScreenUtil.getInstance().setHeight(84),

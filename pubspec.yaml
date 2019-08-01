@@ -55,6 +55,7 @@ flutter:
     - bbs/
     - equipment/
     - skills/berserker_man/
+    - legendarygem/
 
   fonts:
     - family: SourceHanSansCN

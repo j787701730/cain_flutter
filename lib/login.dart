@@ -50,7 +50,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
               child: Center(
                 child: Image.asset(
                   'images/back.png',
-                  width: ScreenUtil.getInstance().setWidth(30),
+                  width: ScreenUtil.getInstance().setWidth(42),
                 ),
               ),
             ),

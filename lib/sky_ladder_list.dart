@@ -168,7 +168,7 @@ class _SkyLadderListState extends State<SkyLadderList> with TickerProviderStateM
               child: Center(
                 child: Image.asset(
                   'images/back.png',
-                  width: ScreenUtil.getInstance().setWidth(30),
+                  width: ScreenUtil.getInstance().setWidth(42),
                 ),
               ),
             ),

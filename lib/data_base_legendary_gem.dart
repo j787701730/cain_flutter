@@ -30,28 +30,187 @@ class _DataBaseLegendaryGemState extends State<DataBaseLegendaryGem> with Ticker
   Map selectLegendaryGem = {};
 
   List legendaryGem = [
-    {'image': 'ia_100002462.png', 'name': '免死宝石', 'drop': 0, 'level': 1, 'equip_level': 1},
-    {'image': 'ia_100002633.png', 'name': '侍从宝石', 'drop': 0, 'level': 1, 'equip_level': 1},
-    {'image': 'ia_100002769.png', 'name': '免死宝石', 'drop': 0, 'level': 1, 'equip_level': 1},
-    {'image': 'ia_100002802.png', 'name': '免死宝石', 'drop': 0, 'level': 1, 'equip_level': 1},
-    {'image': 'ia_100002870.png', 'name': '免死宝石', 'drop': 0, 'level': 1, 'equip_level': 1},
-    {'image': 'ia_100002938.png', 'name': '免死宝石', 'drop': 0, 'level': 1, 'equip_level': 1},
-    {'image': 'ia_100002972.png', 'name': '免死宝石', 'drop': 0, 'level': 1, 'equip_level': 1},
-    {'image': 'ia_100003560.png', 'name': '免死宝石', 'drop': 0, 'level': 1, 'equip_level': 1},
-    {'image': 'ia_100003595.png', 'name': '免死宝石', 'drop': 0, 'level': 1, 'equip_level': 1},
-    {'image': 'ia_100003697.png', 'name': '免死宝石', 'drop': 0, 'level': 1, 'equip_level': 1},
-    {'image': 'ia_100003823.png', 'name': '免死宝石', 'drop': 0, 'level': 1, 'equip_level': 1},
-    {'image': 'ia_100003895.png', 'name': '免死宝石', 'drop': 0, 'level': 1, 'equip_level': 1},
-    {'image': 'ia_100004326.png', 'name': '免死宝石', 'drop': 0, 'level': 1, 'equip_level': 1},
-    {'image': 'ia_100004395.png', 'name': '免死宝石', 'drop': 0, 'level': 1, 'equip_level': 1},
-    {'image': 'ia_100004463.png', 'name': '免死宝石', 'drop': 0, 'level': 1, 'equip_level': 1},
-    {'image': 'ia_100004497.png', 'name': '免死宝石', 'drop': 0, 'level': 1, 'equip_level': 1},
-    {'image': 'ia_100004565.png', 'name': '免死宝石', 'drop': 0, 'level': 1, 'equip_level': 1},
-    {'image': 'ia_100004599.png', 'name': '免死宝石', 'drop': 0, 'level': 1, 'equip_level': 1},
-    {'image': 'ia_100004669.png', 'name': '免死宝石', 'drop': 0, 'level': 1, 'equip_level': 1},
-    {'image': 'ia_100004740.png', 'name': '免死宝石', 'drop': 0, 'level': 1, 'equip_level': 1},
-    {'image': 'ia_300002064.png', 'name': '免死宝石', 'drop': 0, 'level': 1, 'equip_level': 1},
-    {'image': 'ia_300002099.png', 'name': '免死宝石', 'drop': 0, 'level': 1, 'equip_level': 1},
+    {
+      'image': 'ia_100002462.png',
+      'name': '猩红灵魂碎片',
+      'drop': 0,
+      'level': 1,
+      'equip_level': 1,
+      'story': '这好像就是令人闻之色变的猩红灵魂石的一部分。但这不可能啊……那东西很久以前就被毁掉了。'
+    },
+    {
+      'image': 'ia_100002633.png',
+      'name': '闪耀冰晶',
+      'drop': 0,
+      'level': 1,
+      'equip_level': 1,
+      'story':
+          '冒险者们曾经对一种能将敌人冻在原地的板条链甲赞叹不已。有个病怏怏的名叫钟逸洛的宝石匠人听见了这些传说，并决定要切割出一种有着同样效果的宝石。“我有自己的独门秘笈，等着瞧吧。”人们听到她这样喃喃自语。'
+    },
+    {
+      'image': 'ia_100002769.png',
+      'name': '波亚斯基的芯片',
+      'drop': 0,
+      'level': 1,
+      'equip_level': 1,
+      'story':
+          '这块被称为“芯片”的宝石碎块，是一个叫波亚斯基的老头在一处地下密室中发现的。是他把这块碎片打磨成了如今这样一副美丽的珠宝。它会伤害那些试图谋害其主人的恶徒，而且一旦嵌进了镶孔，就再也不会掉落下来。'
+    },
+    {
+      'image': 'ia_100002802.png',
+      'name': '毁伤之御',
+      'drop': 0,
+      'level': 1,
+      'equip_level': 1,
+      'story': '果子山人氏周青设计了一种宝石，它可以将物理攻击所造成的痛楚感转移到一个秘密的地方。当被问起那些伤害都被转移到哪里去了时，她只是笑笑地说了一句“罪有应得、大快人心”。'
+    },
+    {
+      'image': 'ia_100002870.png',
+      'name': '受罚者之灾',
+      'drop': 0,
+      'level': 1,
+      'equip_level': 1,
+      'story': '在马萨伊尔落败后，学者迪亚德拉开始周游世界。她研究了仙塞的宝石切割技术，并将他们的秘诀带回了威斯特玛。受罚者之灾就是她在威斯特玛工作间里出品的第一块宝石。'
+    },
+    {
+      'image': 'ia_100002938.png',
+      'name': '火牛羚砂囊',
+      'drop': 0,
+      'level': 1,
+      'equip_level': 1,
+      'story': '如果将火牛羚的砂囊放进调配得当的炼金术试剂中，会激发出极不寻常的属性，因此这种动物在很久之前就被猎杀得灭绝了。'
+    },
+    {
+      'image': 'ia_100002972.png',
+      'name': '转煞秘石',
+      'drop': 0,
+      'level': 1,
+      'equip_level': 1,
+      'story': '仙塞人氏传阳君设计了一种宝石，它可以将魔法能量从目标身上转移到他的死对头—周青的工坊中。他在神秘地失踪前，制造了若干颗此宝石。'
+    },
+    {
+      'image': 'ia_100003560.png',
+      'name': '太极石',
+      'drop': 0,
+      'level': 1,
+      'equip_level': 1,
+      'story': '“只要能量足够，任何人都拥有无穷的可能性。”—高阶祭司贝伊科'
+    },
+    {
+      'image': 'ia_100003595.png',
+      'name': '囤宝者的恩惠',
+      'drop': 0,
+      'level': 1,
+      'equip_level': 1,
+      'story': '“据说有一位贪婪的女王派手下去收集财宝，并给他们配备了镶有宝石的装备，以便捞到更多的珠宝。据说‘囤宝者的恩惠’就是这样一种宝石。”—阿卜杜·哈兹尔'
+    },
+    {
+      'image': 'ia_100003697.png',
+      'name': '至简之力',
+      'drop': 0,
+      'level': 1,
+      'equip_level': 1,
+      'story': '“拳练千遍，其功自见。”—女尊者莲·拉斯姆森'
+    },
+    {
+      'image': 'ia_100003823.png',
+      'name': '贼神的复仇之石',
+      'drop': 0,
+      'level': 1,
+      'equip_level': 1,
+      'story': '传说这颗宝石是贼神所制，用于折磨逃跑的敌人。但又有其它的传说声称贼神从未存在过。'
+    },
+    {
+      'image': 'ia_100003895.png',
+      'name': '免死宝石',
+      'drop': 0,
+      'level': 1,
+      'equip_level': 1,
+      'story': '艾葛罗德的群峰之中，时常可以发现宝石。据说这些宝石发出的和谐音律能在战斗中阻挡死亡的到来。'
+    },
+    {
+      'image': 'ia_100004326.png',
+      'name': '侍从宝石',
+      'drop': 0,
+      'level': 1,
+      'equip_level': 1,
+      'story': '这颗宝石的核心拥有强大的力量，能与主人的追随者分享。'
+    },
+    {
+      'image': 'ia_100004395.png',
+      'name': '活力宝石',
+      'drop': 0,
+      'level': 1,
+      'equip_level': 1,
+      'story':
+          '“有人说这块石头的力量源自于其主人的生命力，每次使用都会折损使用者的寿命。但在我看来，只要能从战场上活下来就足够了，明天的事还是留给明天去操心吧。”—著名战士勒纳拉斯在其过世的前一天如是说'
+    },
+    {
+      'image': 'ia_100004463.png',
+      'name': '迅捷勾玉',
+      'drop': 0,
+      'level': 1,
+      'equip_level': 1,
+      'story': '“你不用比敌人强壮，只要身心敏捷即可。”—善德女王'
+    },
+    {
+      'image': 'ia_100004497.png',
+      'name': '银河，织星者之泪',
+      'drop': 0,
+      'level': 1,
+      'equip_level': 1,
+      'story':
+          '“相传，有一对情人每一年就会来到银河的两岸一次。无数的喜鹊会筑起一道鹊桥，好让两人可以相会。别离的时候，他们的泪水会洒满大地。这颗银河宝石就是他们的泪水。蕴藏其中的悲伤与愤怒，只会影响宝石周围的人。”—学者黄素珍'
+    },
+    {
+      'image': 'ia_100004565.png',
+      'name': '增痛宝石',
+      'drop': 0,
+      'level': 1,
+      'equip_level': 1,
+      'story': '仙塞岛最美丽的宝石工匠香宜制作了这颗珠宝，以纪念她的前任恋人。她越是生气，工作的速度就越快，所以这颗宝石一下子就做好了。直到她测试了宝石的实际效果之后，她的怒气才消。'
+    },
+    {
+      'image': 'ia_100004599.png',
+      'name': '剧毒宝石',
+      'drop': 0,
+      'level': 1,
+      'equip_level': 1,
+      'story': '仙塞的制毒师们都在传，有个病怏怏的名叫钟逸洛的宝石匠人，他会跑到制毒师的工作室里大喊“总有一天我会让你们所有人都失业！我说到做到！”'
+    },
+    {
+      'image': 'ia_100004669.png',
+      'name': '闪电华冠',
+      'drop': 0,
+      'level': 1,
+      'equip_level': 1,
+      'story':
+          '疯女人艾瑞阿妮认为她能切出一块宝石，给她编织一顶用闪电形成的帽子。“闪电啊，”有人听到她在喃喃自语“降临我的头顶！”数周后人们发现了她的尸体，头发没了，手里还握着这颗宝石。'
+    },
+    {
+      'image': 'ia_100004740.png',
+      'name': '自在宝石',
+      'drop': 0,
+      'level': 1,
+      'equip_level': 1,
+      'story': '这颗闪烁着微光的宝石，能激发起人实现远大抱负的理想。'
+    },
+    {
+      'image': 'ia_300002064.png',
+      'name': '困者之灾',
+      'drop': 0,
+      'level': 1,
+      'equip_level': 1,
+      'story': '涂德琴女士委托仙塞工坊制作了这颗宝石，她说“我要我的目标昏睡或醉倒。实在办不到的话，动作迟缓也行。”'
+    },
+    {
+      'image': 'ia_300002099.png',
+      'name': '强者之灾',
+      'drop': 0,
+      'level': 1,
+      'equip_level': 1,
+      'story': '“没有什么能比眼见强大的敌人死在自己脚下更激励人心。”—仙塞宝石名匠，安多米尔·楚'
+    },
   ];
 
   @override
@@ -558,7 +717,7 @@ class _DataBaseLegendaryGemState extends State<DataBaseLegendaryGem> with Ticker
                                         right: ScreenUtil.getInstance().setWidth(20),
                                         bottom: ScreenUtil.getInstance().setHeight(12)),
                                     child: Text(
-                                      'ilvl ${selectLegendaryGem['level']}',
+                                      'ilvl：${selectLegendaryGem['level']}',
                                       style: TextStyle(
                                           color: Color(0xffC7B377),
                                           fontSize: ScreenUtil.getInstance().setSp(16)),
@@ -570,7 +729,7 @@ class _DataBaseLegendaryGemState extends State<DataBaseLegendaryGem> with Ticker
                                         right: ScreenUtil.getInstance().setWidth(20),
                                         bottom: ScreenUtil.getInstance().setHeight(12)),
                                     child: Text(
-                                      '涂德琴女士向仙塞島的工坊訂做了這顆寶石，她說：「我希望我的目標昏睡或醉倒。如果辦不到，動作遲緩也可以。」',
+                                      '${selectLegendaryGem['story']}',
                                       style: TextStyle(
                                           color: Color(0xffC7B377),
                                           fontSize: ScreenUtil.getInstance().setSp(16)),

@@ -212,8 +212,8 @@ class _DataBaseEquipmentState extends State<DataBaseEquipment>
                       child: Column(
                         children: <Widget>[
                           Container(
-                            width: ScreenUtil.getInstance().setWidth(width / 4 - 48),
-                            height: ScreenUtil.getInstance().setWidth(width / 4 - 48),
+                            width: width / 4 - ScreenUtil.getInstance().setWidth(48),
+                            height: width / 4 - ScreenUtil.getInstance().setWidth(48),
                             padding: EdgeInsets.all(ScreenUtil.getInstance().setWidth(6)),
                             decoration: BoxDecoration(
                                 image: DecorationImage(
@@ -227,7 +227,7 @@ class _DataBaseEquipmentState extends State<DataBaseEquipment>
                           Container(
                             padding: EdgeInsets.only(top: ScreenUtil.getInstance().setWidth(8)),
                             child: Text(
-                              list['name'],
+                              '${list['name']}',
                               style: TextStyle(
                                   color: Color(0xff3D2F1B),
                                   fontSize: ScreenUtil.getInstance().setSp(26)),
@@ -310,7 +310,7 @@ class _DataBaseEquipmentState extends State<DataBaseEquipment>
               child: Center(
                 child: Image.asset(
                   'images/back.png',
-                  width: ScreenUtil.getInstance().setWidth(30),
+                  width: ScreenUtil.getInstance().setWidth(42),
                 ),
               ),
             ),

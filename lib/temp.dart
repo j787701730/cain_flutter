@@ -126,7 +126,7 @@ class _NewsContentState extends State<NewsContent> with TickerProviderStateMixin
               child: Center(
                 child: Image.asset(
                   'images/back.png',
-                  width: ScreenUtil.getInstance().setWidth(30),
+                  width: ScreenUtil.getInstance().setWidth(42),
                 ),
               ),
             ),

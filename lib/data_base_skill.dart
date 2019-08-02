@@ -406,7 +406,7 @@ class _DataBaseSkillState extends State<DataBaseSkill>
                     bottom: ScreenUtil.getInstance().setWidth(24)),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Container(
                       margin: EdgeInsets.only(right: ScreenUtil.getInstance().setWidth(12)),
@@ -447,9 +447,15 @@ class _DataBaseSkillState extends State<DataBaseSkill>
                                         fontSize: ScreenUtil.getInstance().setSp(26))),
                               ],
                             ),
+                            Container(
+                              height: ScreenUtil.getInstance().setHeight(6),
+                            ),
                             Wrap(
                               children: item['rune'].map<Widget>((rune) {
                                 return Container(
+                                  margin: EdgeInsets.only(
+                                    right: ScreenUtil.getInstance().setWidth(10)
+                                  ),
                                   width: ScreenUtil.getInstance().setWidth(40),
                                   height: ScreenUtil.getInstance().setHeight(40),
                                   child: Image.asset(
@@ -762,7 +768,7 @@ class _DataBaseSkillState extends State<DataBaseSkill>
               child: Center(
                 child: Image.asset(
                   'images/back.png',
-                  width: ScreenUtil.getInstance().setWidth(30),
+                  width: ScreenUtil.getInstance().setWidth(42),
                 ),
               ),
             ),

@@ -117,7 +117,7 @@ class _DataBaseSkillState extends State<DataBaseSkill>
       },
       {
         'image': 'rune_e_light.png',
-        'name': '霜咬',
+        'name': '粉碎',
         'list': [
           '<span>每次击中都会引发一道冲击波，对主要敌人后方 <em>26</em> 码直线上的敌人造成 <em>100%</em> 的武器伤害（作为火焰伤害）。</span>',
         ],
@@ -127,6 +127,20 @@ class _DataBaseSkillState extends State<DataBaseSkill>
         ]
       },
     ]
+  };
+
+  Map selectPassiveSkill = {
+    'image': 'berserker_man/ia_400000019.png',
+    'name': '血肉铸就',
+    'level': '2',
+    'attributes': 'wl',
+    'list': [
+      '<span>当你受到生命球治疗时，每秒获得 <em>2%</em> 的生命恢复速度以及 <em>4%</em> 的移动速度加成，持续 <em>15</em> 秒。该加成效果最多叠加 <em>5</em> 次。</span>',
+    ],
+    'limit': [
+      '<span>解锁于等级<b> 10</b></span>',
+    ],
+    'story': '“天降甘霖使庄稼更加茁壮，敌洒热血令我们愈发势不可当。”——丰收颂歌',
   };
 
   List activeSkills = [
@@ -290,39 +304,92 @@ class _DataBaseSkillState extends State<DataBaseSkill>
   List passiveSkills = [
     {
       'image': 'berserker_man/ia_400000019.png',
-      'name': '先祖之锤',
+      'name': '血肉铸就',
       'level': '2',
       'attributes': 'wl',
+      'list': [
+        '<span>当你受到生命球治疗时，每秒获得 <em>2%</em> 的生命恢复速度以及 <em>4%</em> 的移动速度加成，持续 <em>15</em> 秒。该加成效果最多叠加 <em>5</em> 次。</span>',
+      ],
+      'limit': [
+        '<span>解锁于等级<b> 10</b></span>',
+      ],
+      'story': '“天降甘霖使庄稼更加茁壮，敌洒热血令我们愈发势不可当。”——丰收颂歌',
     },
     {
       'image': 'berserker_man/ia_400000020.png',
-      'name': '先祖之锤',
+      'name': '残酷',
       'level': '2',
       'attributes': 'wl',
+      'list': [
+        '<span>对生命值低于 <em>30%</em> 的敌人造成额外 <em>40%</em> 的伤害。</span>',
+      ],
+      'limit': [
+        '<span>解锁于等级<b> 10</b></span>',
+      ],
+      'story': '每个部族都会在自己的战士身上绘饰独具特色的图案。有些赞美高山，有些崇尚烈焰，但塔戈斯部族却偏爱纯粹的苦痛之殇。',
     },
     {
       'image': 'berserker_man/ia_400000021.png',
-      'name': '先祖之锤',
+      'name': '钢铁神经',
       'level': '2',
       'attributes': 'wl',
+      'list': [
+        '<span>致命伤害现在将使你的生命值降低至 <em>15%</em>。在随后的 <em>3</em> 秒内，你受到的伤害降低 <em>95%</em>，并且对所有控制类限制效果免疫。</span>',
+        '<span>该效果每 <em>60</em> 秒内只能生效一次。</span>'
+      ],
+      'limit': [
+        '<span>解锁于等级<b> 13</b></span>',
+      ],
+      'story':
+          '“他们从孩提时期就要经受高强度的训练，征服凶猛残暴的野兽，攀爬暴风肆虐的峭壁，携带连南方战士都能压垮的重型武器。难怪他们从来都不知道什么叫畏缩！”——敦克雷的艾瑞克长官语录',
     },
     {
       'image': 'berserker_man/ia_400000022.png',
-      'name': '先祖之锤',
+      'name': '武器大师',
       'level': '2',
       'attributes': 'wl',
+      'list': [
+        '<span>基于你主手的武器类型，可获得武器属性加成：</span>',
+        '<span>剑/匕首：伤害提高 <em>8%</em></span>',
+        '<span>锤/斧：暴击几率提高 <em>5%</em></span>',
+        '<span>长柄/矛：攻击速度提高 <em>8%</em></span>',
+        '<span>重型武器：每一击获得 <em>2</em> 点怒气</span>',
+      ],
+      'limit': [
+        '<span>解锁于等级<b> 10</b></span>',
+      ],
+      'story': '“我们的人在丛林中伏击了那位旅行者，但大吃一惊的却是我们自己。如此敏锐的感知力、迅捷的移动力、无懈可击的战斗力。我们就连一点儿机会都没有。”——红衣大盗',
     },
     {
       'image': 'berserker_man/ia_400000023.png',
-      'name': '先祖之锤',
+      'name': '振奋军心',
       'level': '2',
       'attributes': 'wl',
+      'list': [
+        '<span>呐喊类技能的持续时间延长一倍。使用呐喊后，你和 <em>100</em> 码内的所有</span>',
+        '<span>同伴可每秒恢复生命值上限的 <em>3%</em> ，持续 <em>120</em> 秒。</span>',
+        '<span>呐喊类技能包括：</span>',
+        '<span>战斗怒火</span>',
+        '<span>威吓呐喊</span>',
+        '<span>战吼</span>',
+      ],
+      'limit': [
+        '<span>解锁于等级<b> 20</b></span>',
+      ],
+      'story': '“敌人从裂隙汹涌而出，直到战斗大师卡尔加用战旗一下子钉死了三只恶魔，在高高的城垛上发出一声振奋战呼，把恶魔的尸体扔到下方的乱军之中。”——无星之夜战斗纪实',
     },
     {
       'image': 'berserker_man/ia_400000024.png',
-      'name': '先祖之锤',
+      'name': '狂战盛怒',
       'level': '2',
       'attributes': 'wl',
+      'list': [
+        '<span>当怒气接近上限时，野蛮人可造成额外 <em>25%</em> 的伤害。</span>',
+      ],
+      'limit': [
+        '<span>解锁于等级<b> 20</b></span>',
+      ],
+      'story': '“你不会想要看到我发怒的样子。” ——狂战班纳',
     },
   ];
 
@@ -623,6 +690,7 @@ class _DataBaseSkillState extends State<DataBaseSkill>
               onTap: () {
                 setState(() {
                   passiveSkillsShow = false;
+                  selectPassiveSkill = item;
                 });
               },
               child: Container(
@@ -664,9 +732,10 @@ class _DataBaseSkillState extends State<DataBaseSkill>
                                   color: Color(0xff3D2F1B),
                                   fontSize: ScreenUtil.getInstance().setSp(30)),
                             ),
-                            Container(
-                              width: ScreenUtil.getInstance().setWidth(10),
-                            ),
+                          ],
+                        ),
+                        Wrap(
+                          children: <Widget>[
                             Text('属性·${attributes[item['attributes']]}',
                                 style: TextStyle(
                                     color: Color(0xff9B8C73),
@@ -679,16 +748,7 @@ class _DataBaseSkillState extends State<DataBaseSkill>
                                     color: Color(0xff9B8C73),
                                     fontSize: ScreenUtil.getInstance().setSp(26))),
                           ],
-                        ),
-//                          Wrap(
-//                            children: item['rune'].map<Widget>((rune) {
-//                              return Container(
-//                                width: ScreenUtil.getInstance().setWidth(40),
-//                                height: ScreenUtil.getInstance().setHeight(40),
-//                                child: Image.asset('images/$rune}',fit: BoxFit.fill,),
-//                              );
-//                            }).toList(),
-//                          )
+                        )
                       ],
                     ))
                   ],
@@ -1080,6 +1140,128 @@ class _DataBaseSkillState extends State<DataBaseSkill>
     );
   }
 
+  passiveSkillDialog() {
+    return ListView(
+      children: <Widget>[
+        Container(
+          decoration: BoxDecoration(
+              border: Border(
+                  bottom: BorderSide(
+                      color: Color(0xff322A20), width: ScreenUtil.getInstance().setWidth(1)))),
+          padding: EdgeInsets.only(
+              top: ScreenUtil.getInstance().setWidth(30),
+              bottom: ScreenUtil.getInstance().setWidth(30),
+              left: ScreenUtil.getInstance().setWidth(15),
+              right: ScreenUtil.getInstance().setWidth(15)),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                width: ScreenUtil.getInstance().setWidth(126),
+                height: ScreenUtil.getInstance().setHeight(126),
+                margin: EdgeInsets.only(right: ScreenUtil.getInstance().setWidth(12)),
+                child: Image.asset(
+                  'skills/${selectPassiveSkill['image']}',
+                  fit: BoxFit.fill,
+                ),
+              ),
+              Expanded(
+                  flex: 1,
+                  child: Container(
+                    padding: EdgeInsets.only(top: ScreenUtil.getInstance().setWidth(10)),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: selectPassiveSkill['list'].map<Widget>((item) {
+                            return Html(
+                              padding:
+                                  EdgeInsets.only(bottom: ScreenUtil.getInstance().setWidth(12)),
+                              data: '$item',
+                              defaultTextStyle: TextStyle(
+                                  fontSize: ScreenUtil.getInstance().setWidth(16),
+                                  fontStyle: FontStyle.normal,
+                                  color: Color(0xff8D7E54),
+                                  fontFamily: 'SourceHanSansCN'),
+                              customTextStyle: (dom.Node node, TextStyle baseStyle) {
+                                if (node is dom.Element) {
+                                  switch (node.localName) {
+//                                                    case "span":
+//                                                      return baseStyle.merge(TextStyle(
+//                                                          color: Color(0xff7A3F1D)));
+//                                                      break;
+                                    case "em":
+                                      return baseStyle.merge(TextStyle(
+                                          color: Color(0xff00FF00),
+                                          fontStyle: FontStyle.normal,
+                                          fontWeight: FontWeight.normal));
+                                      break;
+                                  }
+                                }
+                                return baseStyle;
+                              },
+                            );
+                          }).toList(),
+                        ),
+                        Wrap(
+//                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: selectPassiveSkill['limit'].map<Widget>((item) {
+                            int index = selectPassiveSkill['limit'].indexOf(item);
+                            return Container(
+                              padding:
+                                  EdgeInsets.only(bottom: ScreenUtil.getInstance().setWidth(12)),
+                              width: (index == 0 ? 7 : 8) * ScreenUtil.getInstance().setWidth(16),
+                              child: Html(
+                                data: '$item',
+                                defaultTextStyle: TextStyle(
+                                    fontSize: ScreenUtil.getInstance().setWidth(16),
+                                    fontStyle: FontStyle.normal,
+                                    color: Color(0xff786A53),
+                                    fontFamily: 'SourceHanSansCN'),
+                                customTextStyle: (dom.Node node, TextStyle baseStyle) {
+                                  if (node is dom.Element) {
+                                    switch (node.localName) {
+                                      case "b":
+                                        return baseStyle.merge(TextStyle(color: Color(0xffAD835A)));
+                                        break;
+                                      case "em":
+                                        return baseStyle.merge(TextStyle(
+                                            color: Color(0xff00FF00),
+                                            fontStyle: FontStyle.normal,
+                                            fontWeight: FontWeight.normal));
+                                        break;
+                                    }
+                                  }
+                                  return baseStyle;
+                                },
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      ],
+                    ),
+                  ))
+            ],
+          ),
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.all(ScreenUtil.getInstance().setWidth(12)),
+              child: Text(
+                '${selectPassiveSkill['story']}',
+                style: TextStyle(
+                    color: Color(0xff705439), fontSize: ScreenUtil.getInstance().setSp(16)),
+              ),
+            )
+          ],
+        )
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -1430,7 +1612,7 @@ class _DataBaseSkillState extends State<DataBaseSkill>
                                   Container(
                                     child: Center(
                                       child: Text(
-                                        '被动技能',
+                                        '${selectPassiveSkill['name']}',
                                         style: TextStyle(
                                             color: Color(0xffD1C5B2),
                                             fontSize: ScreenUtil.getInstance().setSp(24)),
@@ -1454,7 +1636,7 @@ class _DataBaseSkillState extends State<DataBaseSkill>
                                 ],
                               ),
                             ),
-                            Expanded(child: ListView())
+                            Expanded(child: passiveSkillDialog())
                           ],
                         ),
                       ),

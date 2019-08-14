@@ -33,6 +33,7 @@ dependencies:
   flutter_swiper: ^1.1.6
   reorderables: ^0.2.12
   flutter_html: ^0.10.4
+  dio: ^2.1.13
 
 dev_dependencies:
   flutter_test:

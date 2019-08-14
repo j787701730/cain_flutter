@@ -19,7 +19,7 @@ class _NewsListState extends State<NewsList> {
   }
 
   _title(item) {
-    return item['type'] == '1'
+    return item['category'] == '2'
         ? RichText(
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
@@ -70,7 +70,7 @@ class _NewsListState extends State<NewsList> {
               Navigator.push(
                 context,
                 new MaterialPageRoute(
-                    builder: (context) => new NewsContent({'type': item['type']})),
+                    builder: (context) => new NewsContent({'type': '${item['category']}'})),
               );
             },
             child: Container(
@@ -85,7 +85,7 @@ class _NewsListState extends State<NewsList> {
                   border: Border(
                       bottom: BorderSide(
                           color: Color(0xffC9BBA4), width: ScreenUtil.getInstance().setWidth(1)))),
-              child: item['show'] == '2'
+              child: item['listStyle'] == '1' || item['listStyle'] == '5'
                   ? Container(
                       height: ScreenUtil.getInstance().setHeight(60.0 + 86),
                       child: Row(
@@ -115,7 +115,7 @@ class _NewsListState extends State<NewsList> {
                                                 width: ScreenUtil.getInstance().setWidth(6),
                                               ),
                                               Text(
-                                                item['author'],
+                                                item['authorName'],
                                                 style: TextStyle(
                                                     fontSize: ScreenUtil.getInstance().setSp(22),
                                                     color: Color(0xffBDB096)),
@@ -137,7 +137,7 @@ class _NewsListState extends State<NewsList> {
                                               Container(
                                                 width: ScreenUtil.getInstance().setWidth(6),
                                               ),
-                                              Text('${item['num']}评论',
+                                              Text('${item['sns']['commentCount']}评论',
                                                   style: TextStyle(
                                                       fontSize: ScreenUtil.getInstance().setSp(22),
                                                       color: Color(0xffBDB096)))
@@ -154,8 +154,8 @@ class _NewsListState extends State<NewsList> {
                               child: Container(
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(6.0),
-                                  child: Image.asset(
-                                    'images/${item['imgs'][0]}.jpg',
+                                  child: Image.network(
+                                    '${item['imgList'][0]}',
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -167,29 +167,49 @@ class _NewsListState extends State<NewsList> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         _title(item),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: item['imgs'].map<Widget>((img) {
-                            return Container(
-                              margin: EdgeInsets.only(top: ScreenUtil.getInstance().setHeight(10)),
-                              decoration:
-                                  BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(8))),
-                              width: item['imgs'].length == 3
-                                  ? (width - ScreenUtil.getInstance().setWidth(72)) / 3
-                                  : width - ScreenUtil.getInstance().setWidth(48),
-                              height: item['imgs'].length == 3
-                                  ? ScreenUtil.getInstance().setWidth(120)
-                                  : ScreenUtil.getInstance().setHeight(240),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(6.0),
-                                child: Image.asset(
-                                  'images/$img.jpg',
-                                  fit: BoxFit.cover,
-                                ),
+                        item['listStyle'] == '3' || item['listStyle'] == '6'
+                            ? Row(
+                                // 大图
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Container(
+                                    margin: EdgeInsets.only(
+                                        top: ScreenUtil.getInstance().setHeight(10)),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.all(Radius.circular(8))),
+                                    width: width - ScreenUtil.getInstance().setWidth(48),
+                                    height: ScreenUtil.getInstance().setHeight(240),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(6.0),
+                                      child: Image.network(
+                                        item['imgList'][0],
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              )
+                            : Row(
+                                // 3图
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: item['imgList'].map<Widget>((img) {
+                                  return Container(
+                                    margin: EdgeInsets.only(
+                                        top: ScreenUtil.getInstance().setHeight(10)),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.all(Radius.circular(8))),
+                                    width: (width - ScreenUtil.getInstance().setWidth(72)) / 3,
+                                    height: ScreenUtil.getInstance().setWidth(120),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(6.0),
+                                      child: Image.network(
+                                        '$img',
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  );
+                                }).toList(),
                               ),
-                            );
-                          }).toList(),
-                        ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
@@ -206,7 +226,7 @@ class _NewsListState extends State<NewsList> {
                                     width: ScreenUtil.getInstance().setWidth(6),
                                   ),
                                   Text(
-                                    item['author'],
+                                    item['authorName'],
                                     style: TextStyle(
                                         fontSize: ScreenUtil.getInstance().setSp(22),
                                         color: Color(0xffBDB096)),
@@ -227,7 +247,7 @@ class _NewsListState extends State<NewsList> {
                                   Container(
                                     width: ScreenUtil.getInstance().setWidth(6),
                                   ),
-                                  Text('${item['num']}评论',
+                                  Text('${item['sns']['commentCount']}评论',
                                       style: TextStyle(
                                           fontSize: ScreenUtil.getInstance().setSp(22),
                                           color: Color(0xffBDB096)))

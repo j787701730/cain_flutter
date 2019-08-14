@@ -1066,6 +1066,7 @@ class _NewsState extends State<News> with AutomaticKeepAliveClientMixin, TickerP
 //          onOffsetChange: _onOffsetChange,
                 onRefresh: () async {
                   _loading();
+                  getBanner();
                   await Future.delayed(Duration(milliseconds: 2000));
                   if (mounted)
                     setState(() {
@@ -1139,11 +1140,15 @@ class _NewsState extends State<News> with AutomaticKeepAliveClientMixin, TickerP
                             children: <Widget>[
                               GestureDetector(
                                 onTap: () {
+                                  print(banner[index]);
                                   Provider.of<ProviderModel>(context).changeTopBackground();
                                   Navigator.push(
                                     context,
                                     new MaterialPageRoute(
-                                        builder: (context) => new NewsContent({'type': '1'})),
+                                        builder: (context) => new NewsContent({
+                                              'type': '1',
+                                              'tid': "${banner[index]['redirectData']}"
+                                            })),
                                   );
                                 },
                                 child: Image.network(

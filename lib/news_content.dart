@@ -1,7 +1,11 @@
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 class NewsContent extends StatefulWidget {
   final props;
@@ -62,17 +66,41 @@ class _NewsContentState extends State<NewsContent> with TickerProviderStateMixin
     }
   ];
 
+  Map msg = {};
+
   bool show = false;
 
   @override
   void initState() {
     super.initState();
     _ajax();
+    _getContent();
     _listController.addListener(() {
       setState(() {
         show = (200 < _listController.offset) ? true : false;
       });
     });
+  }
+
+  _getContent() async {
+    FormData formData = new FormData.from({'tid': widget.props['tid'], 'page': 1});
+    try {
+      Response response;
+      response = await Dio().post(
+        "https://bbs.d.163.com/api/mobile/index.php?module=viewthread&version=163&ppp=15&charset=utf-8&ts=1565771447&uf=8404d63c-7427-4b0c-8cc3-5b41b939d365&ab=dc2530864dc3281b1ab405dd4295f47c1e&ef=64c290e0d028c31a98fb08da7e27b800af",
+        data: formData,
+        options: Options(
+          contentType: ContentType.parse("application/x-www-form-urlencoded"),
+        ),
+      );
+      if (mounted) {
+        setState(() {
+          msg = response.data;
+        });
+      }
+    } catch (e) {
+      return print(e);
+    }
   }
 
   _ajax() async {
@@ -334,7 +362,10 @@ class _NewsContentState extends State<NewsContent> with TickerProviderStateMixin
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            Image.asset('images/head_loading1.png',width: ScreenUtil.getInstance().setWidth(78),),
+                            Image.asset(
+                              'images/head_loading1.png',
+                              width: ScreenUtil.getInstance().setWidth(78),
+                            ),
                             Container(
                               height: ScreenUtil.getInstance().setWidth(10),
                             ),
@@ -351,6 +382,7 @@ class _NewsContentState extends State<NewsContent> with TickerProviderStateMixin
 //          onOffsetChange: _onOffsetChange,
                           onRefresh: () async {
                             _loading();
+                            _getContent();
                             await Future.delayed(Duration(milliseconds: 2000));
                             if (mounted) setState(() {});
                             animationLoadingController.reset();
@@ -415,6 +447,19 @@ class _NewsContentState extends State<NewsContent> with TickerProviderStateMixin
                           child: ListView(
                             controller: _listController,
                             children: <Widget>[
+                              msg.isNotEmpty
+                                  ? Column(
+                                      children: msg['Variables']['postlist'].map<Widget>((item) {
+                                        return Column(
+                                          children: <Widget>[
+                                            Html(
+                                                data: '${item['message']}'
+                                                    .replaceAll('auto', '$width'))
+                                          ],
+                                        );
+                                      }).toList(),
+                                    )
+                                  : Container(),
                               Container(
                                 padding: EdgeInsets.only(
                                     left: ScreenUtil.getInstance().setWidth(24),

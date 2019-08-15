@@ -68,6 +68,8 @@ class _NewsContent2State extends State<NewsContent2> with TickerProviderStateMix
 
   Map msg = {};
 
+  Map ursInfo = {};
+
   bool show = false;
 
   @override
@@ -94,10 +96,28 @@ class _NewsContent2State extends State<NewsContent2> with TickerProviderStateMix
         ),
       );
       if (mounted) {
-        print(response.data);
         setState(() {
           msg = response.data;
         });
+        List users = [];
+        for (int i = 0; i < response.data['Variables']['postlist'].length; i++) {
+          users.add(response.data['Variables']['postlist'][i]['authorid']);
+        }
+
+        FormData formData2 = new FormData.from({'discuzUids': users.join(',')});
+        Response response2;
+        response2 = await Dio().post(
+          "https://cain-api.gameyw.netease.com/cain/userCenter/ursInfo?ts=1565849472&uf=ea04cc80-6d79-4479-83e0-c6bcf12b8c9d&ab=b954a22f9d0e6171bacc98f26330679d92&ef=f907482886b9272ebada43e1750812f892",
+          data: formData2,
+          options: Options(
+            contentType: ContentType.parse("application/x-www-form-urlencoded"),
+          ),
+        );
+        if (mounted) {
+          setState(() {
+            ursInfo = response2.data['data'];
+          });
+        }
       }
     } catch (e) {
       return print(e);
@@ -448,142 +468,192 @@ class _NewsContent2State extends State<NewsContent2> with TickerProviderStateMix
                           child: ListView(
                             controller: _listController,
                             children: <Widget>[
-                              msg.isNotEmpty &&
-                                      msg['Variables'] != null &&
-                                      msg['Variables']['postlist'] != null
-                                  ? Column(
-                                      children: msg['Variables']['postlist'].map<Widget>((item) {
-                                        return Column(
-                                          children: <Widget>[
-                                            Html(
-                                                data: '${item['message']}'
-                                                    .replaceAll('height="auto"', ''))
-                                          ],
-                                        );
-                                      }).toList(),
-                                    )
-                                  : Container(),
-                              Container(
-                                padding: EdgeInsets.only(
-                                    left: ScreenUtil.getInstance().setWidth(24),
-                                    right: ScreenUtil.getInstance().setWidth(24)),
-                                child: Column(
-                                  children: <Widget>[
-                                    Container(
+                              ursInfo.isNotEmpty
+                                  ? Container(
                                       padding: EdgeInsets.only(
-                                          top: ScreenUtil.getInstance().setWidth(30),
-                                          bottom: ScreenUtil.getInstance().setHeight(30)),
-                                      child: Text(
-                                        content['title'],
-                                        style: TextStyle(
-                                            fontSize: ScreenUtil.getInstance().setSp(30),
-                                            color: Color(0xff000000)),
-                                      ),
-                                    ),
-                                    Container(
-                                      decoration: BoxDecoration(
-                                          border: Border(
-                                        top: BorderSide(
-                                            color: Color(0xffA99B83),
-                                            width: ScreenUtil.getInstance().setWidth(2)),
-                                        bottom: BorderSide(
-                                            color: Color(0xffA99B83),
-                                            width: ScreenUtil.getInstance().setWidth(2)),
-                                      )),
-                                      padding: EdgeInsets.only(
-                                          top: ScreenUtil.getInstance().setHeight(12),
-                                          bottom: ScreenUtil.getInstance().setHeight(12)),
-                                      margin: EdgeInsets.only(
-                                          bottom: ScreenUtil.getInstance().setWidth(12)),
-                                      child: Row(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                          left: ScreenUtil.getInstance().setWidth(24),
+                                          right: ScreenUtil.getInstance().setWidth(24)),
+                                      child: Column(
                                         children: <Widget>[
                                           Container(
-                                            child: Image.asset(
-                                              'images/${content['avatar']}',
-                                              width: ScreenUtil.getInstance().setWidth(60),
+                                            padding: EdgeInsets.only(
+                                                top: ScreenUtil.getInstance().setWidth(30),
+                                                bottom: ScreenUtil.getInstance().setHeight(30)),
+                                            child: Text(
+                                              '${msg['Variables']['thread']['subject']}',
+                                              style: TextStyle(
+                                                  fontSize: ScreenUtil.getInstance().setSp(30),
+                                                  color: Color(0xff000000)),
                                             ),
                                           ),
-                                          Expanded(
-                                              child: Container(
+                                          Container(
+                                            decoration: BoxDecoration(
+                                                border: Border(
+                                              top: BorderSide(
+                                                  color: Color(0xffA99B83),
+                                                  width: ScreenUtil.getInstance().setWidth(2)),
+                                              bottom: BorderSide(
+                                                  color: Color(0xffA99B83),
+                                                  width: ScreenUtil.getInstance().setWidth(2)),
+                                            )),
                                             padding: EdgeInsets.only(
-                                                left: ScreenUtil.getInstance().setWidth(12)),
-                                            child: Column(
+                                                top: ScreenUtil.getInstance().setHeight(12),
+                                                bottom: ScreenUtil.getInstance().setHeight(12)),
+                                            margin: EdgeInsets.only(
+                                                bottom: ScreenUtil.getInstance().setWidth(12)),
+                                            child: Row(
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: <Widget>[
-                                                Text(
-                                                  content['author'],
-                                                  style: TextStyle(
-                                                      color: Color(0xffE79425),
-                                                      fontSize: ScreenUtil.getInstance().setSp(26)),
-                                                ),
                                                 Container(
+                                                  child: Image.network(
+                                                    '${ursInfo[msg['Variables']['postlist'][0]['authorid']]['avatar']}',
+                                                    width: ScreenUtil.getInstance().setWidth(60),
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                    child: Container(
                                                   padding: EdgeInsets.only(
-                                                      top: ScreenUtil.getInstance().setHeight(6)),
-                                                  child: Text(content['create_date'],
-                                                      style: TextStyle(
+                                                      left: ScreenUtil.getInstance().setWidth(12)),
+                                                  child: Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: <Widget>[
+                                                      Row(
+                                                        children: <Widget>[
+                                                          Text(
+                                                            '${msg['Variables']['postlist'][0]['author']}',
+                                                            style: TextStyle(
+                                                                color: Color(0xffE79425),
+                                                                fontSize: ScreenUtil.getInstance()
+                                                                    .setSp(26)),
+                                                          ),
+                                                          Wrap(
+//                                                        http://bbs.d.163.com/static/image/common/appmedal/d3char.gif.png
+                                                            children: ursInfo[msg['Variables']
+                                                                        ['postlist'][0]['authorid']]
+                                                                    ['showMedals']
+                                                                .map<Widget>((item) {
+                                                              return Container(
+                                                                width: ScreenUtil.getInstance()
+                                                                    .setWidth(26),
+                                                                height: ScreenUtil.getInstance()
+                                                                    .setWidth(26),
+                                                                child: Image.network(
+                                                                    'https://bbs.d.163.com/static/image/common/appmedal/${item['image']}.png'),
+                                                              );
+                                                            }).toList(),
+                                                          )
+                                                        ],
+                                                      ),
+                                                      Container(
+                                                        padding: EdgeInsets.only(
+                                                            top: ScreenUtil.getInstance()
+                                                                .setHeight(6)),
+                                                        child: Text(
+                                                            '${ursInfo[msg['Variables']['postlist'][0]['authorid']]['title']}  ${msg['Variables']['postlist'][0]['dateline']}',
+                                                            style: TextStyle(
+                                                                color: Color(0xffB5A88E),
+                                                                fontSize: ScreenUtil.getInstance()
+                                                                    .setSp(26))),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )),
+                                                Container(
+                                                  child: Row(
+                                                    children: <Widget>[
+                                                      Icon(
+                                                        Icons.remove_red_eye,
+                                                        color: Color(0xffB5A88E),
+                                                      ),
+                                                      Text(
+                                                        '  ${msg['Variables']['thread']['views']}',
+                                                        style: TextStyle(
                                                           color: Color(0xffB5A88E),
-                                                          fontSize:
-                                                              ScreenUtil.getInstance().setSp(26))),
-                                                ),
-                                              ],
-                                            ),
-                                          )),
-                                          Container(
-                                            child: Row(
-                                              children: <Widget>[
-                                                Icon(
-                                                  Icons.remove_red_eye,
-                                                  color: Color(0xffB5A88E),
-                                                ),
-                                                Text(
-                                                  '  ${content['visits']}',
-                                                  style: TextStyle(
-                                                    color: Color(0xffB5A88E),
+                                                        ),
+                                                      )
+                                                    ],
                                                   ),
                                                 )
                                               ],
                                             ),
-                                          )
+                                          ),
+                                          Container(
+                                            child: Html(
+                                              data: '${msg['Variables']['postlist'][0]['message']}'
+                                                  .replaceAll('height="auto"', ''),
+                                              defaultTextStyle: TextStyle(
+                                                  fontSize: ScreenUtil.getInstance().setSp(26)),
+                                            ),
+                                          ),
+                                          Container(
+                                            padding: EdgeInsets.only(
+                                                top: ScreenUtil.getInstance().setHeight(24),
+                                                bottom: ScreenUtil.getInstance().setHeight(24)),
+                                            child: Row(
+                                              children: <Widget>[
+                                                Icon(Icons.edit),
+                                                Text('点评')
+                                              ],
+                                            ),
+                                          ),
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              color: Color(0xffE2D4BE),
+                                            ),
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: msg['Variables']['comments'].keys.map<Widget>((item) {
+                                                  return Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: msg['Variables']['comments'][item].map<Widget>((comment) {
+                                                        return Wrap(
+                                                          children: <Widget>[
+                                                            RichText(text: TextSpan(
+                                                              text: '${comment['author']}',
+                                                                style: TextStyle(
+                                                                  color: Color(0xffE6A048),
+                                                                  fontSize: ScreenUtil.getInstance().setSp(24)
+                                                                ),
+                                                              children: <TextSpan>[
+                                                                TextSpan(
+                                                                  text: '：${comment['comment']}',
+                                                                  style: TextStyle(
+                                                                      color: Color(0xff141210)
+                                                                  ),
+                                                                )
+                                                              ]
+                                                            )),
+                                                          ],
+                                                        );
+                                                    }).toList(),
+                                                  );
+                                              }).toList(),
+                                            ),
+                                          ),
+                                          Container(
+                                            padding: EdgeInsets.only(
+                                                top: ScreenUtil.getInstance().setHeight(24),
+                                                bottom: ScreenUtil.getInstance().setHeight(24)),
+                                            child: Center(
+                                              child: Image.asset('images/database_divider.png'),
+                                            ),
+                                          ),
+                                          Container(
+                                            padding: EdgeInsets.only(
+                                                bottom: ScreenUtil.getInstance().setHeight(24)),
+                                            child: Center(
+                                              child: Text(
+                                                '｛来源：凯恩之角｝',
+                                                style: TextStyle(
+                                                    color: Color(0xffB5A88E),
+                                                    fontSize: ScreenUtil.getInstance().setSp(26)),
+                                              ),
+                                            ),
+                                          ),
                                         ],
                                       ),
-                                    ),
-                                    Column(
-                                      children: content['imgs'].map<Widget>((item) {
-                                        return Container(
-                                          margin: EdgeInsets.only(
-                                              bottom: ScreenUtil.getInstance().setWidth(24)),
-                                          width: width - ScreenUtil.getInstance().setWidth(48),
-                                          child: Image.asset(
-                                            'images/$item.jpg',
-                                            fit: BoxFit.cover,
-                                          ),
-                                        );
-                                      }).toList(),
-                                    ),
-                                    Container(
-                                      padding: EdgeInsets.only(
-                                          top: ScreenUtil.getInstance().setHeight(24),
-                                          bottom: ScreenUtil.getInstance().setHeight(24)),
-                                      child: Center(
-                                        child: Image.asset('images/database_divider.png'),
-                                      ),
-                                    ),
-                                    Container(
-                                      padding: EdgeInsets.only(
-                                          bottom: ScreenUtil.getInstance().setHeight(24)),
-                                      child: Center(
-                                        child: Text(
-                                          '｛来源：凯恩之角｝',
-                                          style: TextStyle(
-                                              color: Color(0xffB5A88E),
-                                              fontSize: ScreenUtil.getInstance().setSp(26)),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                                    )
+                                  : Container(),
                               Container(
                                 decoration: BoxDecoration(
                                     color: Color(0xffDED0BB),

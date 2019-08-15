@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:cain_flutter/ProviderModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +6,9 @@ import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-import 'news_content.dart';
+import 'news_content1.dart';
+import 'news_content2.dart';
+import 'news_content3.dart';
 import 'news_list.dart';
 import 'util.dart';
 
@@ -1140,16 +1140,40 @@ class _NewsState extends State<News> with AutomaticKeepAliveClientMixin, TickerP
                             children: <Widget>[
                               GestureDetector(
                                 onTap: () {
-                                  print(banner[index]);
                                   Provider.of<ProviderModel>(context).changeTopBackground();
-                                  Navigator.push(
-                                    context,
-                                    new MaterialPageRoute(
-                                        builder: (context) => new NewsContent({
-                                              'type': '1',
-                                              'tid': "${banner[index]['redirectData']}"
-                                            })),
-                                  );
+                                  switch (banner[index]['redirectTo']) {
+                                    case 1:
+                                      Navigator.push(
+                                        context,
+                                        new MaterialPageRoute(
+                                            builder: (context) => new NewsContent1({
+                                                  'type': '1',
+                                                  'tid': "${banner[index]['redirectData']}"
+                                                })),
+                                      );
+                                      break;
+                                    case 2:
+                                      Navigator.push(
+                                        context,
+                                        new MaterialPageRoute(
+                                            builder: (context) => new NewsContent2({
+                                                  'type': '1',
+                                                  'tid': "${banner[index]['redirectData']}"
+                                                })),
+                                      );
+                                      break;
+                                    case 3:
+                                      Navigator.push(
+                                        context,
+                                        new MaterialPageRoute(
+                                            builder: (context) => new NewsContent3({
+                                                  'type': '1',
+                                                  'tid': "${banner[index]['redirectData']}",
+                                                  'title': "${banner[index]['imageName']}"
+                                                })),
+                                      );
+                                      break;
+                                  }
                                 },
                                 child: Image.network(
                                   "${banner[index]['imgUrl']}",

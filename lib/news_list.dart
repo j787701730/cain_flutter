@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'news_content.dart';
+import 'news_content2.dart';
 
 class NewsList extends StatefulWidget {
   final news;
@@ -67,11 +67,11 @@ class _NewsListState extends State<NewsList> {
       children: widget.news.map<Widget>((item) {
         return GestureDetector(
             onTap: () {
-              Navigator.push(
-                context,
-                new MaterialPageRoute(
-                    builder: (context) => new NewsContent({'type': '${item['category']}'})),
-              );
+//              Navigator.push(
+//                context,
+//                new MaterialPageRoute(
+//                    builder: (context) => new NewsContent({'type': '${item['category']}'})),
+//              );
             },
             child: Container(
               margin: EdgeInsets.only(

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-import 'news_content.dart';
+import 'news_content2.dart';
 
 class BbsContent extends StatefulWidget {
   final props;
@@ -160,10 +160,10 @@ class _BbsContentState extends State<BbsContent> with TickerProviderStateMixin {
   _contentCon(item) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          new MaterialPageRoute(builder: (context) => new NewsContent({})),
-        );
+//        Navigator.push(
+//          context,
+//          new MaterialPageRoute(builder: (context) => new NewsContent({})),
+//        );
       },
       child: Container(
         padding: EdgeInsets.only(

@@ -7,16 +7,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:flutter_html/flutter_html.dart';
 
-class NewsContent extends StatefulWidget {
+class NewsContent2 extends StatefulWidget {
   final props;
 
-  NewsContent(this.props);
+  NewsContent2(this.props);
 
   @override
-  _NewsContentState createState() => _NewsContentState();
+  _NewsContent2State createState() => _NewsContent2State();
 }
 
-class _NewsContentState extends State<NewsContent> with TickerProviderStateMixin {
+class _NewsContent2State extends State<NewsContent2> with TickerProviderStateMixin {
   RefreshController _refreshController = RefreshController();
 
   AnimationController animationLoadingController;
@@ -94,6 +94,7 @@ class _NewsContentState extends State<NewsContent> with TickerProviderStateMixin
         ),
       );
       if (mounted) {
+        print(response.data);
         setState(() {
           msg = response.data;
         });
@@ -447,14 +448,16 @@ class _NewsContentState extends State<NewsContent> with TickerProviderStateMixin
                           child: ListView(
                             controller: _listController,
                             children: <Widget>[
-                              msg.isNotEmpty
+                              msg.isNotEmpty &&
+                                      msg['Variables'] != null &&
+                                      msg['Variables']['postlist'] != null
                                   ? Column(
                                       children: msg['Variables']['postlist'].map<Widget>((item) {
                                         return Column(
                                           children: <Widget>[
                                             Html(
                                                 data: '${item['message']}'
-                                                    .replaceAll('auto', '$width'))
+                                                    .replaceAll('height="auto"', ''))
                                           ],
                                         );
                                       }).toList(),

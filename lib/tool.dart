@@ -308,7 +308,7 @@ class _ToolState extends State<Tool> with AutomaticKeepAliveClientMixin, TickerP
                                             Text(
 //                                              serverTypeList  serverType=0
                                               ' ${info['serverTypeList'][item[0]['serverType'] + 1]['type']}'
-                                              '${name}第一',
+                                              '$name第1',
                                               style: TextStyle(
                                                   fontSize: ScreenUtil.getInstance().setSp(26),
                                                   color: Color(0xff6A5C41)),

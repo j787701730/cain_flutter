@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'news_content2.dart';
+import 'news_content1.dart';
+import 'news_content3.dart';
 
 class NewsList extends StatefulWidget {
   final news;
@@ -19,7 +21,7 @@ class _NewsListState extends State<NewsList> {
   }
 
   _title(item) {
-    return item['category'] == '2'
+    return item['category'] == 2
         ? RichText(
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
@@ -67,11 +69,45 @@ class _NewsListState extends State<NewsList> {
       children: widget.news.map<Widget>((item) {
         return GestureDetector(
             onTap: () {
-//              Navigator.push(
-//                context,
-//                new MaterialPageRoute(
-//                    builder: (context) => new NewsContent({'type': '${item['category']}'})),
-//              );
+              switch (item['listStyle']) {
+                case '1':
+//                  Navigator.push(
+//                    context,
+//                    new MaterialPageRoute(
+//                        builder: (context) =>
+//                            new NewsContent1({'type': '1', 'tid': "${item['tid']}"})),
+//                  );
+//                  break;
+                case '2':
+                case '5':
+                case '6':
+                  Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                        builder: (context) =>
+                            new NewsContent2({'type': '1', 'tid': "${item['tid']}"})),
+                  );
+                  break;
+                case '3':
+                  Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                        builder: (context) =>
+                            new NewsContent1({'type': '1', 'tid': "${item['tid']}"})),
+                  );
+                  break;
+                case '4':
+                  Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                        builder: (context) => new NewsContent3({
+                              'type': '1',
+                              'tid': "${item['tid']}",
+                              'title': "${item['imageName']}"
+                            })),
+                  );
+                  break;
+              }
             },
             child: Container(
               margin: EdgeInsets.only(

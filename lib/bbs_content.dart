@@ -445,57 +445,65 @@ class _BbsContentState extends State<BbsContent> with TickerProviderStateMixin {
                             padding: EdgeInsets.only(
                                 left: ScreenUtil.getInstance().setWidth(24),
                                 right: ScreenUtil.getInstance().setWidth(24)),
-                            child: Column(
-                              children: variables['forum_threadlist'].map<Widget>((item) {
-                                return item['displayorder'].toString() == '1'
-                                    ? Container(
-                                        height: ScreenUtil.getInstance().setHeight(60),
-                                        decoration: BoxDecoration(
-                                            border: Border(
-                                          top: BorderSide(
-                                              color:
-                                                  variables['forum_threadlist'].indexOf(item) == 0
-                                                      ? Colors.transparent
-                                                      : Color(0xffC9BBA4),
-                                              width: ScreenUtil.getInstance().setWidth(1)),
-                                        )),
-                                        child: Row(
-                                          children: <Widget>[
-                                            Container(
-                                              padding: EdgeInsets.only(
-                                                  left: ScreenUtil.getInstance().setWidth(6),
-                                                  right: ScreenUtil.getInstance().setWidth(6)),
-                                              margin: EdgeInsets.only(
-                                                  right: ScreenUtil.getInstance().setWidth(16)),
+                            child: variables['forum_threadlist'] != null
+                                ? Column(
+                                    children: variables['forum_threadlist'].map<Widget>((item) {
+                                      return item['displayorder'].toString() == '1'
+                                          ? Container(
+                                              height: ScreenUtil.getInstance().setHeight(60),
                                               decoration: BoxDecoration(
-                                                  border: Border.all(
-                                                      color: Color(0xffB51610),
-                                                      width: ScreenUtil.getInstance().setWidth(1)),
-                                                  borderRadius:
-                                                      BorderRadius.all(Radius.circular(4))),
-                                              child: Text(
-                                                '置顶',
-                                                style: TextStyle(
-                                                    color: Color(0xffB51610),
-                                                    fontSize: ScreenUtil.getInstance().setSp(18)),
+                                                  border: Border(
+                                                top: BorderSide(
+                                                    color: variables['forum_threadlist']
+                                                                .indexOf(item) ==
+                                                            0
+                                                        ? Colors.transparent
+                                                        : Color(0xffC9BBA4),
+                                                    width: ScreenUtil.getInstance().setWidth(1)),
+                                              )),
+                                              child: Row(
+                                                children: <Widget>[
+                                                  Container(
+                                                    padding: EdgeInsets.only(
+                                                        left: ScreenUtil.getInstance().setWidth(6),
+                                                        right:
+                                                            ScreenUtil.getInstance().setWidth(6)),
+                                                    margin: EdgeInsets.only(
+                                                        right:
+                                                            ScreenUtil.getInstance().setWidth(16)),
+                                                    decoration: BoxDecoration(
+                                                        border: Border.all(
+                                                            color: Color(0xffB51610),
+                                                            width: ScreenUtil.getInstance()
+                                                                .setWidth(1)),
+                                                        borderRadius:
+                                                            BorderRadius.all(Radius.circular(4))),
+                                                    child: Text(
+                                                      '置顶',
+                                                      style: TextStyle(
+                                                          color: Color(0xffB51610),
+                                                          fontSize:
+                                                              ScreenUtil.getInstance().setSp(18)),
+                                                    ),
+                                                  ),
+                                                  Expanded(
+                                                      flex: 1,
+                                                      child: Text(
+                                                        '${item['subject']}',
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow.ellipsis,
+                                                        style: TextStyle(
+                                                            color: Color(0xff4D4945),
+                                                            fontSize:
+                                                                ScreenUtil.getInstance().setSp(26)),
+                                                      ))
+                                                ],
                                               ),
-                                            ),
-                                            Expanded(
-                                                flex: 1,
-                                                child: Text(
-                                                  '${item['subject']}',
-                                                  maxLines: 1,
-                                                  overflow: TextOverflow.ellipsis,
-                                                  style: TextStyle(
-                                                      color: Color(0xff4D4945),
-                                                      fontSize: ScreenUtil.getInstance().setSp(26)),
-                                                ))
-                                          ],
-                                        ),
-                                      )
-                                    : Container();
-                              }).toList(),
-                            ),
+                                            )
+                                          : Container();
+                                    }).toList(),
+                                  )
+                                : Container(),
                           ),
                           GestureDetector(
                             onTap: () {
@@ -647,29 +655,31 @@ class _BbsContentState extends State<BbsContent> with TickerProviderStateMixin {
                           Offstage(
                             offstage: _tabIndex == 1,
                             child: Container(
-                              color: Color(0xffE8DAC5),
-                              child: variables2.isEmpty
-                                  ? Container()
-                                  : Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: variables['forum_threadlist'].map<Widget>((item) {
-                                        return _contentCon(item, 1);
-                                      }).toList(),
-                                    ),
-                            ),
+                                color: Color(0xffE8DAC5),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: variables['forum_threadlist'].map<Widget>((item) {
+                                    return _contentCon(item, 1);
+                                  }).toList(),
+                                )),
                           ),
                           Offstage(
                             offstage: _tabIndex == 0,
                             child: Container(
                               color: Color(0xffE8DAC5),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: variables2['forum_threadlist'].map<Widget>((list) {
-                                  return _contentCon(list, 2);
-                                }).toList(),
-                              ),
+                              child: variables2.isNotEmpty
+                                  ? Column(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: variables2['forum_threadlist'].map<Widget>((list) {
+                                        return _contentCon(list, 2);
+                                      }).toList(),
+                                    )
+                                  : Container(
+                                      color: Color(0xffE8DAC5),
+                                      height: height,
+                                    ),
                             ),
                           ),
                           Container(

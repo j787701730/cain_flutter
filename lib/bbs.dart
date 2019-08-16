@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+
 import 'bbs_content.dart';
+import 'util.dart';
 
 class Bbs extends StatefulWidget {
   @override
@@ -10,55 +12,10 @@ class Bbs extends StatefulWidget {
 }
 
 class _BbsState extends State<Bbs> with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
-  RefreshController _refreshController = RefreshController(initialRefresh: true);
+  RefreshController _refreshController = RefreshController();
 
   AnimationController animationLoadingController;
   Animation animationLoading;
-
-  List bbs = [
-    {
-      'title': '庇护之地',
-      'list': [
-        {'icon': 'a_03.png', 'title': '新崔斯特姆', 'desc': '暗黑3综合讨论', 'count': '169'},
-        {'icon': 'a_05.png', 'title': '不朽之地', 'desc': '暗黑手游综合讨论', 'count': '4'},
-        {'icon': 'a_09.png', 'title': '战网', 'desc': '全球战网信息交流', 'count': '4'},
-        {'icon': 'a_10.png', 'title': '主机', 'desc': '主机版讨论区', 'count': '4'},
-      ]
-    },
-    {
-      'title': '燃烧地狱',
-      'list': [
-        {'icon': 'a_13.png', 'title': '硬汉之路', 'desc': '专家模式讨论', 'count': '169'},
-        {'icon': 'a_14.png', 'title': '海德格铁匠铺', 'desc': '晒装与幻化评估', 'count': '4'},
-        {'icon': 'a_17.png', 'title': '探险者公会', 'desc': '成就党集结地', 'count': '4'},
-      ]
-    },
-    {
-      'title': '英雄驿站',
-      'list': [
-        {'icon': 'a_19.png', 'title': '暗影王国', 'desc': '死亡只是开始', 'count': '169'},
-        {'icon': 'a_20.png', 'title': '哈洛加斯', 'desc': '晒装与幻化评估', 'count': '4'},
-        {'icon': '20_03.png', 'title': '无形之地', 'desc': '成就党集结地', 'count': '4'},
-        {'icon': '20_05.png', 'title': '复仇者营地', 'desc': '恶魔不绝猎杀不休', 'count': '169'},
-        {'icon': '20_09.png', 'title': '天空寺院', 'desc': '愿精气带给你平衡', 'count': '4'},
-        {'icon': '20_10.png', 'title': '仙塞学院', 'desc': '掌控元素之力', 'count': '4'},
-        {'icon': '20_13.png', 'title': '勇者圣殿', 'desc': '圣光净化一切', 'count': '4'},
-      ]
-    },
-    {
-      'title': '灼沙旅店',
-      'list': [
-        {'icon': '20_15.png', 'title': '山羊小丘酒馆', 'desc': '传说中的水区', 'count': '999+'},
-        {'icon': '20_16.png', 'title': '卡迪安城邦', 'desc': '文学艺术创作', 'count': '4'},
-      ]
-    },
-    {
-      'title': '高阶天堂',
-      'list': [
-        {'icon': '20_19.png', 'title': '安格里斯议会', 'desc': '讨论意见反馈', 'count': '2'},
-      ]
-    },
-  ];
 
   @override
   bool get wantKeepAlive => true;
@@ -66,6 +23,36 @@ class _BbsState extends State<Bbs> with AutomaticKeepAliveClientMixin, TickerPro
   @override
   void initState() {
     super.initState();
+    _getDiscuzList();
+  }
+
+  List discuzList = [];
+  Map variables = {};
+
+  _getDiscuzList() {
+    _loading();
+    ajax(
+        'https://cain-api.gameyw.netease.com/cain/discuz/discuz_model_v2/list/center/1?sid=d09dad18179e42de82d369daec8b11b4__vD1S%252FPEqu3rDFtc40pd99Q%253D%253D&ts=1565927596&uf=4d20262a-7004-4abe-95d6-04a163797a2e&ab=7bfda2314833cebec5f24e6edd76e430eb&ef=143c7db3956865f9713b2eda60f66fdb48',
+        (data) {
+      if (mounted && data['code'] == 200) {
+        setState(() {
+          discuzList = data['data']['discuzList'];
+        });
+      }
+      animationLoadingController.reset();
+      animationLoadingController.stop();
+      _refreshController.refreshCompleted();
+    });
+
+    ajax(
+        'https://bbs.d.163.com/api/mobile/index.php?version=163&module=onlineusernum&ts=1565927924&uf=25fa639a-635d-4376-885a-bd4897df91c1&ab=4c93b21a7e14c406b083caebaf61a481b0&ef=a7a1ea0e6b7b9c648689dfaf65a760df0d',
+        (data) {
+      if (mounted) {
+        setState(() {
+          variables = data['Variables'];
+        });
+      }
+    });
   }
 
   @override
@@ -141,161 +128,181 @@ class _BbsState extends State<Bbs> with AutomaticKeepAliveClientMixin, TickerPro
       ),
       body: Container(
         color: Color(0xffE8DAC5),
-        child: SmartRefresher(
-          controller: _refreshController,
-//          onOffsetChange: _onOffsetChange,
-          onRefresh: () async {
-            _loading();
-            await Future.delayed(Duration(milliseconds: 2000));
-            if (mounted) setState(() {});
-            animationLoadingController.reset();
-            animationLoadingController.stop();
-            _refreshController.refreshCompleted();
-          },
-          header: CustomHeader(
-            refreshStyle: RefreshStyle.Behind,
-            builder: (c, m) {
-              return Container(
-                child: Center(
-                  child: Image.asset(
-                    'images/head_loading${animationLoadingController == null ? 1 : (animationLoadingController.value * (8 - 1.01 + 1) + 1).toInt()}.png',
+        child: discuzList.isEmpty
+            ? Center(
+                child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Image.asset(
+                    'images/head_loading1.png',
                     width: ScreenUtil.getInstance().setWidth(78),
-                    height: ScreenUtil.getInstance().setWidth(84),
                   ),
+                  Container(
+                    height: ScreenUtil.getInstance().setWidth(10),
+                  ),
+                  Text(
+                    '正在前往大秘境...',
+                    style: TextStyle(
+                        color: Color(0xff938373), fontSize: ScreenUtil.getInstance().setSp(23)),
+                  )
+                ],
+              ))
+            : SmartRefresher(
+                controller: _refreshController,
+//          onOffsetChange: _onOffsetChange,
+                onRefresh: () async {
+                  _getDiscuzList();
+                },
+                header: CustomHeader(
+                  refreshStyle: RefreshStyle.Behind,
+                  builder: (c, m) {
+                    return Container(
+                      child: Center(
+                        child: Image.asset(
+                          'images/head_loading${animationLoadingController == null ? 1 : (animationLoadingController.value * (8 - 1.01 + 1) + 1).toInt()}.png',
+                          width: ScreenUtil.getInstance().setWidth(78),
+                          height: ScreenUtil.getInstance().setWidth(84),
+                        ),
+                      ),
+                    );
+                  },
                 ),
-              );
-            },
-          ),
-          child: ListView(
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.only(
-                  top: ScreenUtil.getInstance().setHeight(24),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                child: ListView(
                   children: <Widget>[
-                    Image.asset('images/ic_editor.png'),
-                    Text(
-                      '  9527人在线',
-                      style: TextStyle(
-                          fontSize: ScreenUtil.getInstance().setSp(22), color: Color(0xffB5A88E)),
+                    Container(
+                      padding: EdgeInsets.only(
+                        top: ScreenUtil.getInstance().setHeight(24),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Image.asset('images/ic_editor.png'),
+                          Text(
+                            '  ${variables.isNotEmpty ? variables['onlineusernum'] : 9527}人在线',
+                            style: TextStyle(
+                                fontSize: ScreenUtil.getInstance().setSp(22),
+                                color: Color(0xffB5A88E)),
+                          )
+                        ],
+                      ),
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: discuzList.map<Widget>((item) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Container(
+                              margin: EdgeInsets.only(
+                                  bottom: ScreenUtil.getInstance().setWidth(24),
+                                  top: ScreenUtil.getInstance().setHeight(24)),
+                              width: width,
+                              color: Color(0xffD9CBB5),
+                              padding: EdgeInsets.only(
+                                  left: ScreenUtil.getInstance().setWidth(24),
+                                  top: ScreenUtil.getInstance().setHeight(5),
+                                  bottom: ScreenUtil.getInstance().setHeight(5)),
+                              child: Text(
+                                '${item['type']['typeName']}',
+                                style: TextStyle(
+                                    color: Color(0xff483A26),
+                                    fontSize: ScreenUtil.getInstance().setSp(22)),
+                              ),
+                            ),
+                            Wrap(
+                              runSpacing: ScreenUtil.getInstance().setWidth(24),
+                              children: item['detailList'].map<Widget>((list) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      new MaterialPageRoute(
+                                          builder: (context) =>
+                                              new BbsContent({'title': list['modelName']})),
+                                    );
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: Color(0xffB5A88E),
+                                            width: ScreenUtil.getInstance().setWidth(1)),
+                                        borderRadius: BorderRadius.all(Radius.circular(6))),
+                                    padding: EdgeInsets.only(
+                                        top: ScreenUtil.getInstance().setHeight(20),
+                                        bottom: ScreenUtil.getInstance().setHeight(20),
+                                        left: ScreenUtil.getInstance().setWidth(16),
+                                        right: ScreenUtil.getInstance().setWidth(16)),
+                                    margin: EdgeInsets.only(
+                                        left: ScreenUtil.getInstance().setWidth(24)),
+                                    width: (width - ScreenUtil.getInstance().setWidth(72)) / 2,
+                                    child: Row(
+                                      children: <Widget>[
+                                        Container(
+                                          child: Image.network(
+                                            '${list['iconUrl']}',
+                                            width: ScreenUtil.getInstance().setWidth(60),
+                                            height: ScreenUtil.getInstance().setHeight(60),
+                                          ),
+                                          margin: EdgeInsets.only(
+                                              right: ScreenUtil.getInstance().setWidth(10)),
+                                        ),
+                                        Expanded(
+                                            flex: 1,
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: <Widget>[
+                                                Row(
+                                                  children: <Widget>[
+                                                    Expanded(
+                                                        flex: 1,
+                                                        child: Text(
+                                                          list['modelName'],
+                                                          maxLines: 1,
+                                                          overflow: TextOverflow.ellipsis,
+                                                          style: TextStyle(
+                                                              fontSize: ScreenUtil.getInstance()
+                                                                  .setSp(25),
+                                                              color: Color(0xff3D2F1B)),
+                                                        )),
+                                                    Container(
+                                                      child: Text(
+                                                        '${list['todayPosts']}',
+                                                        style: TextStyle(
+                                                            fontSize:
+                                                                ScreenUtil.getInstance().setSp(18),
+                                                            color: Color(0xffB51610)),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                                Container(
+                                                  child: Text(
+                                                    list['modelDesc'],
+                                                    style: TextStyle(
+                                                        fontSize:
+                                                            ScreenUtil.getInstance().setSp(22),
+                                                        color: Color(0xff74664B)),
+                                                  ),
+                                                )
+                                              ],
+                                            ))
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                            )
+                          ],
+                        );
+                      }).toList(),
+                    ),
+                    Container(
+                      height: ScreenUtil.getInstance().setHeight(24),
                     )
                   ],
                 ),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: bbs.map<Widget>((item) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.only(
-                            bottom: ScreenUtil.getInstance().setWidth(24),
-                            top: ScreenUtil.getInstance().setHeight(24)),
-                        width: width,
-                        color: Color(0xffD9CBB5),
-                        padding: EdgeInsets.only(
-                            left: ScreenUtil.getInstance().setWidth(24),
-                            top: ScreenUtil.getInstance().setHeight(5),
-                            bottom: ScreenUtil.getInstance().setHeight(5)),
-                        child: Text(
-                          item['title'],
-                          style: TextStyle(
-                              color: Color(0xff483A26),
-                              fontSize: ScreenUtil.getInstance().setSp(22)),
-                        ),
-                      ),
-                      Wrap(
-                        runSpacing: ScreenUtil.getInstance().setWidth(24),
-                        children: item['list'].map<Widget>((list) {
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                new MaterialPageRoute(
-                                    builder: (context) => new BbsContent({'title': list['title']})),
-                              );
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: Color(0xffB5A88E),
-                                      width: ScreenUtil.getInstance().setWidth(1)),
-                                  borderRadius: BorderRadius.all(Radius.circular(6))),
-                              padding: EdgeInsets.only(
-                                  top: ScreenUtil.getInstance().setHeight(20),
-                                  bottom: ScreenUtil.getInstance().setHeight(20),
-                                  left: ScreenUtil.getInstance().setWidth(16),
-                                  right: ScreenUtil.getInstance().setWidth(16)),
-                              margin: EdgeInsets.only(left: ScreenUtil.getInstance().setWidth(24)),
-                              width: (width - ScreenUtil.getInstance().setWidth(72)) / 2,
-                              child: Row(
-                                children: <Widget>[
-                                  Container(
-                                    child: Image.asset(
-                                      'bbs/${list['icon']}',
-                                      width: ScreenUtil.getInstance().setWidth(60),
-                                      height: ScreenUtil.getInstance().setHeight(60),
-                                    ),
-                                    margin: EdgeInsets.only(
-                                        right: ScreenUtil.getInstance().setWidth(10)),
-                                  ),
-                                  Expanded(
-                                      flex: 1,
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Row(
-                                            children: <Widget>[
-                                              Expanded(
-                                                  flex: 1,
-                                                  child: Text(
-                                                    list['title'],
-                                                    maxLines: 1,
-                                                    overflow: TextOverflow.ellipsis,
-                                                    style: TextStyle(
-                                                        fontSize:
-                                                            ScreenUtil.getInstance().setSp(25),
-                                                        color: Color(0xff3D2F1B)),
-                                                  )),
-                                              Container(
-                                                child: Text(
-                                                  '${list['count']}',
-                                                  style: TextStyle(
-                                                      fontSize: ScreenUtil.getInstance().setSp(18),
-                                                      color: Color(0xffB51610)),
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                          Container(
-                                            child: Text(
-                                              list['desc'],
-                                              style: TextStyle(
-                                                  fontSize: ScreenUtil.getInstance().setSp(22),
-                                                  color: Color(0xff74664B)),
-                                            ),
-                                          )
-                                        ],
-                                      ))
-                                ],
-                              ),
-                            ),
-                          );
-                        }).toList(),
-                      )
-                    ],
-                  );
-                }).toList(),
-              ),
-              Container(
-                height: ScreenUtil.getInstance().setHeight(24),
-              )
-            ],
-          ),
-        ),
       ),
     );
   }

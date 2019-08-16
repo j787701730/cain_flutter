@@ -179,6 +179,7 @@ class _BbsContentState extends State<BbsContent> with TickerProviderStateMixin {
   Map variables2 = {};
 
   _getBbs() {
+    _loading();
     ajax(
         'https://bbs.d.163.com/api/mobile/index.php?version=163&module=forumdisplay&charset=utf-8&digest=1&hidesticky=0&tpp=15&fid=${widget.props['fid']}&page=1&filter&orderby&ts=1565936290&uf=421d9f6e-5cff-4347-896c-8566d5302886&ab=af1c468cded2ab111a41ca0a4f18d45dbe&ef=cd7a1ae29beb4d59b62c46308fa2c73df9',
         (data) {
@@ -187,10 +188,14 @@ class _BbsContentState extends State<BbsContent> with TickerProviderStateMixin {
           variables = data['Variables'];
         });
       }
+      animationLoadingController.reset();
+      animationLoadingController.stop();
+      _refreshController.refreshCompleted();
     });
   }
 
   _getBbs2() {
+    _loading();
     ajax(
         'https://bbs.d.163.com/api/mobile/index.php?version=163&module=forumdisplay&charset=utf-8&digest=1&hidesticky=0&tpp=15&fid=${widget.props['fid']}&page=1&filter=digest&orderby&ts=1565936470&uf=f14d331c-aa95-4ce1-8b7c-b65abbbe2593&ab=904f039d9d8d3ffcfb51e48d7c63253498&ef=d99d5889ed50ea30be4f6183c6a43b01dc',
         (data) {
@@ -199,6 +204,9 @@ class _BbsContentState extends State<BbsContent> with TickerProviderStateMixin {
           variables2 = data['Variables'];
         });
       }
+      animationLoadingController.reset();
+      animationLoadingController.stop();
+      _refreshController.refreshCompleted();
     });
   }
 
@@ -316,13 +324,11 @@ class _BbsContentState extends State<BbsContent> with TickerProviderStateMixin {
                       controller: _refreshController,
 //          onOffsetChange: _onOffsetChange,
                       onRefresh: () async {
-                        _getBbs();
-                        _loading();
-                        await Future.delayed(Duration(milliseconds: 2000));
-                        if (mounted) setState(() {});
-                        animationLoadingController.reset();
-                        animationLoadingController.stop();
-                        _refreshController.refreshCompleted();
+                        if (_tabIndex == 0) {
+                          _getBbs();
+                        } else {
+                          _getBbs2();
+                        }
                       },
                       enablePullUp: true,
                       header: CustomHeader(

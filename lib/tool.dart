@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-import 'sky_ladder_list.dart';
-import 'simulator.dart';
 import 'data_base.dart';
 import 'lifting_artifact.dart';
+import 'simulator.dart';
+import 'sky_ladder_list.dart';
+import 'util.dart';
 
 class Tool extends StatefulWidget {
   @override
@@ -25,23 +26,42 @@ class _ToolState extends State<Tool> with AutomaticKeepAliveClientMixin, TickerP
   @override
   bool get wantKeepAlive => true;
 
-  List strongest = [
-    {'type': '亚服野蛮人第1', 'role': '착한솔져', 'floor': 128},
-    {'type': '美服双人第1', 'role': 'TOSbreaker/Residuals', 'floor': 150},
-    {'type': '欧服三人第1', 'role': 'Arkis/Framez/Chewingnom', 'floor': 150},
-    {'type': '国服四人第1', 'role': '迷惘丶/陳祖恩/逸尘梵音/凌洛', 'floor': 150},
-  ];
-
-  List tools = [
-    {'name': '模拟器', 'icon': 'icon_tools_simulator', 'state': '0', 'desc': '装备技能模拟'},
-    {'name': '数据库', 'icon': 'icon_tools_database', 'state': '1', 'desc': '新增传奇宝石数据'},
-    {'name': '提升神器', 'icon': 'tools_promotion_tool', 'state': '0', 'desc': '猎魔人散件连射玩法'},
-  ];
-
   @override
   void initState() {
     super.initState();
     _ajax();
+    _getDiabloToolsIndexConfig();
+  }
+
+  Map diabloToolsIndexConfig = {};
+
+  Map info = {};
+
+  _getDiabloToolsIndexConfig() {
+    _loading();
+    ajax(
+        'http://cain-api.gameyw.netease.com/cain/diabloToolsIndexConfig/list?sid=d09dad18179e42de82d369daec8b11b4__vD1S%252FPEqu3rDFtc40pd99Q%253D%253D&ts=1565942557&uf=d7931789-3330-43e1-8579-b46ee63c9e07&ab=2f1b73e97ae70deb7914725cf3622e0005&ef=97677f5b7ac5e4c3bf2749ac18863f604e',
+        (data) {
+      if (mounted && data['code'] == 200) {
+        setState(() {
+          diabloToolsIndexConfig = data;
+        });
+      }
+      if (mounted) setState(() {});
+      animationLoadingController.reset();
+      animationLoadingController.stop();
+      _refreshController.refreshCompleted();
+    });
+
+    ajax(
+        'http://cain-api.gameyw.netease.com/worldhero-web/app_api/queryConfig?ts=1565942556&uf=a2c41190-bb2d-45fb-8c07-aa794b390cb6&ab=373a0b296574db9d61acb3e651c9ebd692&ef=96b4b82b17610d79c34d458f34671cfa7c',
+        (data) {
+      if (mounted && data['code'] == 0) {
+        setState(() {
+          info = data['info'];
+        });
+      }
+    });
   }
 
   _ajax() async {
@@ -92,6 +112,7 @@ class _ToolState extends State<Tool> with AutomaticKeepAliveClientMixin, TickerP
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     ScreenUtil.instance = ScreenUtil(width: 640, height: 1136)..init(context);
+    int count = 0;
     return Scaffold(
       backgroundColor: Colors.transparent,
       appBar: AppBar(
@@ -108,7 +129,7 @@ class _ToolState extends State<Tool> with AutomaticKeepAliveClientMixin, TickerP
             color: Color(0xffE8DAC5),
             image: DecorationImage(
                 image: AssetImage('images/fragment_tools_bg.jpg'), fit: BoxFit.cover)),
-        child: flag
+        child: diabloToolsIndexConfig.isEmpty
             ? Center(
                 child: Image.asset(
                   'images/head_loading1.png',
@@ -119,12 +140,7 @@ class _ToolState extends State<Tool> with AutomaticKeepAliveClientMixin, TickerP
                 controller: _refreshController,
 //          onOffsetChange: _onOffsetChange,
                 onRefresh: () async {
-                  _loading();
-                  await Future.delayed(Duration(milliseconds: 2000));
-                  if (mounted) setState(() {});
-                  animationLoadingController.reset();
-                  animationLoadingController.stop();
-                  _refreshController.refreshCompleted();
+                  _getDiabloToolsIndexConfig();
                 },
                 header: CustomHeader(
                   refreshStyle: RefreshStyle.Behind,
@@ -168,7 +184,9 @@ class _ToolState extends State<Tool> with AutomaticKeepAliveClientMixin, TickerP
                                     width: ScreenUtil.getInstance().setWidth(24),
                                   ),
                                   Text(
-                                    '  更新时间:  ${now.year}/${now.month}/${now.day} ${now.hour}:${now.minute}',
+                                    info.isEmpty
+                                        ? '  更新时间:  ${now.year}/${now.month}/${now.day} ${now.hour}:${now.minute}'
+                                        : '  更新时间:  ${info['collectVersion']}'.replaceAll('-', '/'),
                                     style: TextStyle(
                                         fontSize: ScreenUtil.getInstance().setSp(22),
                                         color: Color(0xff6F6146)),
@@ -240,68 +258,98 @@ class _ToolState extends State<Tool> with AutomaticKeepAliveClientMixin, TickerP
                         ],
                       ),
                     ),
-                    Wrap(
-                      runSpacing: ScreenUtil.getInstance().setWidth(20),
-                      children: strongest.map<Widget>((item) {
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              new MaterialPageRoute(builder: (context) => new SkyLadderList({})),
-                            );
-                          },
-                          child: Container(
-                            width: (width - ScreenUtil.getInstance().setWidth(72)) / 2,
-                            margin: EdgeInsets.only(left: ScreenUtil.getInstance().setWidth(24)),
-                            padding: EdgeInsets.all(
-                              ScreenUtil.getInstance().setWidth(15),
-                            ),
-                            decoration: BoxDecoration(
-                                border: Border.all(color: Color(0xffB5A88E)),
-                                borderRadius: BorderRadius.all(Radius.circular(6))),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Container(
-                                  child: Row(
+                    diabloToolsIndexConfig.isNotEmpty && info.isNotEmpty
+                        ? Wrap(
+                            runSpacing: ScreenUtil.getInstance().setWidth(20),
+                            children:
+                                diabloToolsIndexConfig['serverMysticInfo'].keys.map<Widget>((key) {
+                              count += 1;
+                              var item = diabloToolsIndexConfig['serverMysticInfo'][key];
+                              String name = '';
+
+                              for (int i = 0; i < info['mysticTypeList'].length; i++) {
+                                if (item[0]['mysticType'].toString() ==
+                                    info['mysticTypeList'][i]['code'].toString()) {
+                                  name = info['mysticTypeList'][i]['type']
+                                      .toString()
+                                      .replaceAll('组队', '');
+                                  break;
+                                }
+                              }
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    new MaterialPageRoute(
+                                        builder: (context) => new SkyLadderList({})),
+                                  );
+                                },
+                                child: Container(
+                                  width: (width - ScreenUtil.getInstance().setWidth(72)) / 2,
+                                  margin:
+                                      EdgeInsets.only(left: ScreenUtil.getInstance().setWidth(24)),
+                                  padding: EdgeInsets.all(
+                                    ScreenUtil.getInstance().setWidth(15),
+                                  ),
+                                  decoration: BoxDecoration(
+                                      border: Border.all(color: Color(0xffB5A88E)),
+                                      borderRadius: BorderRadius.all(Radius.circular(6))),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: <Widget>[
-                                      Image.asset(
-                                        'images/tools_${(strongest.indexOf(item) + 1)}_ic.png',
-                                        width: ScreenUtil.getInstance().setWidth(24),
+                                      Container(
+                                        child: Row(
+                                          children: <Widget>[
+                                            Image.asset(
+                                              'images/tools_${count}_ic.png',
+                                              width: ScreenUtil.getInstance().setWidth(24),
+                                            ),
+                                            Text(
+//                                              serverTypeList  serverType=0
+                                              ' ${info['serverTypeList'][item[0]['serverType'] + 1]['type']}'
+                                              '${name}第一',
+                                              style: TextStyle(
+                                                  fontSize: ScreenUtil.getInstance().setSp(26),
+                                                  color: Color(0xff6A5C41)),
+                                            )
+                                          ],
+                                        ),
                                       ),
-                                      Text(
-                                        ' ${item['type']}',
-                                        style: TextStyle(
-                                            fontSize: ScreenUtil.getInstance().setSp(26),
-                                            color: Color(0xff6A5C41)),
+                                      Container(
+                                          height: ScreenUtil.getInstance().setHeight(24.0 * 3 + 30),
+                                          child: RichText(
+                                              text: TextSpan(
+                                                  style: TextStyle(
+                                                      color: Color(0xff96886E),
+                                                      fontSize: ScreenUtil.getInstance().setSp(24)),
+                                                  children: item.map<TextSpan>((battleTag) {
+                                                    return TextSpan(
+                                                        text: '${battleTag['battleTag']}');
+                                                  }).toList()))
+
+//                                        Text(
+//                                          '${item[0]['mysticTier']}层',
+//                                          style: TextStyle(
+//                                              color: Color(0xff96886E),
+//                                              fontSize: ScreenUtil.getInstance().setSp(24)),
+//                                        ),
+                                          ),
+                                      Container(
+                                        child: Text(
+                                          '${item[0]['mysticTier']}层',
+                                          style: TextStyle(
+                                              color: Color(0xffB51610),
+                                              fontSize: ScreenUtil.getInstance().setSp(36)),
+                                        ),
                                       )
                                     ],
                                   ),
                                 ),
-                                Container(
-                                  height: ScreenUtil.getInstance().setHeight(24.0 * 3 + 30),
-                                  child: Text(
-                                    item['role'],
-                                    style: TextStyle(
-                                        color: Color(0xff96886E),
-                                        fontSize: ScreenUtil.getInstance().setSp(24)),
-                                  ),
-                                ),
-                                Container(
-                                  child: Text(
-                                    '${item['floor']}层',
-                                    style: TextStyle(
-                                        color: Color(0xffB51610),
-                                        fontSize: ScreenUtil.getInstance().setSp(36)),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        );
-                      }).toList(),
-                    ),
+                              );
+                            }).toList(),
+                          )
+                        : Container(),
                     Container(
                       margin: EdgeInsets.only(
                         top: ScreenUtil.getInstance().setHeight(32),
@@ -313,84 +361,88 @@ class _ToolState extends State<Tool> with AutomaticKeepAliveClientMixin, TickerP
                       color: Color(0xff94856D),
                     ),
                     Column(
-                      children: tools.map<Widget>((item) {
-                        return GestureDetector(
-                          onTap: () {
-                            if (tools.indexOf(item) == 0) {
-                              Navigator.push(
-                                context,
-                                new MaterialPageRoute(builder: (context) => new Simulator({})),
-                              );
-                            } else if (tools.indexOf(item) == 1) {
-                              Navigator.push(
-                                context,
-                                new MaterialPageRoute(builder: (context) => new DataBase()),
-                              );
-                            } else if (tools.indexOf(item) == 2) {
-                              Navigator.push(
-                                context,
-                                new MaterialPageRoute(builder: (context) => new LiftingArtifacts()),
-                              );
-                            }
-                          },
-                          child: Container(
-                            margin: EdgeInsets.only(
-                              bottom: ScreenUtil.getInstance().setHeight(20),
-                              left: ScreenUtil.getInstance().setHeight(24),
-                              right: ScreenUtil.getInstance().setHeight(24),
-                            ),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: Color(0xffB5A88E),
-                                  width: ScreenUtil.getInstance().setWidth(1)),
-                              color: Color(0xffD0C4AC),
-                            ),
-                            padding: EdgeInsets.only(
-                                left: ScreenUtil.getInstance().setWidth(14),
-                                right: ScreenUtil.getInstance().setWidth(14),
-                                top: ScreenUtil.getInstance().setWidth(8),
-                                bottom: ScreenUtil.getInstance().setWidth(8)),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Row(
-                                  children: <Widget>[
-                                    Image.asset(
-                                      'images/${item['icon']}.png',
-                                      width: ScreenUtil.getInstance().setWidth(72),
-                                    ),
-                                    Text(
-                                      item['name'],
-                                      style: TextStyle(
-                                          fontSize: ScreenUtil.getInstance().setSp(26),
-                                          color: Color(0xff6A5C41)),
-                                    )
-                                  ],
-                                ),
-                                Row(
-                                  children: <Widget>[
-                                    Text(
-                                      '${item['desc']}',
-                                      style: TextStyle(
-                                          fontSize: ScreenUtil.getInstance().setSp(22),
-                                          color: Color(0xff998C72)),
-                                    ),
-                                    item['state'] == '1'
-                                        ? Container(
-                                            margin: EdgeInsets.only(
-                                                left: ScreenUtil.getInstance().setWidth(10)),
-                                            child: Image.asset(
-                                              'images/btn_pgbbs_details_page2.png',
-                                              width: ScreenUtil.getInstance().setWidth(14),
-                                            ),
+                      children: diabloToolsIndexConfig['list'].reversed.map<Widget>((item) {
+                        return item['name'] == '天梯榜'
+                            ? Container()
+                            : GestureDetector(
+                                onTap: () {
+                                  if (item['id'].toString() == '10') {
+                                    Navigator.push(
+                                      context,
+                                      new MaterialPageRoute(
+                                          builder: (context) => new Simulator({})),
+                                    );
+                                  } else if (item['id'].toString() == '9') {
+                                    Navigator.push(
+                                      context,
+                                      new MaterialPageRoute(builder: (context) => new DataBase()),
+                                    );
+                                  } else if (item['id'].toString() == '1') {
+                                    Navigator.push(
+                                      context,
+                                      new MaterialPageRoute(
+                                          builder: (context) => new LiftingArtifacts()),
+                                    );
+                                  }
+                                },
+                                child: Container(
+                                  margin: EdgeInsets.only(
+                                    bottom: ScreenUtil.getInstance().setHeight(20),
+                                    left: ScreenUtil.getInstance().setHeight(24),
+                                    right: ScreenUtil.getInstance().setHeight(24),
+                                  ),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: Color(0xffB5A88E),
+                                        width: ScreenUtil.getInstance().setWidth(1)),
+                                    color: Color(0xffD0C4AC),
+                                  ),
+                                  padding: EdgeInsets.only(
+                                      left: ScreenUtil.getInstance().setWidth(14),
+                                      right: ScreenUtil.getInstance().setWidth(14),
+                                      top: ScreenUtil.getInstance().setWidth(8),
+                                      bottom: ScreenUtil.getInstance().setWidth(8)),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Row(
+                                        children: <Widget>[
+                                          Image.asset(
+                                            'images/${item['name'] == '模拟器' ? 'icon_tools_simulator' : item['name'] == '数据库' ? 'icon_tools_database' : item['name'] == '提升神器' ? 'tools_promotion_tool' : ''}.png',
+                                            width: ScreenUtil.getInstance().setWidth(72),
+                                          ),
+                                          Text(
+                                            item['name'],
+                                            style: TextStyle(
+                                                fontSize: ScreenUtil.getInstance().setSp(26),
+                                                color: Color(0xff6A5C41)),
                                           )
-                                        : SizedBox()
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
-                        );
+                                        ],
+                                      ),
+                                      Row(
+                                        children: <Widget>[
+                                          Text(
+                                            '${item['title']}',
+                                            style: TextStyle(
+                                                fontSize: ScreenUtil.getInstance().setSp(22),
+                                                color: Color(0xff998C72)),
+                                          ),
+                                          item['state'] == '1'
+                                              ? Container(
+                                                  margin: EdgeInsets.only(
+                                                      left: ScreenUtil.getInstance().setWidth(10)),
+                                                  child: Image.asset(
+                                                    'images/btn_pgbbs_details_page2.png',
+                                                    width: ScreenUtil.getInstance().setWidth(14),
+                                                  ),
+                                                )
+                                              : SizedBox()
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              );
                       }).toList(),
                     ),
                   ],

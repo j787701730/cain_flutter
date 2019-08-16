@@ -216,7 +216,35 @@ class _NewsContent1State extends State<NewsContent1> with TickerProviderStateMix
                                 color: Color(0xff6A5C41),
                                 fontSize: ScreenUtil.getInstance().setSp(30)),
                           ),
-                        )
+                        ),
+                        item['replyContent'] != null 
+                            ? Container(
+                          margin: EdgeInsets.only(
+                            top: ScreenUtil.getInstance().setHeight(6)
+                          ),
+                          decoration: BoxDecoration(
+                              color: Color(0xffE2D4BE),
+                              border: Border.all(
+                                  color: Color(0xffD5C7B1),
+                                  width: ScreenUtil.getInstance().setSp(1)
+                              )
+                          ),
+                          padding: EdgeInsets.all(
+                              ScreenUtil.getInstance().setWidth(24)
+                          ),
+                          child: RichText(text: TextSpan(
+                              text: '@${item['replyUser']['nickname']}:', style: TextStyle(
+                              color: Color(0xffE6A048),
+                              fontSize:
+                              ScreenUtil.getInstance()
+                                  .setSp(26)),
+                              children: <TextSpan>[
+                                TextSpan(text: '${item['replyContent']}', style: TextStyle(
+                                    color: Color(0xff141210)),
+                                )
+                              ]
+                          )),
+                        ) : Container()
                       ],
                     ))
               ],

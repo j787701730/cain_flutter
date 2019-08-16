@@ -25,25 +25,6 @@ class _NewsContent2State extends State<NewsContent2> with TickerProviderStateMix
   ScrollController _listController = ScrollController();
 
   bool flag = true;
-  Map content = {
-    'title': 'App 1.6.2版本上线：模拟器迭代与太古装备展示',
-    'author': '秋仲琉璃子不语',
-    'create_date': '5个小时前',
-    'avatar': 'default_avatar.png',
-    'level': '',
-    'visits': 9527,
-    'imgs': [
-      'new1_1',
-      'new1_2',
-      'new1_3',
-      'new2',
-      'new3_1',
-      'new3_2',
-      'new3_3',
-      'new4',
-      'new5',
-    ],
-  };
 
   List comments = [
     {
@@ -75,7 +56,6 @@ class _NewsContent2State extends State<NewsContent2> with TickerProviderStateMix
   @override
   void initState() {
     super.initState();
-    _ajax();
     _getContent();
     _listController.addListener(() {
       setState(() {
@@ -113,6 +93,7 @@ class _NewsContent2State extends State<NewsContent2> with TickerProviderStateMix
             contentType: ContentType.parse("application/x-www-form-urlencoded"),
           ),
         );
+        flag = false;
         if (mounted) {
           setState(() {
             ursInfo = response2.data['data'];
@@ -122,15 +103,6 @@ class _NewsContent2State extends State<NewsContent2> with TickerProviderStateMix
     } catch (e) {
       return print(e);
     }
-  }
-
-  _ajax() async {
-    await Future.delayed(Duration(seconds: 2), () {
-      if (mounted)
-        setState(() {
-          flag = false;
-        });
-    });
   }
 
   @override
@@ -170,106 +142,123 @@ class _NewsContent2State extends State<NewsContent2> with TickerProviderStateMix
   // todo: 只实现了一种评论
   commentsLayout() {
     return Column(
-      children: comments.map<Widget>((item) {
-        return Container(
-          padding: EdgeInsets.only(
-            left: ScreenUtil.getInstance().setWidth(24),
-            right: ScreenUtil.getInstance().setWidth(24),
-          ),
-          child: Container(
-            padding: EdgeInsets.only(
-                top: ScreenUtil.getInstance().setHeight(36),
-                bottom: ScreenUtil.getInstance().setHeight(36)),
-            decoration: BoxDecoration(
-                border: Border(
-                    bottom: BorderSide(
-                        color: Color(0xffCABCA5), width: ScreenUtil.getInstance().setWidth(1)))),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                  child: Image.asset(
-                    'images/${item['avatar']}',
-                    width: ScreenUtil.getInstance().setWidth(70),
-                  ),
-                  margin: EdgeInsets.only(right: ScreenUtil.getInstance().setWidth(12)),
+      children: msg['Variables']['postlist'].map<Widget>((item) {
+        return msg['Variables']['postlist'].indexOf(item) == 0
+            ? Container()
+            : Container(
+                padding: EdgeInsets.only(
+                  left: ScreenUtil.getInstance().setWidth(24),
+                  right: ScreenUtil.getInstance().setWidth(24),
                 ),
-                Expanded(
-                    flex: 1,
-                    child: Column(
-                      children: <Widget>[
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Expanded(
-                                flex: 1,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text(
-                                      item['author'],
-                                      style: TextStyle(
-                                          color: Color(0xffE79425),
-                                          fontSize: ScreenUtil.getInstance().setSp(26)),
-                                    ),
-                                    Row(
-                                      children: <Widget>[
-                                        Icon(
-                                          Icons.location_on,
-                                          color: Color(0xffABA191),
-                                          size: ScreenUtil.getInstance().setSp(30),
-                                        ),
-                                        Text(
-                                          item['address'],
-                                          style: TextStyle(
-                                              color: Color(0xffABA191),
-                                              fontSize: ScreenUtil.getInstance().setSp(24)),
-                                        ),
-                                        Container(
-                                          width: ScreenUtil.getInstance().setWidth(24),
-                                        ),
-                                        Text(
-                                          item['create_date'],
-                                          style: TextStyle(
-                                              color: Color(0xffABA191),
-                                              fontSize: ScreenUtil.getInstance().setSp(24)),
-                                        )
-                                      ],
-                                    )
-                                  ],
-                                )),
-                            Container(
-                              child: Row(
+                child: Container(
+                  padding: EdgeInsets.only(
+                      top: ScreenUtil.getInstance().setHeight(36),
+                      bottom: ScreenUtil.getInstance().setHeight(36)),
+                  decoration: BoxDecoration(
+                      border: Border(
+                          bottom: BorderSide(
+                              color: Color(0xffCABCA5),
+                              width: ScreenUtil.getInstance().setWidth(1)))),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        child: ClipOval(
+                          child: Image.network(
+                            '${ursInfo[item['authorid']]['avatar']}',
+                            width: ScreenUtil.getInstance().setWidth(70),
+                          ),
+                        ),
+                        margin: EdgeInsets.only(right: ScreenUtil.getInstance().setWidth(12)),
+                      ),
+                      Expanded(
+                          flex: 1,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-                                  Text(
-                                    '${item['num']} ',
-                                    style: TextStyle(
-                                        color: Color(0xffABA191),
-                                        fontSize: ScreenUtil.getInstance().setSp(24)),
-                                  ),
-                                  Image.asset(
-                                    'images/icon_comment_zan.png',
-                                    width: ScreenUtil.getInstance().setWidth(36),
+                                  Expanded(
+                                      flex: 1,
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Row(
+                                            children: <Widget>[
+                                              Expanded(
+                                                flex: 1,
+                                                child: Text(
+                                                  '${item['author']}',
+                                                  style: TextStyle(
+                                                      color: Color(0xffE79425),
+                                                      fontSize: ScreenUtil.getInstance().setSp(26)),
+                                                ),),
+                                              Container(
+                                                child: Text(
+                                                  '${msg['Variables']['postlist'].indexOf(item) +
+                                                      1}楼',
+                                                  style: TextStyle(
+                                                      fontSize: ScreenUtil.getInstance().setSp(
+                                                          20)),),
+                                              )
+                                            ],
+                                          ),
+                                          Row(
+                                            children: <Widget>[
+//                                              Icon(
+//                                                Icons.location_on,
+//                                                color: Color(0xffABA191),
+//                                                size: ScreenUtil.getInstance().setSp(30),
+//                                              ),
+//                                              Text(
+//                                                '${msg['Variables']['postlist'].indexOf(item) + 1}',
+//                                                style: TextStyle(
+//                                                    color: Color(0xffABA191),
+//                                                    fontSize: ScreenUtil.getInstance().setSp(24)),
+//                                              ),
+//                                              Container(
+//                                                width: ScreenUtil.getInstance().setWidth(24),
+//                                              ),
+                                              Text(
+                                                '${item['dateline']}',
+                                                style: TextStyle(
+                                                    color: Color(0xffABA191),
+                                                    fontSize: ScreenUtil.getInstance().setSp(24)),
+                                              )
+                                            ],
+                                          )
+                                        ],
+                                      )),
+                                  Container(
+                                    child: Row(
+                                      children: <Widget>[
+//                                        Text(
+//                                          '${item['num']} ',
+//                                          style: TextStyle(
+//                                              color: Color(0xffABA191),
+//                                              fontSize: ScreenUtil.getInstance().setSp(24)),
+//                                        ),
+//                                        Image.asset(
+//                                          'images/icon_comment_zan.png',
+//                                          width: ScreenUtil.getInstance().setWidth(36),
+//                                        )
+                                      ],
+                                    ),
                                   )
                                 ],
                               ),
-                            )
-                          ],
-                        ),
-                        Container(
-                          child: Text(
-                            item['comment'],
-                            style: TextStyle(
-                                color: Color(0xff6A5C41),
-                                fontSize: ScreenUtil.getInstance().setSp(30)),
-                          ),
-                        )
-                      ],
-                    ))
-              ],
-            ),
-          ),
-        );
+                              Container(
+                                child: Html(data: '${item['message']}',defaultTextStyle: TextStyle(
+                                  fontSize: ScreenUtil.getInstance().setSp(36)
+                                ),),
+                              )
+                            ],
+                          ))
+                    ],
+                  ),
+                ),
+              );
       }).toList(),
     );
   }
@@ -311,15 +300,17 @@ class _NewsContent2State extends State<NewsContent2> with TickerProviderStateMix
             child: show
                 ? Row(
                     children: <Widget>[
-                      Image.asset(
-                        'images/${content['avatar']}',
-                        width: ScreenUtil.getInstance().setWidth(40),
+                      ClipOval(
+                        child: Image.network(
+                          '${ursInfo[msg['Variables']['postlist'][0]['authorid']]['avatar']}',
+                          width: ScreenUtil.getInstance().setWidth(30),
+                        ),
                       ),
                       Container(
                         width: ScreenUtil.getInstance().setWidth(12),
                       ),
                       Text(
-                        content['author'],
+                        '${msg['Variables']['postlist'][0]['author']}',
                         style: TextStyle(
                             color: Color(0xffF5DA9C), fontSize: ScreenUtil.getInstance().setSp(28)),
                       )
@@ -591,42 +582,61 @@ class _NewsContent2State extends State<NewsContent2> with TickerProviderStateMix
                                                 bottom: ScreenUtil.getInstance().setHeight(24)),
                                             child: Row(
                                               children: <Widget>[
-                                                Icon(Icons.edit),
-                                                Text('点评')
+                                                Icon(Icons.edit, color: Color(0xffB51515),
+                                                  size: ScreenUtil.getInstance().setSp(36),),
+                                                Text('点评', style: TextStyle(
+                                                    color: Color(0xffB51515),
+                                                    fontSize: ScreenUtil.getInstance().setSp(36)
+                                                ),)
                                               ],
                                             ),
                                           ),
                                           Container(
                                             decoration: BoxDecoration(
                                               color: Color(0xffE2D4BE),
+                                              border: Border.all(
+                                                color: Color(0xffD5C7B1),
+                                                width: ScreenUtil.getInstance().setSp(1)
+                                              )
+                                            ),
+                                            padding: EdgeInsets.all(
+                                              ScreenUtil.getInstance().setWidth(24)
                                             ),
                                             child: Column(
                                               crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: msg['Variables']['comments'].keys.map<Widget>((item) {
-                                                  return Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children: msg['Variables']['comments'][item].map<Widget>((comment) {
-                                                        return Wrap(
-                                                          children: <Widget>[
-                                                            RichText(text: TextSpan(
-                                                              text: '${comment['author']}',
-                                                                style: TextStyle(
-                                                                  color: Color(0xffE6A048),
-                                                                  fontSize: ScreenUtil.getInstance().setSp(24)
-                                                                ),
-                                                              children: <TextSpan>[
-                                                                TextSpan(
-                                                                  text: '：${comment['comment']}',
+                                              children: msg['Variables']['comments']
+                                                  .keys
+                                                  .map<Widget>((item) {
+                                                return Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: msg['Variables']['comments'][item]
+                                                      .map<Widget>((comment) {
+                                                    return Container(
+                                                      padding: EdgeInsets.only(
+                                                        bottom: ScreenUtil.getInstance().setHeight(6)
+                                                      ),
+                                                      child: Wrap(
+                                                        children: <Widget>[
+                                                          RichText(
+                                                              text: TextSpan(
+                                                                  text: '${comment['author']}',
                                                                   style: TextStyle(
-                                                                      color: Color(0xff141210)
-                                                                  ),
-                                                                )
-                                                              ]
-                                                            )),
-                                                          ],
-                                                        );
-                                                    }).toList(),
-                                                  );
+                                                                      color: Color(0xffE6A048),
+                                                                      fontSize:
+                                                                      ScreenUtil.getInstance()
+                                                                          .setSp(26)),
+                                                                  children: <TextSpan>[
+                                                                    TextSpan(
+                                                                      text: '：${comment['comment']}',
+                                                                      style: TextStyle(
+                                                                          color: Color(0xff141210)),
+                                                                    )
+                                                                  ])),
+                                                        ],
+                                                      ),
+                                                    );
+                                                  }).toList(),
+                                                );
                                               }).toList(),
                                             ),
                                           ),

@@ -26,46 +26,8 @@ class _NewsContent1State extends State<NewsContent1> with TickerProviderStateMix
   ScrollController _listController = ScrollController();
 
   bool flag = true;
-  Map content = {
-    'title': 'App 1.6.2版本上线：模拟器迭代与太古装备展示',
-    'author': '秋仲琉璃子不语',
-    'create_date': '5个小时前',
-    'avatar': 'default_avatar.png',
-    'level': '',
-    'visits': 9527,
-    'imgs': [
-      'new1_1',
-      'new1_2',
-      'new1_3',
-      'new2',
-      'new3_1',
-      'new3_2',
-      'new3_3',
-      'new4',
-      'new5',
-    ],
-  };
 
-  List comments = [
-    {
-      'comment': 'App 1.6.2版本上线：模拟器迭代与太古装备展示',
-      'author': '秋仲琉璃子不语',
-      'create_date': '5个小时前',
-      'avatar': 'default_avatar.png',
-      'level': '',
-      'num': 9527,
-      'address': '四川省成都市'
-    },
-    {
-      'comment': 'App 1.6.2版本上线：模拟器迭代与太古装备展示',
-      'author': '秋仲琉璃子不语',
-      'create_date': '5个小时前',
-      'avatar': 'default_avatar.png',
-      'level': '',
-      'num': 9527,
-      'address': '四川省成都市'
-    }
-  ];
+  Map comments = {};
 
   Map msg = {};
 
@@ -76,6 +38,7 @@ class _NewsContent1State extends State<NewsContent1> with TickerProviderStateMix
     super.initState();
     _ajax();
     _getContent();
+    _getComments();
     _listController.addListener(() {
       setState(() {
         show = (200 < _listController.offset) ? true : false;
@@ -88,9 +51,20 @@ class _NewsContent1State extends State<NewsContent1> with TickerProviderStateMix
         'https://cain-api.gameyw.netease.com/cain/article/detail?id=${widget.props['tid']}&sid=be08e07dc5814d1b88b0ed086f00b4e4__vD1S%252FPEqu3rDFtc40pd99Q%253D%253D&ts=1565834507&uf=6a70b030-fc8f-4988-87ef-9c89c586d77e&ab=b9a9d68aa9e2c20d224654225c62267549&ef=aad5d398b9213b771eb58aa8a87c5c0092',
         (data) {
       if (mounted && data['code'] == 200) {
-        print(data);
         setState(() {
           msg = data['data'];
+        });
+      }
+    });
+  }
+
+  _getComments() {
+    ajax(
+        'https://cain-api.gameyw.netease.com//cain/comment/list?aid=${widget.props['tid']}&timestamp=9223372036854775807&size=20&withRootCount=false&withHotComment=true&sid=8196b3f17a5642519ad0c46fd649bfa8__vD1S%252FPEqu3rDFtc40pd99Q%253D%253D&ts=1565920571&uf=9be20621-b9eb-4a0a-8057-71ff65f81111&ab=17e5a22d7430db58d7ee354532f440b3c0&ef=d7ed9b07a5f0439c97b55727198658629f',
+        (data) {
+      if (mounted && data['code'] == 200) {
+        setState(() {
+          comments = data;
         });
       }
     });
@@ -140,9 +114,11 @@ class _NewsContent1State extends State<NewsContent1> with TickerProviderStateMix
   }
 
   // todo: 只实现了一种评论
-  commentsLayout() {
+  commentsLayout(data) {
     return Column(
-      children: comments.map<Widget>((item) {
+      children: data.map<Widget>((item) {
+        DateTime time;
+        time = DateTime.fromMillisecondsSinceEpoch(item['createTime']);
         return Container(
           padding: EdgeInsets.only(
             left: ScreenUtil.getInstance().setWidth(24),
@@ -160,15 +136,20 @@ class _NewsContent1State extends State<NewsContent1> with TickerProviderStateMix
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Container(
-                  child: Image.asset(
-                    'images/${item['avatar']}',
-                    width: ScreenUtil.getInstance().setWidth(70),
+                  child: ClipOval(
+                    child: Image.network(
+                      '${item['user']['avatar']}',
+                      width: ScreenUtil.getInstance().setWidth(70),
+                      height: ScreenUtil.getInstance().setWidth(70),
+                      fit: BoxFit.cover,
+                    ),
                   ),
                   margin: EdgeInsets.only(right: ScreenUtil.getInstance().setWidth(12)),
                 ),
                 Expanded(
                     flex: 1,
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -179,7 +160,7 @@ class _NewsContent1State extends State<NewsContent1> with TickerProviderStateMix
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Text(
-                                      item['author'],
+                                      '${item['user']['nickname']}',
                                       style: TextStyle(
                                           color: Color(0xffE79425),
                                           fontSize: ScreenUtil.getInstance().setSp(26)),
@@ -192,19 +173,19 @@ class _NewsContent1State extends State<NewsContent1> with TickerProviderStateMix
                                           size: ScreenUtil.getInstance().setSp(30),
                                         ),
                                         Text(
-                                          item['address'],
+                                          '${item['location']}',
                                           style: TextStyle(
                                               color: Color(0xffABA191),
-                                              fontSize: ScreenUtil.getInstance().setSp(24)),
+                                              fontSize: ScreenUtil.getInstance().setSp(20)),
                                         ),
                                         Container(
-                                          width: ScreenUtil.getInstance().setWidth(24),
+                                          width: ScreenUtil.getInstance().setWidth(20),
                                         ),
                                         Text(
-                                          item['create_date'],
+                                          '${time.year}/${time.month}/${time.day} ${time.hour}:${time.minute}:${time.second}',
                                           style: TextStyle(
                                               color: Color(0xffABA191),
-                                              fontSize: ScreenUtil.getInstance().setSp(24)),
+                                              fontSize: ScreenUtil.getInstance().setSp(20)),
                                         )
                                       ],
                                     )
@@ -214,7 +195,7 @@ class _NewsContent1State extends State<NewsContent1> with TickerProviderStateMix
                               child: Row(
                                 children: <Widget>[
                                   Text(
-                                    '${item['num']} ',
+                                    '${item['likeCount']} ',
                                     style: TextStyle(
                                         color: Color(0xffABA191),
                                         fontSize: ScreenUtil.getInstance().setSp(24)),
@@ -230,7 +211,7 @@ class _NewsContent1State extends State<NewsContent1> with TickerProviderStateMix
                         ),
                         Container(
                           child: Text(
-                            item['comment'],
+                            '${item['content']}',
                             style: TextStyle(
                                 color: Color(0xff6A5C41),
                                 fontSize: ScreenUtil.getInstance().setSp(30)),
@@ -251,6 +232,10 @@ class _NewsContent1State extends State<NewsContent1> with TickerProviderStateMix
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     ScreenUtil.instance = ScreenUtil(width: 640, height: 1136)..init(context);
+    DateTime time;
+    if (msg.isNotEmpty) {
+      time = DateTime.fromMillisecondsSinceEpoch(msg['publishTime']);
+    }
     return Container(
       decoration: BoxDecoration(
           color: Color(0xffE8DAC5),
@@ -283,15 +268,17 @@ class _NewsContent1State extends State<NewsContent1> with TickerProviderStateMix
             child: show
                 ? Row(
                     children: <Widget>[
-                      Image.asset(
-                        'images/${content['avatar']}',
-                        width: ScreenUtil.getInstance().setWidth(40),
+                      ClipOval(
+                        child: Image.network(
+                          '${msg['author']['avatar']}',
+                          width: ScreenUtil.getInstance().setWidth(30),
+                        ),
                       ),
                       Container(
                         width: ScreenUtil.getInstance().setWidth(12),
                       ),
                       Text(
-                        content['author'],
+                        '${msg['authorName']}',
                         style: TextStyle(
                             color: Color(0xffF5DA9C), fontSize: ScreenUtil.getInstance().setSp(28)),
                       )
@@ -349,7 +336,7 @@ class _NewsContent1State extends State<NewsContent1> with TickerProviderStateMix
                 width: width,
                 child: Container(
                   color: Color(0xffE8DAC5),
-                  child: flag
+                  child: msg.isEmpty
                       ? Center(
                           child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -441,129 +428,135 @@ class _NewsContent1State extends State<NewsContent1> with TickerProviderStateMix
                             controller: _listController,
                             children: <Widget>[
                               msg.isNotEmpty && msg['content'] != null
-                                  ? Html(data: '${msg['content']}'.replaceAll('height="auto"', ''))
-                                  : Container(),
-                              Container(
-                                padding: EdgeInsets.only(
-                                    left: ScreenUtil.getInstance().setWidth(24),
-                                    right: ScreenUtil.getInstance().setWidth(24)),
-                                child: Column(
-                                  children: <Widget>[
-                                    Container(
+                                  ? Container(
                                       padding: EdgeInsets.only(
-                                          top: ScreenUtil.getInstance().setWidth(30),
-                                          bottom: ScreenUtil.getInstance().setHeight(30)),
-                                      child: Text(
-                                        content['title'],
-                                        style: TextStyle(
-                                            fontSize: ScreenUtil.getInstance().setSp(30),
-                                            color: Color(0xff000000)),
-                                      ),
-                                    ),
-                                    Container(
-                                      decoration: BoxDecoration(
-                                          border: Border(
-                                        top: BorderSide(
-                                            color: Color(0xffA99B83),
-                                            width: ScreenUtil.getInstance().setWidth(2)),
-                                        bottom: BorderSide(
-                                            color: Color(0xffA99B83),
-                                            width: ScreenUtil.getInstance().setWidth(2)),
-                                      )),
-                                      padding: EdgeInsets.only(
-                                          top: ScreenUtil.getInstance().setHeight(12),
-                                          bottom: ScreenUtil.getInstance().setHeight(12)),
-                                      margin: EdgeInsets.only(
-                                          bottom: ScreenUtil.getInstance().setWidth(12)),
-                                      child: Row(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                          left: ScreenUtil.getInstance().setWidth(24),
+                                          right: ScreenUtil.getInstance().setWidth(24)),
+                                      child: Column(
                                         children: <Widget>[
                                           Container(
-                                            child: Image.asset(
-                                              'images/${content['avatar']}',
-                                              width: ScreenUtil.getInstance().setWidth(60),
+                                            padding: EdgeInsets.only(
+                                                top: ScreenUtil.getInstance().setWidth(30),
+                                                bottom: ScreenUtil.getInstance().setHeight(30)),
+                                            child: Text(
+                                              '${msg['title']}',
+                                              style: TextStyle(
+                                                  fontSize: ScreenUtil.getInstance().setSp(30),
+                                                  color: Color(0xff000000)),
                                             ),
                                           ),
-                                          Expanded(
-                                              child: Container(
+                                          Container(
+                                            decoration: BoxDecoration(
+                                                border: Border(
+                                              top: BorderSide(
+                                                  color: Color(0xffA99B83),
+                                                  width: ScreenUtil.getInstance().setWidth(2)),
+                                              bottom: BorderSide(
+                                                  color: Color(0xffA99B83),
+                                                  width: ScreenUtil.getInstance().setWidth(2)),
+                                            )),
                                             padding: EdgeInsets.only(
-                                                left: ScreenUtil.getInstance().setWidth(12)),
-                                            child: Column(
+                                                top: ScreenUtil.getInstance().setHeight(12),
+                                                bottom: ScreenUtil.getInstance().setHeight(12)),
+                                            margin: EdgeInsets.only(
+                                                bottom: ScreenUtil.getInstance().setWidth(12)),
+                                            child: Row(
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: <Widget>[
-                                                Text(
-                                                  content['author'],
-                                                  style: TextStyle(
-                                                      color: Color(0xffE79425),
-                                                      fontSize: ScreenUtil.getInstance().setSp(26)),
-                                                ),
                                                 Container(
-                                                  padding: EdgeInsets.only(
-                                                      top: ScreenUtil.getInstance().setHeight(6)),
-                                                  child: Text(content['create_date'],
-                                                      style: TextStyle(
-                                                          color: Color(0xffB5A88E),
-                                                          fontSize:
-                                                              ScreenUtil.getInstance().setSp(26))),
-                                                ),
-                                              ],
-                                            ),
-                                          )),
-                                          Container(
-                                            child: Row(
-                                              children: <Widget>[
-                                                Icon(
-                                                  Icons.remove_red_eye,
-                                                  color: Color(0xffB5A88E),
-                                                ),
-                                                Text(
-                                                  '  ${content['visits']}',
-                                                  style: TextStyle(
-                                                    color: Color(0xffB5A88E),
+                                                  child: ClipOval(
+                                                    child: Image.network(
+                                                      '${msg['author']['avatar']}',
+                                                      width: ScreenUtil.getInstance().setWidth(60),
+                                                    ),
                                                   ),
-                                                )
+                                                ),
+                                                Expanded(
+                                                    child: Container(
+                                                  padding: EdgeInsets.only(
+                                                      left: ScreenUtil.getInstance().setWidth(12)),
+                                                  child: Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: <Widget>[
+                                                      RichText(
+                                                          text: TextSpan(
+                                                              text: '${msg['authorName']}',
+                                                              style: TextStyle(
+                                                                  color: Color(0xffE79425),
+                                                                  fontSize: ScreenUtil.getInstance()
+                                                                      .setSp(26)),
+                                                              children: <TextSpan>[
+                                                            TextSpan(
+                                                                text: '  ${msg['author']['title']}',
+                                                                style: TextStyle(
+                                                                    color: Color(0xffC9BCA4)))
+                                                          ])),
+                                                      Container(
+                                                        padding: EdgeInsets.only(
+                                                            top: ScreenUtil.getInstance()
+                                                                .setHeight(6)),
+                                                        child: Text(
+                                                            '${time.year}/${time.month}/${time.day} ${time.hour}:${time.minute}:${time.second}',
+                                                            style: TextStyle(
+                                                                color: Color(0xffB5A88E),
+                                                                fontSize: ScreenUtil.getInstance()
+                                                                    .setSp(20))),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )),
                                               ],
                                             ),
-                                          )
+                                          ),
+                                          Html(
+                                            data:
+                                                '${msg['content']}'.replaceAll('height="auto"', ''),
+                                            defaultTextStyle: TextStyle(
+                                                fontSize: ScreenUtil.getInstance().setSp(30)),
+                                          ),
+                                          msg['photosView'] != null &&
+                                                  msg['photosView']['photos'] != null
+                                              ? Column(
+                                                  children: msg['photosView']['photos']
+                                                      .map<Widget>((photo) {
+                                                    return Container(
+                                                      margin: EdgeInsets.only(
+                                                          bottom: ScreenUtil.getInstance()
+                                                              .setWidth(24)),
+                                                      width: width -
+                                                          ScreenUtil.getInstance().setWidth(48),
+                                                      child: Image.network(
+                                                        '${photo['img']}',
+                                                        fit: BoxFit.cover,
+                                                      ),
+                                                    );
+                                                  }).toList(),
+                                                )
+                                              : Container(),
+                                          Container(
+                                            padding: EdgeInsets.only(
+                                                top: ScreenUtil.getInstance().setHeight(24),
+                                                bottom: ScreenUtil.getInstance().setHeight(24)),
+                                            child: Center(
+                                              child: Image.asset('images/database_divider.png'),
+                                            ),
+                                          ),
+                                          Container(
+                                            padding: EdgeInsets.only(
+                                                bottom: ScreenUtil.getInstance().setHeight(24)),
+                                            child: Center(
+                                              child: Text(
+                                                '｛来源：凯恩之角｝',
+                                                style: TextStyle(
+                                                    color: Color(0xffB5A88E),
+                                                    fontSize: ScreenUtil.getInstance().setSp(26)),
+                                              ),
+                                            ),
+                                          ),
                                         ],
                                       ),
-                                    ),
-                                    Column(
-                                      children: content['imgs'].map<Widget>((item) {
-                                        return Container(
-                                          margin: EdgeInsets.only(
-                                              bottom: ScreenUtil.getInstance().setWidth(24)),
-                                          width: width - ScreenUtil.getInstance().setWidth(48),
-                                          child: Image.asset(
-                                            'images/$item.jpg',
-                                            fit: BoxFit.cover,
-                                          ),
-                                        );
-                                      }).toList(),
-                                    ),
-                                    Container(
-                                      padding: EdgeInsets.only(
-                                          top: ScreenUtil.getInstance().setHeight(24),
-                                          bottom: ScreenUtil.getInstance().setHeight(24)),
-                                      child: Center(
-                                        child: Image.asset('images/database_divider.png'),
-                                      ),
-                                    ),
-                                    Container(
-                                      padding: EdgeInsets.only(
-                                          bottom: ScreenUtil.getInstance().setHeight(24)),
-                                      child: Center(
-                                        child: Text(
-                                          '｛来源：凯恩之角｝',
-                                          style: TextStyle(
-                                              color: Color(0xffB5A88E),
-                                              fontSize: ScreenUtil.getInstance().setSp(26)),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                                    )
+                                  : Container(),
                               Container(
                                 decoration: BoxDecoration(
                                     color: Color(0xffDED0BB),
@@ -579,13 +572,37 @@ class _NewsContent1State extends State<NewsContent1> with TickerProviderStateMix
                                     top: ScreenUtil.getInstance().setHeight(4),
                                     left: ScreenUtil.getInstance().setWidth(24)),
                                 child: Text(
-                                  '最新跟帖 7',
+                                  '热门跟帖',
                                   style: TextStyle(
                                       color: Color(0xff877964),
                                       fontSize: ScreenUtil.getInstance().setSp(22)),
                                 ),
                               ),
-                              commentsLayout(),
+                              comments.isNotEmpty
+                                  ? commentsLayout(comments['hotList'])
+                                  : Container(),
+                              Container(
+                                decoration: BoxDecoration(
+                                    color: Color(0xffDED0BB),
+                                    border: Border(
+                                        top: BorderSide(
+                                            color: Color(0xffD5C8B2),
+                                            width: ScreenUtil.getInstance().setWidth(2)),
+                                        bottom: BorderSide(
+                                            color: Color(0xffD5C8B2),
+                                            width: ScreenUtil.getInstance().setWidth(2)))),
+                                padding: EdgeInsets.only(
+                                    bottom: ScreenUtil.getInstance().setHeight(4),
+                                    top: ScreenUtil.getInstance().setHeight(4),
+                                    left: ScreenUtil.getInstance().setWidth(24)),
+                                child: Text(
+                                  '最新跟帖',
+                                  style: TextStyle(
+                                      color: Color(0xff877964),
+                                      fontSize: ScreenUtil.getInstance().setSp(22)),
+                                ),
+                              ),
+                              comments.isNotEmpty ? commentsLayout(comments['list']) : Container(),
                               Container(
                                 height: ScreenUtil.getInstance().setHeight(24),
                               )

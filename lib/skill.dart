@@ -29,15 +29,7 @@ class _SkillState extends State<Skill> with TickerProviderStateMixin {
     'level': '',
     'visits': 9527,
     'imgs': [
-      'new1_1',
-      'new1_2',
-      'new1_3',
-      'new2',
-      'new3_1',
-      'new3_2',
-      'new3_3',
-      'new4',
-      'new5',
+      'my_medal_header_bg',
     ],
   };
 

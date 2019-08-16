@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'util.dart';
 
 import 'news_content2.dart';
 
@@ -25,275 +26,135 @@ class _BbsContentState extends State<BbsContent> with TickerProviderStateMixin {
   bool flag = true;
   bool fixed = true;
   int _tabIndex = 0;
-  List content = [
-    {
-      'title': '打假，这是个假的',
-      'author': '秋仲琉璃子不语',
-      'create_date': '5个小时前',
-      'avatar': 'default_avatar.png',
-      'visits': 9527,
-      'is_hot': 1,
-      'is_essence': 0
-    },
-    {
-      'title': '填坑完毕：精英怪及秘境守卫技能伤害查询表2.4.1版（4月27日小更新）',
-      'author': '秋仲琉璃子不语',
-      'create_date': '5个小时前',
-      'avatar': 'default_avatar.png',
-      'visits': 9527,
-      'is_hot': 1,
-      'is_essence': 1
-    },
-    {
-      'title': '耐玩，让暗黑3找到自己的游戏灵魂------写在暗黑3夺魂之镰资料片前',
-      'author': '秋仲琉璃子不语',
-      'create_date': '5个小时前',
-      'avatar': 'default_avatar.png',
-      'visits': 9527,
-      'is_hot': 0,
-      'is_essence': 1
-    },
-    {
-      'title': '［新手试水］［独家翻译］凯恩之书 全卷',
-      'author': '秋仲琉璃子不语',
-      'create_date': '5个小时前',
-      'avatar': 'default_avatar.png',
-      'visits': 9527,
-      'is_hot': 0,
-      'is_essence': 0
-    },
-    {
-      'title': '打假，这是个假的',
-      'author': '秋仲琉璃子不语',
-      'create_date': '5个小时前',
-      'avatar': 'default_avatar.png',
-      'visits': 9527,
-      'is_hot': 1,
-      'is_essence': 0
-    },
-    {
-      'title': '填坑完毕：精英怪及秘境守卫技能伤害查询表2.4.1版（4月27日小更新）',
-      'author': '秋仲琉璃子不语',
-      'create_date': '5个小时前',
-      'avatar': 'default_avatar.png',
-      'visits': 9527,
-      'is_hot': 1,
-      'is_essence': 1
-    },
-    {
-      'title': '耐玩，让暗黑3找到自己的游戏灵魂------写在暗黑3夺魂之镰资料片前',
-      'author': '秋仲琉璃子不语',
-      'create_date': '5个小时前',
-      'avatar': 'default_avatar.png',
-      'visits': 9527,
-      'is_hot': 0,
-      'is_essence': 1
-    },
-    {
-      'title': '［新手试水］［独家翻译］凯恩之书 全卷',
-      'author': '秋仲琉璃子不语',
-      'create_date': '5个小时前',
-      'avatar': 'default_avatar.png',
-      'visits': 9527,
-      'is_hot': 0,
-      'is_essence': 0
-    },
-  ];
 
-  List content2 = [
-    {
-      'title': '你可能还不知道的暗黑3常用小技巧，多年经验和大部分人都不知道的冷知识大百科',
-      'author': '秋仲琉璃子不语',
-      'create_date': '5个小时前',
-      'avatar': 'default_avatar.png',
-      'visits': 9527,
-      'is_hot': 1,
-      'is_essence': 0
-    },
-    {
-      'title': '献给那些准备传奇幻化的朋友，传奇造型独特性调查（多图）已更新',
-      'author': '秋仲琉璃子不语',
-      'create_date': '5个小时前',
-      'avatar': 'default_avatar.png',
-      'visits': 9527,
-      'is_hot': 1,
-      'is_essence': 1
-    },
-    {
-      'title': '事了拂衣，挥手兹去，网路无声，吾思有痕。',
-      'author': '秋仲琉璃子不语',
-      'create_date': '5个小时前',
-      'avatar': 'default_avatar.png',
-      'visits': 9527,
-      'is_hot': 0,
-      'is_essence': 1
-    },
-    {
-      'title': '你可能还不知道的暗黑3常用小技巧，多年经验和大部分人都不知道的冷知识大百科',
-      'author': '秋仲琉璃子不语',
-      'create_date': '5个小时前',
-      'avatar': 'default_avatar.png',
-      'visits': 9527,
-      'is_hot': 1,
-      'is_essence': 0
-    },
-    {
-      'title': '献给那些准备传奇幻化的朋友，传奇造型独特性调查（多图）已更新',
-      'author': '秋仲琉璃子不语',
-      'create_date': '5个小时前',
-      'avatar': 'default_avatar.png',
-      'visits': 9527,
-      'is_hot': 1,
-      'is_essence': 1
-    },
-    {
-      'title': '事了拂衣，挥手兹去，网路无声，吾思有痕。',
-      'author': '秋仲琉璃子不语',
-      'create_date': '5个小时前',
-      'avatar': 'default_avatar.png',
-      'visits': 9527,
-      'is_hot': 0,
-      'is_essence': 1
-    },
-  ];
-
-  _contentCon(item) {
-    return GestureDetector(
-      onTap: () {
-//        Navigator.push(
-//          context,
-//          new MaterialPageRoute(builder: (context) => new NewsContent({})),
-//        );
-      },
-      child: Container(
-        padding: EdgeInsets.only(
-            left: ScreenUtil.getInstance().setWidth(24),
-            right: ScreenUtil.getInstance().setWidth(24),
-            top: ScreenUtil.getInstance().setHeight(24),
-            bottom: ScreenUtil.getInstance().setHeight(24)),
-        decoration: BoxDecoration(
-            border: Border(
-                bottom: BorderSide(
-                    color: Color(0xffC9BBA4), width: ScreenUtil.getInstance().setWidth(1)))),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            RichText(
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              text: TextSpan(children: <TextSpan>[
-                item['is_hot'] == 1
-                    ? TextSpan(
-                        text: ' 热 ',
+  Widget _contentCon(item, type) {
+    return item['displayorder'] == '1'
+        ? Container()
+        : GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                new MaterialPageRoute(
+                    builder: (context) => new NewsContent2({'type': '1', 'tid': "${item['tid']}"})),
+              );
+            },
+            child: Container(
+              padding: EdgeInsets.only(
+                  left: ScreenUtil.getInstance().setWidth(24),
+                  right: ScreenUtil.getInstance().setWidth(24),
+                  top: ScreenUtil.getInstance().setHeight(24),
+                  bottom: ScreenUtil.getInstance().setHeight(24)),
+              decoration: BoxDecoration(
+                  border: Border(
+                      bottom: BorderSide(
+                          color: Color(0xffC9BBA4), width: ScreenUtil.getInstance().setWidth(1)))),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  RichText(
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    text: TextSpan(children: <TextSpan>[
+                      item['special'] == '1'
+                          ? TextSpan(
+                              text: ' 热 ',
+                              style: TextStyle(
+                                  color: Color(0xffF4DA9C),
+                                  backgroundColor: Color(0xffB51610),
+                                  fontSize: ScreenUtil.getInstance().setSp(22),
+                                  fontFamily: 'SourceHanSansCN'))
+                          : TextSpan(text: ''),
+                      item['special'].toString() == '1' ? TextSpan(text: '  ') : TextSpan(text: ''),
+                      type == 2
+                          ? TextSpan(
+                              text: ' 精 ',
+                              style: TextStyle(
+                                  color: Color(0xffF4DA9C),
+                                  backgroundColor: Color(0xffE79222),
+                                  fontSize: ScreenUtil.getInstance().setSp(22),
+                                  fontFamily: 'SourceHanSansCN'))
+                          : TextSpan(),
+                      type == 2 ? TextSpan(text: '  ') : TextSpan(text: ''),
+                      TextSpan(
+                        text: '${item['subject']}',
                         style: TextStyle(
-                            color: Color(0xffF4DA9C),
-                            backgroundColor: Color(0xffB51610),
-                            fontSize: ScreenUtil.getInstance().setSp(22),
-                            fontFamily: 'SourceHanSansCN'))
-                    : TextSpan(text: ''),
-                item['is_hot'] == 1 ? TextSpan(text: '  ') : TextSpan(text: ''),
-                item['is_essence'] == 1
-                    ? TextSpan(
-                        text: ' 精 ',
-                        style: TextStyle(
-                            color: Color(0xffF4DA9C),
-                            backgroundColor: Color(0xffE79222),
-                            fontSize: ScreenUtil.getInstance().setSp(22),
-                            fontFamily: 'SourceHanSansCN'))
-                    : TextSpan(),
-                item['is_essence'] == 1 ? TextSpan(text: '  ') : TextSpan(text: ''),
-                TextSpan(
-                  text: '${item['title']}',
-                  style: TextStyle(
-                    color: Color(0xff3F311D),
-                    fontSize: ScreenUtil.getInstance().setSp(30),
-                    fontFamily: 'SourceHanSansCN',
+                          color: Color(0xff3F311D),
+                          fontSize: ScreenUtil.getInstance().setSp(30),
+                          fontFamily: 'SourceHanSansCN',
+                        ),
+                      )
+                    ]),
                   ),
-                )
-              ]),
-            ),
-            Container(
-              height: ScreenUtil.getInstance().setHeight(46),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Expanded(
-                  child: Row(
+                  Container(
+                    height: ScreenUtil.getInstance().setHeight(46),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Image.asset(
-                        'images/ic_editor.png',
-                        width: ScreenUtil.getInstance().setWidth(24),
+                      Expanded(
+                        child: Row(
+                          children: <Widget>[
+                            Image.asset(
+                              'images/ic_editor.png',
+                              width: ScreenUtil.getInstance().setWidth(24),
+                            ),
+                            Container(
+                              width: ScreenUtil.getInstance().setWidth(6),
+                            ),
+                            Text(
+                              item['author'],
+                              style: TextStyle(
+                                  color: Color(0xff6A5C41),
+                                  fontSize: ScreenUtil.getInstance().setSp(22)),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            )
+                          ],
+                        ),
                       ),
                       Container(
-                        width: ScreenUtil.getInstance().setWidth(6),
-                      ),
-                      Text(
-                        item['author'],
-                        style: TextStyle(
-                            color: Color(0xff6A5C41), fontSize: ScreenUtil.getInstance().setSp(22)),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                        child: Row(
+                          children: <Widget>[
+                            Image.asset(
+                              'images/icon_bbs_time.png',
+                              width: ScreenUtil.getInstance().setWidth(24),
+                            ),
+                            Container(
+                              width: ScreenUtil.getInstance().setWidth(6),
+                            ),
+                            Text(
+                              '${item['lastpost']}'.replaceAll('&nbsp;', ''),
+                              style: TextStyle(
+                                  color: Color(0xffB5A88E),
+                                  fontSize: ScreenUtil.getInstance().setSp(22)),
+                            ),
+                            Container(
+                              width: ScreenUtil.getInstance().setWidth(60),
+                            ),
+                            Image.asset(
+                              'images/ic_news_list_comment.png',
+                              width: ScreenUtil.getInstance().setWidth(24),
+                            ),
+                            Container(
+                              width: ScreenUtil.getInstance().setWidth(6),
+                            ),
+                            Text(
+                              '${item['views']}',
+                              style: TextStyle(
+                                  color: Color(0xffB5A88E),
+                                  fontSize: ScreenUtil.getInstance().setSp(22)),
+                            )
+                          ],
+                        ),
                       )
                     ],
-                  ),
-                ),
-                Container(
-                  child: Row(
-                    children: <Widget>[
-                      Image.asset(
-                        'images/icon_bbs_time.png',
-                        width: ScreenUtil.getInstance().setWidth(24),
-                      ),
-                      Container(
-                        width: ScreenUtil.getInstance().setWidth(6),
-                      ),
-                      Text(
-                        item['create_date'],
-                        style: TextStyle(
-                            color: Color(0xffB5A88E), fontSize: ScreenUtil.getInstance().setSp(22)),
-                      ),
-                      Container(
-                        width: ScreenUtil.getInstance().setWidth(60),
-                      ),
-                      Image.asset(
-                        'images/ic_news_list_comment.png',
-                        width: ScreenUtil.getInstance().setWidth(24),
-                      ),
-                      Container(
-                        width: ScreenUtil.getInstance().setWidth(6),
-                      ),
-                      Text(
-                        '${item['visits']}',
-                        style: TextStyle(
-                            color: Color(0xffB5A88E), fontSize: ScreenUtil.getInstance().setSp(22)),
-                      )
-                    ],
-                  ),
-                )
-              ],
-            )
-          ],
-        ),
-      ),
-    );
+                  )
+                ],
+              ),
+            ),
+          );
   }
-
-  List topList = [
-    {
-      'title': 'App 1.6.2版本上线：模拟器迭代与太古装备展示',
-    },
-    {
-      'title': '开额之角对硬件宏的原则声明',
-    },
-    {
-      'title': '新崔斯特姆版规 v2.05 发帖前必读',
-    },
-    {
-      'title': '凯恩之角论坛新手导航 提升用户等级权限指南',
-    },
-  ];
 
   int topListLength = 3;
 
@@ -305,11 +166,39 @@ class _BbsContentState extends State<BbsContent> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     _ajax();
+    _getBbs();
     _listController.addListener(() {
       setState(() {
         show = (top < _listController.offset) ? true : false;
         fixed = (fixedHeight > _listController.offset) ? true : false;
       });
+    });
+  }
+
+  Map variables = {};
+  Map variables2 = {};
+
+  _getBbs() {
+    ajax(
+        'https://bbs.d.163.com/api/mobile/index.php?version=163&module=forumdisplay&charset=utf-8&digest=1&hidesticky=0&tpp=15&fid=${widget.props['fid']}&page=1&filter&orderby&ts=1565936290&uf=421d9f6e-5cff-4347-896c-8566d5302886&ab=af1c468cded2ab111a41ca0a4f18d45dbe&ef=cd7a1ae29beb4d59b62c46308fa2c73df9',
+        (data) {
+      if (mounted) {
+        setState(() {
+          variables = data['Variables'];
+        });
+      }
+    });
+  }
+
+  _getBbs2() {
+    ajax(
+        'https://bbs.d.163.com/api/mobile/index.php?version=163&module=forumdisplay&charset=utf-8&digest=1&hidesticky=0&tpp=15&fid=${widget.props['fid']}&page=1&filter=digest&orderby&ts=1565936470&uf=f14d331c-aa95-4ce1-8b7c-b65abbbe2593&ab=904f039d9d8d3ffcfb51e48d7c63253498&ef=d99d5889ed50ea30be4f6183c6a43b01dc',
+        (data) {
+      if (mounted) {
+        setState(() {
+          variables2 = data['Variables'];
+        });
+      }
     });
   }
 
@@ -366,6 +255,7 @@ class _BbsContentState extends State<BbsContent> with TickerProviderStateMixin {
         MediaQuery.of(context).padding.top -
         56 +
         ScreenUtil.getInstance().setHeight(84.0 + 84 + 60 * topListLength);
+
     return Container(
       child: Stack(
         children: <Widget>[
@@ -373,7 +263,7 @@ class _BbsContentState extends State<BbsContent> with TickerProviderStateMixin {
             decoration: BoxDecoration(
               color: Color(0xff000000),
             ),
-            child: flag
+            child: variables.isEmpty
                 ? Scaffold(
                     floatingActionButton: FloatingActionButton(
                       onPressed: () {},
@@ -426,6 +316,7 @@ class _BbsContentState extends State<BbsContent> with TickerProviderStateMixin {
                       controller: _refreshController,
 //          onOffsetChange: _onOffsetChange,
                       onRefresh: () async {
+                        _getBbs();
                         _loading();
                         await Future.delayed(Duration(milliseconds: 2000));
                         if (mounted) setState(() {});
@@ -513,7 +404,7 @@ class _BbsContentState extends State<BbsContent> with TickerProviderStateMixin {
                                         height: ScreenUtil.getInstance().setHeight(24),
                                       ),
                                       Text(
-                                        '版主：明月、禅仙',
+                                        '版主：${variables['forum']['moderators'].join('、')}',
                                         style: TextStyle(
                                             color: Color(0xff746B5B),
                                             fontSize: ScreenUtil.getInstance().setSp(22)),
@@ -525,7 +416,7 @@ class _BbsContentState extends State<BbsContent> with TickerProviderStateMixin {
                                       children: <Widget>[
                                         Container(
                                           child: Text(
-                                            '主题 397839',
+                                            '主题 ${variables['forum']['threadcount']}',
                                             style: TextStyle(
                                                 color: Color(0xffB5A88E),
                                                 fontSize: ScreenUtil.getInstance().setSp(22)),
@@ -536,7 +427,7 @@ class _BbsContentState extends State<BbsContent> with TickerProviderStateMixin {
                                         ),
                                         Container(
                                           child: Text(
-                                            '今日 9527',
+                                            '今日 ${variables['forum']['todayposts']}',
                                             style: TextStyle(
                                                 color: Color(0xffB5A88E),
                                                 fontSize: ScreenUtil.getInstance().setSp(22)),
@@ -555,16 +446,17 @@ class _BbsContentState extends State<BbsContent> with TickerProviderStateMixin {
                                 left: ScreenUtil.getInstance().setWidth(24),
                                 right: ScreenUtil.getInstance().setWidth(24)),
                             child: Column(
-                              children: topList.map<Widget>((item) {
-                                return topList.indexOf(item) < topListLength
+                              children: variables['forum_threadlist'].map<Widget>((item) {
+                                return item['displayorder'].toString() == '1'
                                     ? Container(
                                         height: ScreenUtil.getInstance().setHeight(60),
                                         decoration: BoxDecoration(
                                             border: Border(
                                           top: BorderSide(
-                                              color: topList.indexOf(item) == 0
-                                                  ? Colors.transparent
-                                                  : Color(0xffC9BBA4),
+                                              color:
+                                                  variables['forum_threadlist'].indexOf(item) == 0
+                                                      ? Colors.transparent
+                                                      : Color(0xffC9BBA4),
                                               width: ScreenUtil.getInstance().setWidth(1)),
                                         )),
                                         child: Row(
@@ -589,14 +481,15 @@ class _BbsContentState extends State<BbsContent> with TickerProviderStateMixin {
                                               ),
                                             ),
                                             Expanded(
+                                                flex: 1,
                                                 child: Text(
-                                              item['title'],
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                  color: Color(0xff4D4945),
-                                                  fontSize: ScreenUtil.getInstance().setSp(26)),
-                                            ))
+                                                  '${item['subject']}',
+                                                  maxLines: 1,
+                                                  overflow: TextOverflow.ellipsis,
+                                                  style: TextStyle(
+                                                      color: Color(0xff4D4945),
+                                                      fontSize: ScreenUtil.getInstance().setSp(26)),
+                                                ))
                                           ],
                                         ),
                                       )
@@ -607,7 +500,7 @@ class _BbsContentState extends State<BbsContent> with TickerProviderStateMixin {
                           GestureDetector(
                             onTap: () {
                               setState(() {
-                                topListLength = topListLength == 3 ? topList.length : 3;
+                                topListLength = topListLength == 3 ? 4 : 3;
                               });
                             },
                             child: Container(
@@ -654,6 +547,7 @@ class _BbsContentState extends State<BbsContent> with TickerProviderStateMixin {
                                       flex: 1,
                                       child: GestureDetector(
                                         onTap: () {
+                                          _getBbs();
                                           setState(() {
                                             _tabIndex = 0;
                                           });
@@ -688,6 +582,7 @@ class _BbsContentState extends State<BbsContent> with TickerProviderStateMixin {
                                       flex: 1,
                                       child: GestureDetector(
                                         onTap: () {
+                                          _getBbs2();
                                           setState(() {
                                             _tabIndex = 1;
                                           });
@@ -753,13 +648,15 @@ class _BbsContentState extends State<BbsContent> with TickerProviderStateMixin {
                             offstage: _tabIndex == 1,
                             child: Container(
                               color: Color(0xffE8DAC5),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: content.map<Widget>((item) {
-                                  return _contentCon(item);
-                                }).toList(),
-                              ),
+                              child: variables2.isEmpty
+                                  ? Container()
+                                  : Column(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: variables['forum_threadlist'].map<Widget>((item) {
+                                        return _contentCon(item, 1);
+                                      }).toList(),
+                                    ),
                             ),
                           ),
                           Offstage(
@@ -769,8 +666,8 @@ class _BbsContentState extends State<BbsContent> with TickerProviderStateMixin {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: content2.map<Widget>((item) {
-                                  return _contentCon(item);
+                                children: variables2['forum_threadlist'].map<Widget>((list) {
+                                  return _contentCon(list, 2);
                                 }).toList(),
                               ),
                             ),

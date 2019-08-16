@@ -219,7 +219,7 @@ class _BbsState extends State<Bbs> with AutomaticKeepAliveClientMixin, TickerPro
                                       context,
                                       new MaterialPageRoute(
                                           builder: (context) =>
-                                              new BbsContent({'title': list['modelName']})),
+                                              new BbsContent({'title': list['modelName'],'fid':list['fid']})),
                                     );
                                   },
                                   child: Container(

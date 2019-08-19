@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'equipment.dart';
+import 'util.dart';
 
 class DataBaseEquipment extends StatefulWidget {
   @override
@@ -150,11 +151,25 @@ class _DataBaseEquipmentState extends State<DataBaseEquipment>
   void initState() {
     super.initState();
     _ajax();
+    _getArmorsList();
     _tabController = TabController(length: 2, vsync: this);
     _listController.addListener(() {
       setState(() {
         show = (200 < _listController.offset) ? true : false;
       });
+    });
+  }
+
+  Map armorsList = {};
+
+  _getArmorsList() {
+    ajax('https://cain-api.gameyw.netease.com/diablo3db-web/item/meta', (data) {
+      print(data);
+      if (mounted && data['code'] == 200) {
+        setState(() {
+          armorsList = data['armorsList'];
+        });
+      }
     });
   }
 

@@ -18,176 +18,33 @@ class _DataBaseEquipmentState extends State<DataBaseEquipment>
   AnimationController animationLoadingController;
   Animation animationLoading;
 
-  ScrollController _listController = ScrollController();
-
   TabController _tabController;
-  bool flag = true;
-
-  List weapons = [
-    {
-      'type': '单手',
-      'list': [
-        {'name': '斧头', 'image': 'diablo3db_49511_cn_items_axe_norm_base_01.png'},
-        {'name': '匕首', 'image': 'diablo3db_49511_cn_items_dagger_norm_base_04_icon.png'},
-        {'name': '钉锤', 'image': 'diablo3db_49511_cn_items_mace_normal_base_06.png'},
-        {'name': '长矛', 'image': 'diablo3db_49511_cn_items_spear_norm_base_04_icon.png'},
-        {'name': '剑', 'image': 'diablo3db_49511_cn_items_sword_norm_base_07.png'},
-        {'name': '祭祀刀', 'image': 'diablo3db_49511_cn_items_ceremonialdagger_norm_base_01_icon.png'},
-        {'name': '拳套武器', 'image': 'diablo3db_49511_cn_items_fistweapons_norm_base_04_icon.png'},
-        {'name': '重武器', 'image': 'diablo3db_49511_cn_items_mightyweapon_1h_normal_unique_06.png'},
-        {'name': '连枷', 'image': 'diablo3db_49511_cn_items_x1_flail_1h_norm_base_01.png'},
-        {'name': '镰刀', 'image': 'diablo3db_49511_cn_items_p6_scythe_norm_base_01_icon.png'},
-      ]
-    },
-    {
-      'type': '双手',
-      'list': [
-        {'name': '斧头', 'image': 'diablo3db_49511_cn_items_axe_norm_base_01.png'},
-        {'name': '钉锤', 'image': 'diablo3db_49511_cn_items_axe_norm_base_01.png'},
-        {'name': '长柄武器', 'image': 'diablo3db_49511_cn_items_axe_norm_base_01.png'},
-        {'name': '法杖', 'image': 'diablo3db_49511_cn_items_axe_norm_base_01.png'},
-        {'name': '剑', 'image': 'diablo3db_49511_cn_items_axe_norm_base_01.png'},
-        {'name': '降魔杖', 'image': 'diablo3db_49511_cn_items_axe_norm_base_01.png'},
-        {'name': '重武器', 'image': 'diablo3db_49511_cn_items_axe_norm_base_01.png'},
-        {'name': '连枷', 'image': 'diablo3db_49511_cn_items_axe_norm_base_01.png'},
-        {'name': '镰刀', 'image': 'diablo3db_49511_cn_items_axe_norm_base_01.png'},
-      ]
-    },
-    {
-      'type': '远程',
-      'list': [
-        {'name': '弓', 'image': 'diablo3db_49511_cn_items_axe_norm_base_01.png'},
-        {'name': '十字弩', 'image': 'diablo3db_49511_cn_items_axe_norm_base_01.png'},
-        {'name': '手弩', 'image': 'diablo3db_49511_cn_items_axe_norm_base_01.png'},
-        {'name': '魔杖', 'image': 'diablo3db_49511_cn_items_axe_norm_base_01.png'},
-      ]
-    },
-  ];
-  List armor = [
-    {
-      'type': '头部',
-      'list': [
-        {'name': '头盔', 'image': 'diablo3db_49511_cn_items_axe_norm_base_01.png'},
-        {'name': '灵石', 'image': 'diablo3db_49511_cn_items_axe_norm_base_01.png'},
-        {'name': '巫毒面具', 'image': 'diablo3db_49511_cn_items_axe_norm_base_01.png'},
-        {'name': '魔法师帽', 'image': 'diablo3db_49511_cn_items_axe_norm_base_01.png'},
-      ]
-    },
-    {
-      'type': '肩部',
-      'list': [
-        {'name': '护肩', 'image': 'diablo3db_49511_cn_items_axe_norm_base_01.png'},
-      ]
-    },
-    {
-      'type': '胸部',
-      'list': [
-        {'name': '胸甲', 'image': 'diablo3db_49511_cn_items_axe_norm_base_01.png'},
-        {'name': '披风', 'image': 'diablo3db_49511_cn_items_axe_norm_base_01.png'},
-      ]
-    },
-    {
-      'type': '手腕',
-      'list': [
-        {'name': '护腕', 'image': 'diablo3db_49511_cn_items_axe_norm_base_01.png'},
-      ]
-    },
-    {
-      'type': '手部',
-      'list': [
-        {'name': '手套', 'image': 'diablo3db_49511_cn_items_axe_norm_base_01.png'},
-      ]
-    },
-    {
-      'type': '腰部',
-      'list': [
-        {'name': '腰带', 'image': 'diablo3db_49511_cn_items_axe_norm_base_01.png'},
-        {'name': '重型腰带', 'image': 'diablo3db_49511_cn_items_axe_norm_base_01.png'},
-      ]
-    },
-    {
-      'type': '腿部',
-      'list': [
-        {'name': '裤子', 'image': 'diablo3db_49511_cn_items_axe_norm_base_01.png'},
-      ]
-    },
-    {
-      'type': '脚部',
-      'list': [
-        {'name': '靴子', 'image': 'diablo3db_49511_cn_items_axe_norm_base_01.png'},
-      ]
-    },
-    {
-      'type': '珠宝',
-      'list': [
-        {'name': '护符', 'image': 'diablo3db_49511_cn_items_axe_norm_base_01.png'},
-        {'name': '戒指', 'image': 'diablo3db_49511_cn_items_axe_norm_base_01.png'},
-      ]
-    },
-    {
-      'type': '副手',
-      'list': [
-        {'name': '盾牌', 'image': 'diablo3db_49511_cn_items_axe_norm_base_01.png'},
-        {'name': '符咒', 'image': 'diablo3db_49511_cn_items_axe_norm_base_01.png'},
-        {'name': '法球', 'image': 'diablo3db_49511_cn_items_axe_norm_base_01.png'},
-        {'name': '箭袋', 'image': 'diablo3db_49511_cn_items_axe_norm_base_01.png'},
-        {'name': '圣教军盾牌', 'image': 'diablo3db_49511_cn_items_axe_norm_base_01.png'},
-        {'name': '魂匣', 'image': 'diablo3db_49511_cn_items_axe_norm_base_01.png'},
-      ]
-    },
-    {
-      'type': '追随者专用',
-      'list': [
-        {'name': '魔女魔饰', 'image': 'diablo3db_49511_cn_items_axe_norm_base_01.png'},
-        {'name': '痞子徽记', 'image': 'diablo3db_49511_cn_items_axe_norm_base_01.png'},
-        {'name': '圣殿骑士圣物', 'image': 'diablo3db_49511_cn_items_axe_norm_base_01.png'},
-      ]
-    },
-  ];
-
-  bool show = false;
 
   @override
   void initState() {
     super.initState();
-    _ajax();
     _getArmorsList();
     _tabController = TabController(length: 2, vsync: this);
-    _listController.addListener(() {
-      setState(() {
-        show = (200 < _listController.offset) ? true : false;
-      });
-    });
   }
 
   Map armorsList = {};
 
   _getArmorsList() {
     ajax('https://cain-api.gameyw.netease.com/diablo3db-web/item/meta', (data) {
-      print(data);
       if (mounted && data['code'] == 200) {
         setState(() {
-          armorsList = data['armorsList'];
+          armorsList = data;
         });
       }
     });
   }
 
-  _ajax() async {
-    await Future.delayed(Duration(seconds: 2), () {
-      if (mounted)
-        setState(() {
-          flag = false;
-        });
-    });
-  }
-
-  equipmentBox(width, data) {
-    return ListView(
-      controller: _listController,
-      children: data.map<Widget>((item) {
-        return Container(
-          child: Column(
+  equipItem(width, data) {
+    return Container(
+      child: Column(
+        children: data.keys.map<Widget>((key) {
+          var item = data[key];
+          return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Container(
@@ -201,7 +58,7 @@ class _DataBaseEquipmentState extends State<DataBaseEquipment>
                         image: AssetImage('images/equipment_title_bg.png'), fit: BoxFit.fitHeight)),
                 child: Center(
                   child: Text(
-                    item['type'],
+                    '${item['name']}',
                     style: TextStyle(
                         fontSize: ScreenUtil.getInstance().setSp(26), color: Color(0xff3D2F1B)),
                   ),
@@ -234,15 +91,15 @@ class _DataBaseEquipmentState extends State<DataBaseEquipment>
                                 image: DecorationImage(
                                     image: AssetImage('images/equipment_weapon_bg.png'),
                                     fit: BoxFit.fill)),
-                            child: Image.asset(
-                              'equipment/${list['image']}',
+                            child: Image.network(
+                              'https://ok.166.net/cain-corner/diablo3db/49512/cn/items/${list['typeKey']}.png?imageView&type=webp&thumbnail=86x86',
                               fit: BoxFit.contain,
                             ),
                           ),
                           Container(
                             padding: EdgeInsets.only(top: ScreenUtil.getInstance().setWidth(8)),
                             child: Text(
-                              '${list['name']}',
+                              '${list['type']}',
                               style: TextStyle(
                                   color: Color(0xff3D2F1B),
                                   fontSize: ScreenUtil.getInstance().setSp(26)),
@@ -257,9 +114,9 @@ class _DataBaseEquipmentState extends State<DataBaseEquipment>
                 }).toList(),
               )
             ],
-          ),
-        );
-      }).toList(),
+          );
+        }).toList(),
+      ),
     );
   }
 
@@ -267,7 +124,6 @@ class _DataBaseEquipmentState extends State<DataBaseEquipment>
   void dispose() {
     super.dispose();
     _refreshController.dispose();
-    _listController.dispose();
     if (animationLoadingController != null) {
       animationLoadingController.dispose();
     }
@@ -361,7 +217,7 @@ class _DataBaseEquipmentState extends State<DataBaseEquipment>
                   width: width,
                   child: Container(
 //                    color: Color(0xffE8DAC5),
-                    child: flag
+                    child: armorsList.isEmpty
                         ? Center(
                             child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -455,8 +311,20 @@ class _DataBaseEquipmentState extends State<DataBaseEquipment>
                                 physics: NeverScrollableScrollPhysics(),
                                 controller: _tabController,
                                 children: <Widget>[
-                                  equipmentBox(width, weapons),
-                                  equipmentBox(width, armor),
+//                                  equipmentBox(width, weapons),
+//                                  equipmentBox(width, armor),
+                                  // 武器
+                                  ListView(
+                                    children: <Widget>[
+                                      equipItem(width, armorsList['weaponsList']),
+                                    ],
+                                  ),
+                                  // 护甲
+                                  ListView(
+                                    children: <Widget>[
+                                      equipItem(width, armorsList['armorsList']),
+                                    ],
+                                  ),
                                 ],
                               ),
                             ),

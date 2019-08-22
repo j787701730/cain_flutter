@@ -44,6 +44,7 @@ class _NewsState extends State<News> with AutomaticKeepAliveClientMixin, TickerP
     _getInstanceEquipmentList();
     _getInstanceSkillList();
     _getInstanceGemList();
+    _getInstanceConstant();
   }
 
   getBanner() {
@@ -76,6 +77,7 @@ class _NewsState extends State<News> with AutomaticKeepAliveClientMixin, TickerP
     });
   }
 
+  // 装备
   _saveEquipmentList(data) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('equipmentList', data);
@@ -97,6 +99,7 @@ class _NewsState extends State<News> with AutomaticKeepAliveClientMixin, TickerP
     });
   }
 
+// 技能
   _saveSkillList(data) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('skillList', data);
@@ -118,6 +121,7 @@ class _NewsState extends State<News> with AutomaticKeepAliveClientMixin, TickerP
     });
   }
 
+// 宝石
   _saveGemList(data) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('gemList', data);
@@ -126,7 +130,6 @@ class _NewsState extends State<News> with AutomaticKeepAliveClientMixin, TickerP
   _getInstanceGemList() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String gemList = prefs.getString('gemList');
-    print(gemList);
     if (gemList == null) {
       getGemList();
     }
@@ -136,6 +139,29 @@ class _NewsState extends State<News> with AutomaticKeepAliveClientMixin, TickerP
     ajax('https://cain-api.gameyw.netease.com/diablo3db-web/item/legendaryGem/listAll', (data) {
       if (data['code'] == 200) {
         _saveGemList(jsonEncode(data['list']));
+      }
+    });
+  }
+
+  // constant 常数 (职业)
+  _saveConstant(data) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('constant', data);
+  }
+
+  _getInstanceConstant() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String constant = prefs.getString('constant');
+    if (constant == null) {
+      getConstant();
+    }
+  }
+
+  getConstant() {
+    ajax('https://cain-api.gameyw.netease.com/cain/app/constant', (data) {
+      print(data);
+      if (data['code'] == 200) {
+        _saveConstant(jsonEncode(data));
       }
     });
   }

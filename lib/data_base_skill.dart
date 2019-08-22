@@ -5,6 +5,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:reorderables/reorderables.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 
 class DataBaseSkill extends StatefulWidget {
   @override
@@ -30,104 +32,17 @@ class _DataBaseSkillState extends State<DataBaseSkill>
     0xffE79222,
   ];
 
-  List roles = [
-    {'name': '野蛮人', 'img': 'berserker_man.png', 'id': 1},
-    {'name': '圣教军', 'img': 'holysect_man.png', 'id': 2},
-    {'name': '武僧', 'img': 'monk_man.png', 'id': 3},
-    {'name': '猎魔人', 'img': 'hunting_man.png', 'id': 4},
-    {'name': '巫医', 'img': 'witchdoctor_man.png', 'id': 5},
-    {'name': '死灵法师', 'img': 'necromancer_man.png', 'id': 6},
-    {'name': '魔法师', 'img': 'mage_man.png', 'id': 7},
-  ];
-
   Map attributes = {
-    'wl': '物理',
-    'hy': '火焰',
-    'sd': '闪电',
-    'bh': '冰寒',
-    'ds': '毒素',
-    'mf': '秘法',
-    'ss': '神圣',
+    '0': '物理',
+    '1': '火焰',
+    '2': '闪电',
+    '3': '冰寒',
+    '4': '毒素',
+    '5': '秘法',
+    '6': '神圣',
   };
 
-  Map selectActiveSkill = {
-    'image': 'berserker_man/ia_100000024.png',
-    'name': '猛击',
-    'level': '1',
-    'attributes': 'wl',
-    'main': [
-      '<span>生成：<em>6</em>点怒气</span>',
-      '<span>猛烈打击一名敌人，对其造成<em>320%</em>的武器伤害。</span>',
-    ],
-    'second': [
-      '<span>暴击时有一定几率使压制的冷却时间缩短 <em>1</em> 秒。</span>',
-    ],
-    'attr': '主要',
-    'limit': [
-      '<span>解锁于等级<b> 6</b></span>',
-      '<span>触发系数<em> 100%</em></span>',
-    ],
-    'rune': [
-      {
-        'image': 'rune_a_light.png',
-        'name': '霜咬',
-        'list': [
-          '<span>每次击中会<em>冰冻</em>敌人<em>1.5</em>秒。</span>',
-          '<span>敌人每<em>5</em>秒只能被猛击冰冻一次。</span>',
-        ],
-        'limit': [
-          '<span>解锁于等级<b>6</b></span>',
-          '<span>触发系数<em>100%</em></span>',
-        ]
-      },
-      {
-        'image': 'rune_b_light.png',
-        'name': '暴揍',
-        'list': [
-          '<span>使敌人受到暴击的几率提高 <em>10%</em>，持续 <em>3</em> 秒。</span>',
-          '<span>猛击的伤害类型转换为闪电伤害。</span>',
-        ],
-        'limit': [
-          '<span>解锁于等级<b>13</b></span>',
-          '<span>触发系数<em>100%</em></span>',
-        ]
-      },
-      {
-        'image': 'rune_c_light.png',
-        'name': '痛殴',
-        'list': [
-          '<span>使用猛击后的 <em>5</em> 秒内，使你造成的伤害提高 <em>4%</em> 。该效果最多可叠加 <em>3</em> 层。</span>',
-        ],
-        'limit': [
-          '<span>解锁于等级<b>26</b></span>',
-          '<span>触发系数<em>100%</em></span>',
-        ]
-      },
-      {
-        'image': 'rune_d_light.png',
-        'name': '暴怒',
-        'list': [
-          '<span>使生成的怒气提高至 <em>9</em> 点。</span>',
-          '<span>猛击的伤害类型转换为火焰伤害。</span>',
-        ],
-        'limit': [
-          '<span>解锁于等级<b>44</b></span>',
-          '<span>触发系数<em>100%</em></span>',
-        ]
-      },
-      {
-        'image': 'rune_e_light.png',
-        'name': '粉碎',
-        'list': [
-          '<span>每次击中都会引发一道冲击波，对主要敌人后方 <em>26</em> 码直线上的敌人造成 <em>100%</em> 的武器伤害（作为火焰伤害）。</span>',
-        ],
-        'limit': [
-          '<span>解锁于等级<b>52</b></span>',
-          '<span>触发系数<em>100%</em></span>',
-        ]
-      },
-    ]
-  };
+  Map selectActiveSkill = {};
 
   Map selectPassiveSkill = {
     'image': 'berserker_man/ia_400000019.png',
@@ -143,164 +58,6 @@ class _DataBaseSkillState extends State<DataBaseSkill>
     'story': '“天降甘霖使庄稼更加茁壮，敌洒热血令我们愈发势不可当。”——丰收颂歌',
   };
 
-  List activeSkills = [
-    {
-      'image': 'berserker_man/ia_100000024.png',
-      'name': '猛击',
-      'level': '1',
-      'attributes': 'wl',
-      'rune': [
-        'rune_a_light.png',
-        'rune_b_light.png',
-        'rune_c_light.png',
-        'rune_d_light.png',
-        'rune_e_light.png',
-      ],
-    },
-    {
-      'image': 'berserker_man/ia_100000030.png',
-      'name': '先祖之锤',
-      'level': '2',
-      'attributes': 'wl',
-      'rune': [
-        'rune_a_light.png',
-        'rune_b_light.png',
-        'rune_c_light.png',
-        'rune_d_light.png',
-        'rune_e_light.png',
-      ]
-    },
-    {
-      'image': 'berserker_man/ia_100000036.png',
-      'name': '顺劈斩',
-      'level': '3',
-      'attributes': 'wl',
-      'rune': [
-        'rune_a_light.png',
-        'rune_b_light.png',
-        'rune_c_light.png',
-        'rune_d_light.png',
-        'rune_e_light.png',
-      ]
-    },
-    {
-      'image': 'berserker_man/ia_100000042.png',
-      'name': '大地践踏',
-      'level': '4',
-      'attributes': 'wl',
-      'rune': [
-        'rune_a_light.png',
-        'rune_b_light.png',
-        'rune_c_light.png',
-        'rune_d_light.png',
-        'rune_e_light.png',
-      ]
-    },
-    {
-      'image': 'berserker_man/ia_100000048.png',
-      'name': '痛割',
-      'level': '5',
-      'attributes': 'wl',
-      'rune': [
-        'rune_a_light.png',
-        'rune_b_light.png',
-        'rune_c_light.png',
-        'rune_d_light.png',
-        'rune_e_light.png',
-      ]
-    },
-    {
-      'image': 'berserker_man/ia_100000054.png',
-      'name': '先祖之锤',
-      'level': '2',
-      'attributes': 'wl',
-      'rune': [
-        'rune_a_light.png',
-        'rune_b_light.png',
-        'rune_c_light.png',
-        'rune_d_light.png',
-        'rune_e_light.png',
-      ]
-    },
-    {
-      'image': 'berserker_man/ia_100000060.png',
-      'name': '先祖之锤',
-      'level': '2',
-      'attributes': 'wl',
-      'rune': [
-        'rune_a_light.png',
-        'rune_b_light.png',
-        'rune_c_light.png',
-        'rune_d_light.png',
-        'rune_e_light.png',
-      ]
-    },
-    {
-      'image': 'berserker_man/ia_100000066.png',
-      'name': '先祖之锤',
-      'level': '2',
-      'attributes': 'wl',
-      'rune': [
-        'rune_a_light.png',
-        'rune_b_light.png',
-        'rune_c_light.png',
-        'rune_d_light.png',
-        'rune_e_light.png',
-      ]
-    },
-    {
-      'image': 'berserker_man/ia_100000072.png',
-      'name': '先祖之锤',
-      'level': '2',
-      'attributes': 'wl',
-      'rune': [
-        'rune_a_light.png',
-        'rune_b_light.png',
-        'rune_c_light.png',
-        'rune_d_light.png',
-        'rune_e_light.png',
-      ]
-    },
-    {
-      'image': 'berserker_man/ia_100000078.png',
-      'name': '先祖之锤',
-      'level': '2',
-      'attributes': 'wl',
-      'rune': [
-        'rune_a_light.png',
-        'rune_b_light.png',
-        'rune_c_light.png',
-        'rune_d_light.png',
-        'rune_e_light.png',
-      ]
-    },
-    {
-      'image': 'berserker_man/ia_100000084.png',
-      'name': '先祖之锤',
-      'level': '2',
-      'attributes': 'wl',
-      'rune': [
-        'rune_a_light.png',
-        'rune_b_light.png',
-        'rune_c_light.png',
-        'rune_d_light.png',
-        'rune_e_light.png',
-      ]
-    },
-    {
-      'image': 'berserker_man/ia_100000090.png',
-      'name': '先祖之锤',
-      'level': '2',
-      'attributes': 'wl',
-      'rune': [
-        'rune_a_light.png',
-        'rune_b_light.png',
-        'rune_c_light.png',
-        'rune_d_light.png',
-        'rune_e_light.png',
-      ]
-    },
-  ];
   List passiveSkills = [
     {
       'image': 'berserker_man/ia_400000019.png',
@@ -393,7 +150,8 @@ class _DataBaseSkillState extends State<DataBaseSkill>
     },
   ];
 
-  int roleIndex = 1;
+  String roleIndex = '1';
+  Map nowRole = {};
   OverlayEntry overlayEntry;
 
   LayerLink layerLink = new LayerLink();
@@ -403,6 +161,43 @@ class _DataBaseSkillState extends State<DataBaseSkill>
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
     _ajax();
+    _getInstanceConstant();
+  }
+
+  Map constant = {};
+  List skills = [];
+
+  List roleActiveSkills = [];
+
+  getRoleSkills() {
+    roleActiveSkills.clear();
+    for (int i = 0; i < skills.length; i++) {
+      Map item = skills[i];
+      if (item['topClassKey'] == 'Active' &&
+          item['professionKey'].toLowerCase() == nowRole['enname'].replaceAll('-', '')) {
+        roleActiveSkills.add(item);
+      }
+    }
+  }
+
+  _getInstanceConstant() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String constant1 = prefs.getString('constant');
+    String skillList = prefs.getString('skillList');
+    if (constant1 != null) {
+      setState(() {
+        constant = jsonDecode(constant1);
+        roleIndex = constant['classesInfo'][0]['id'];
+        nowRole = constant['classesInfo'][0];
+      });
+    }
+
+    if (skillList != null) {
+      setState(() {
+        skills = jsonDecode(skillList);
+        getRoleSkills();
+      });
+    }
   }
 
   _ajax() async {
@@ -417,8 +212,8 @@ class _DataBaseSkillState extends State<DataBaseSkill>
   void _onReorder(int oldIndex, int newIndex) {
     if (mounted)
       setState(() {
-        var row = roles.removeAt(oldIndex);
-        roles.insert(newIndex, row);
+        var row = constant['classesInfo'].removeAt(oldIndex);
+        constant['classesInfo'].insert(newIndex, row);
       });
   }
 
@@ -527,98 +322,102 @@ class _DataBaseSkillState extends State<DataBaseSkill>
           if (mounted) setState(() {});
           _refreshController.loadComplete();
         },
-        child: ListView(
+        child: roleActiveSkills.isEmpty
+            ? Container()
+            : ListView(
 //      controller: _listController,
-          padding: EdgeInsets.only(
-              left: ScreenUtil.getInstance().setWidth(24),
-              right: ScreenUtil.getInstance().setWidth(24)),
-          children: activeSkills.map<Widget>((item) {
-            return GestureDetector(
-              onTap: () {
-                setState(() {
-                  activeSkillsShow = false;
-                });
-              },
-              child: Container(
-                margin: EdgeInsets.only(top: ScreenUtil.getInstance().setHeight(24)),
-                decoration: BoxDecoration(
-                    color: Color(0xffE3D4BF),
-                    border: Border.all(
-                        color: Color(0xffB5A88E), width: ScreenUtil.getInstance().setWidth(1)),
-                    borderRadius: BorderRadius.all(Radius.circular(6))),
                 padding: EdgeInsets.only(
                     left: ScreenUtil.getInstance().setWidth(24),
-                    top: ScreenUtil.getInstance().setWidth(24),
-                    right: ScreenUtil.getInstance().setWidth(24),
-                    bottom: ScreenUtil.getInstance().setWidth(24)),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(right: ScreenUtil.getInstance().setWidth(12)),
-                      width: ScreenUtil.getInstance().setWidth(84),
-                      height: ScreenUtil.getInstance().setHeight(84),
-                      child: Image.asset(
-                        'skills/${item['image']}',
-                        fit: BoxFit.fill,
+                    right: ScreenUtil.getInstance().setWidth(24)),
+                children: roleActiveSkills.map<Widget>((item) {
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        activeSkillsShow = false;
+                        selectActiveSkill = item;
+                      });
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(top: ScreenUtil.getInstance().setHeight(24)),
+                      decoration: BoxDecoration(
+                          color: Color(0xffE3D4BF),
+                          border: Border.all(
+                              color: Color(0xffB5A88E),
+                              width: ScreenUtil.getInstance().setWidth(1)),
+                          borderRadius: BorderRadius.all(Radius.circular(6))),
+                      padding: EdgeInsets.only(
+                          left: ScreenUtil.getInstance().setWidth(24),
+                          top: ScreenUtil.getInstance().setWidth(24),
+                          right: ScreenUtil.getInstance().setWidth(24),
+                          bottom: ScreenUtil.getInstance().setWidth(24)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Container(
+                            margin: EdgeInsets.only(right: ScreenUtil.getInstance().setWidth(12)),
+                            width: ScreenUtil.getInstance().setWidth(84),
+                            height: ScreenUtil.getInstance().setHeight(84),
+                            child: Image.network(
+                              'https://ok.166.net/cain-corner/diablo3db/49512/cn/skills/${item['picIcon']}.png?imageView&type=webp&thumbnail=84x84',
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                          Expanded(
+                              flex: 1,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Wrap(
+                                    crossAxisAlignment: WrapCrossAlignment.center,
+                                    children: <Widget>[
+                                      Text(
+                                        '${item['name']}',
+                                        style: TextStyle(
+                                            color: Color(0xff3D2F1B),
+                                            fontSize: ScreenUtil.getInstance().setSp(30)),
+                                      ),
+                                      Container(
+                                        width: ScreenUtil.getInstance().setWidth(10),
+                                      ),
+                                      Text('属性·${attributes[item['damageType'].toString()]}',
+                                          style: TextStyle(
+                                              color: Color(0xff9B8C73),
+                                              fontSize: ScreenUtil.getInstance().setSp(26))),
+                                      Container(
+                                        width: ScreenUtil.getInstance().setWidth(10),
+                                      ),
+                                      Text('等级·${item['unlockLevel']}',
+                                          style: TextStyle(
+                                              color: Color(0xff9B8C73),
+                                              fontSize: ScreenUtil.getInstance().setSp(26))),
+                                    ],
+                                  ),
+                                  Container(
+                                    height: ScreenUtil.getInstance().setHeight(6),
+                                  ),
+                                  Wrap(
+                                    children: item['runeList'].map<Widget>((rune) {
+                                      return Container(
+                                        margin: EdgeInsets.only(
+                                            right: ScreenUtil.getInstance().setWidth(10)),
+                                        width: ScreenUtil.getInstance().setWidth(40),
+                                        height: ScreenUtil.getInstance().setHeight(40),
+                                        child: Image.asset(
+                                          'images/rune_${rune['type']}_light.png',
+                                          fit: BoxFit.fill,
+                                        ),
+                                      );
+                                    }).toList(),
+                                  )
+                                ],
+                              ))
+                        ],
                       ),
                     ),
-                    Expanded(
-                        flex: 1,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Wrap(
-                              crossAxisAlignment: WrapCrossAlignment.center,
-                              children: <Widget>[
-                                Text(
-                                  '${item['name']}',
-                                  style: TextStyle(
-                                      color: Color(0xff3D2F1B),
-                                      fontSize: ScreenUtil.getInstance().setSp(30)),
-                                ),
-                                Container(
-                                  width: ScreenUtil.getInstance().setWidth(10),
-                                ),
-                                Text('属性·${attributes[item['attributes']]}',
-                                    style: TextStyle(
-                                        color: Color(0xff9B8C73),
-                                        fontSize: ScreenUtil.getInstance().setSp(26))),
-                                Container(
-                                  width: ScreenUtil.getInstance().setWidth(10),
-                                ),
-                                Text('等级·${item['level']}',
-                                    style: TextStyle(
-                                        color: Color(0xff9B8C73),
-                                        fontSize: ScreenUtil.getInstance().setSp(26))),
-                              ],
-                            ),
-                            Container(
-                              height: ScreenUtil.getInstance().setHeight(6),
-                            ),
-                            Wrap(
-                              children: item['rune'].map<Widget>((rune) {
-                                return Container(
-                                  margin:
-                                      EdgeInsets.only(right: ScreenUtil.getInstance().setWidth(10)),
-                                  width: ScreenUtil.getInstance().setWidth(40),
-                                  height: ScreenUtil.getInstance().setHeight(40),
-                                  child: Image.asset(
-                                    'images/$rune',
-                                    fit: BoxFit.fill,
-                                  ),
-                                );
-                              }).toList(),
-                            )
-                          ],
-                        ))
-                  ],
-                ),
-              ),
-            );
-          }).toList(),
-        ));
+                  );
+                }).toList(),
+              ));
   }
 
   passiveSkillsBox(width) {
@@ -808,8 +607,10 @@ class _DataBaseSkillState extends State<DataBaseSkill>
                                   color: Color(0xff6A5C41)),
                             ),
                           ),
-                          ReorderableWrap(
-                            onReorder: _onReorder,
+                          constant.isEmpty
+                              ? Container()
+                              : ReorderableWrap(
+                                  onReorder: _onReorder,
 //                                      onNoReorder: (int index) {
 //                                        //this callback is optional
 //                                        debugPrint(
@@ -820,47 +621,51 @@ class _DataBaseSkillState extends State<DataBaseSkill>
 //                                        debugPrint(
 //                                            '${DateTime.now().toString().substring(5, 22)} reorder started: index:$index');
 //                                      },
-                            runSpacing: ScreenUtil.getInstance().setWidth(24),
-                            spacing: ScreenUtil.getInstance().setWidth(24),
-                            children: roles.map<Widget>((item) {
-                              int id = item['id'];
-                              return GestureDetector(
-                                onTap: () {
-                                  close();
-                                  if (mounted)
-                                    setState(() {
-                                      roleIndex = id;
-                                    });
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      color:
-                                          id == roleIndex ? Color(0xffB51610) : Color(0xffD0C4AC),
-                                      borderRadius: BorderRadius.all(Radius.circular(4)),
-                                      border: Border.all(
-                                        width: ScreenUtil.getInstance().setWidth(1),
-                                        color:
-                                            id == roleIndex ? Color(0xffB51610) : Color(0xff6A5C41),
-                                      )),
-                                  padding: EdgeInsets.only(
-                                      bottom: ScreenUtil.getInstance().setHeight(4),
-                                      top: ScreenUtil.getInstance().setWidth(4)),
-                                  width: ScreenUtil.getInstance()
-                                      .setWidth(item['name'].length * 28 + 48.0),
-                                  child: Align(
-                                    child: Text(
-                                      item['name'],
-                                      style: TextStyle(
-                                          color: id == roleIndex
-                                              ? Color(0xffF3D699)
-                                              : Color(0xff6A5C41),
-                                          fontSize: ScreenUtil.getInstance().setSp(26)),
-                                    ),
-                                  ),
+                                  runSpacing: ScreenUtil.getInstance().setWidth(24),
+                                  spacing: ScreenUtil.getInstance().setWidth(24),
+                                  children: constant['classesInfo'].map<Widget>((item) {
+                                    String id = item['id'];
+                                    return GestureDetector(
+                                      onTap: () {
+                                        close();
+                                        if (mounted)
+                                          setState(() {
+                                            roleIndex = id;
+                                            nowRole = item;
+                                            getRoleSkills();
+                                          });
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            color: id == roleIndex
+                                                ? Color(0xffB51610)
+                                                : Color(0xffD0C4AC),
+                                            borderRadius: BorderRadius.all(Radius.circular(4)),
+                                            border: Border.all(
+                                              width: ScreenUtil.getInstance().setWidth(1),
+                                              color: id == roleIndex
+                                                  ? Color(0xffB51610)
+                                                  : Color(0xff6A5C41),
+                                            )),
+                                        padding: EdgeInsets.only(
+                                            bottom: ScreenUtil.getInstance().setHeight(4),
+                                            top: ScreenUtil.getInstance().setWidth(4)),
+                                        width: ScreenUtil.getInstance()
+                                            .setWidth(item['cnname'].length * 28 + 48.0),
+                                        child: Align(
+                                          child: Text(
+                                            '${item['cnname']}',
+                                            style: TextStyle(
+                                                color: id == roleIndex
+                                                    ? Color(0xffF3D699)
+                                                    : Color(0xff6A5C41),
+                                                fontSize: ScreenUtil.getInstance().setSp(26)),
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  }).toList(),
                                 ),
-                              );
-                            }).toList(),
-                          ),
                         ],
                       ),
                     ),
@@ -880,194 +685,45 @@ class _DataBaseSkillState extends State<DataBaseSkill>
   }
 
   activeSkillDialog() {
-    return ListView(
-      children: <Widget>[
-        Container(
-          decoration: BoxDecoration(
-              border: Border(
-                  bottom: BorderSide(
-                      color: Color(0xff322A20), width: ScreenUtil.getInstance().setWidth(1)))),
-          padding: EdgeInsets.only(
-              top: ScreenUtil.getInstance().setWidth(30),
-              bottom: ScreenUtil.getInstance().setWidth(30),
-              left: ScreenUtil.getInstance().setWidth(15),
-              right: ScreenUtil.getInstance().setWidth(15)),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return selectActiveSkill.isEmpty
+        ? Container()
+        : ListView(
             children: <Widget>[
               Container(
-                width: ScreenUtil.getInstance().setWidth(126),
-                height: ScreenUtil.getInstance().setHeight(126),
-                margin: EdgeInsets.only(right: ScreenUtil.getInstance().setWidth(12)),
-                child: Image.asset(
-                  'skills/${selectActiveSkill['image']}',
-                  fit: BoxFit.fill,
-                ),
-              ),
-              Expanded(
-                  flex: 1,
-                  child: Container(
-                    padding: EdgeInsets.only(top: ScreenUtil.getInstance().setWidth(10)),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: selectActiveSkill['main'].map<Widget>((item) {
-                            return Html(
-                              padding:
-                                  EdgeInsets.only(bottom: ScreenUtil.getInstance().setWidth(12)),
-                              data: '$item',
-                              defaultTextStyle: TextStyle(
-                                  fontSize: ScreenUtil.getInstance().setWidth(16),
-                                  fontStyle: FontStyle.normal,
-                                  color: Color(0xff8D7E54),
-                                  fontFamily: 'SourceHanSansCN'),
-                              customTextStyle: (dom.Node node, TextStyle baseStyle) {
-                                if (node is dom.Element) {
-                                  switch (node.localName) {
-//                                                    case "span":
-//                                                      return baseStyle.merge(TextStyle(
-//                                                          color: Color(0xff7A3F1D)));
-//                                                      break;
-                                    case "em":
-                                      return baseStyle.merge(TextStyle(
-                                          color: Color(0xff00FF00),
-                                          fontStyle: FontStyle.normal,
-                                          fontWeight: FontWeight.normal));
-                                      break;
-                                  }
-                                }
-                                return baseStyle;
-                              },
-                            );
-                          }).toList(),
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: selectActiveSkill['second'].map<Widget>((item) {
-                            return Html(
-                              padding:
-                                  EdgeInsets.only(bottom: ScreenUtil.getInstance().setWidth(12)),
-                              data: '$item',
-                              defaultTextStyle: TextStyle(
-                                  fontSize: ScreenUtil.getInstance().setWidth(16),
-                                  fontStyle: FontStyle.normal,
-                                  color: Color(0xffffff00),
-                                  fontFamily: 'SourceHanSansCN'),
-                              customTextStyle: (dom.Node node, TextStyle baseStyle) {
-                                if (node is dom.Element) {
-                                  switch (node.localName) {
-//                                                    case "span":
-//                                                      return baseStyle.merge(TextStyle(
-//                                                          color: Color(0xff7A3F1D)));
-//                                                      break;
-                                    case "em":
-                                      return baseStyle.merge(TextStyle(
-                                          color: Color(0xff00FF00),
-                                          fontStyle: FontStyle.normal,
-                                          fontWeight: FontWeight.normal));
-                                      break;
-                                  }
-                                }
-                                return baseStyle;
-                              },
-                            );
-                          }).toList(),
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(bottom: ScreenUtil.getInstance().setWidth(12)),
-                          child: Text(
-                            '${selectActiveSkill['attr']}',
-                            style: TextStyle(color: Color(0xff705439)),
-                          ),
-                        ),
-                        Wrap(
-//                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: selectActiveSkill['limit'].map<Widget>((item) {
-                            int index = selectActiveSkill['limit'].indexOf(item);
-                            return Container(
-                              padding:
-                                  EdgeInsets.only(bottom: ScreenUtil.getInstance().setWidth(12)),
-                              width: (index == 0 ? 7 : 8) * ScreenUtil.getInstance().setWidth(16),
-                              child: Html(
-                                data: '$item',
-                                defaultTextStyle: TextStyle(
-                                    fontSize: ScreenUtil.getInstance().setWidth(16),
-                                    fontStyle: FontStyle.normal,
-                                    color: Color(0xff786A53),
-                                    fontFamily: 'SourceHanSansCN'),
-                                customTextStyle: (dom.Node node, TextStyle baseStyle) {
-                                  if (node is dom.Element) {
-                                    switch (node.localName) {
-                                      case "b":
-                                        return baseStyle.merge(TextStyle(color: Color(0xffAD835A)));
-                                        break;
-                                      case "em":
-                                        return baseStyle.merge(TextStyle(
-                                            color: Color(0xff00FF00),
-                                            fontStyle: FontStyle.normal,
-                                            fontWeight: FontWeight.normal));
-                                        break;
-                                    }
-                                  }
-                                  return baseStyle;
-                                },
-                              ),
-                            );
-                          }).toList(),
-                        ),
-                      ],
+                decoration: BoxDecoration(
+                    border: Border(
+                        bottom: BorderSide(
+                            color: Color(0xff322A20),
+                            width: ScreenUtil.getInstance().setWidth(1)))),
+                padding: EdgeInsets.only(
+                    top: ScreenUtil.getInstance().setWidth(30),
+                    bottom: ScreenUtil.getInstance().setWidth(30),
+                    left: ScreenUtil.getInstance().setWidth(15),
+                    right: ScreenUtil.getInstance().setWidth(15)),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      width: ScreenUtil.getInstance().setWidth(126),
+                      height: ScreenUtil.getInstance().setHeight(126),
+                      margin: EdgeInsets.only(right: ScreenUtil.getInstance().setWidth(12)),
+                      child: Image.network(
+                        'https://ok.166.net/cain-corner/diablo3db/49512/cn/skills/${selectActiveSkill['picIcon']}.png?imageView&type=webp&thumbnail=84x84',
+                        fit: BoxFit.fill,
+                      ),
                     ),
-                  ))
-            ],
-          ),
-        ),
-        Column(
-          children: selectActiveSkill['rune'].map<Widget>((item) {
-            return Container(
-              decoration: BoxDecoration(
-                  border: Border(
-                      bottom: BorderSide(
-                          color: Color(0xff322A20), width: ScreenUtil.getInstance().setWidth(1)))),
-              padding: EdgeInsets.only(
-                  top: ScreenUtil.getInstance().setWidth(30),
-                  bottom: ScreenUtil.getInstance().setWidth(30),
-                  left: ScreenUtil.getInstance().setWidth(15),
-                  right: ScreenUtil.getInstance().setWidth(15)),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                    width: ScreenUtil.getInstance().setWidth(84),
-                    height: ScreenUtil.getInstance().setHeight(84),
-                    margin: EdgeInsets.only(right: ScreenUtil.getInstance().setWidth(12)),
-                    child: Image.asset(
-                      'images/${item['image']}',
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                  Expanded(
-                      flex: 1,
-                      child: Container(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Container(
-                              padding:
-                                  EdgeInsets.only(bottom: ScreenUtil.getInstance().setWidth(12)),
-                              child: Text(
-                                '${item['name']}',
-                                style: TextStyle(color: Color(0xff705439)),
-                              ),
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: item['list'].map<Widget>((list) {
-                                return Html(
+                    Expanded(
+                        flex: 1,
+                        child: Container(
+                          padding: EdgeInsets.only(top: ScreenUtil.getInstance().setWidth(10)),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Container(
+                                child: Html(
                                   padding: EdgeInsets.only(
                                       bottom: ScreenUtil.getInstance().setWidth(12)),
-                                  data: '$list',
+                                  data: '${selectActiveSkill['attrDesc']}',
                                   defaultTextStyle: TextStyle(
                                       fontSize: ScreenUtil.getInstance().setWidth(16),
                                       fontStyle: FontStyle.normal,
@@ -1075,12 +731,8 @@ class _DataBaseSkillState extends State<DataBaseSkill>
                                       fontFamily: 'SourceHanSansCN'),
                                   customTextStyle: (dom.Node node, TextStyle baseStyle) {
                                     if (node is dom.Element) {
-                                      switch (node.localName) {
-//                                                    case "span":
-//                                                      return baseStyle.merge(TextStyle(
-//                                                          color: Color(0xff7A3F1D)));
-//                                                      break;
-                                        case "em":
+                                      switch (node.className) {
+                                        case "d3-color-green":
                                           return baseStyle.merge(TextStyle(
                                               color: Color(0xff00FF00),
                                               fontStyle: FontStyle.normal,
@@ -1090,31 +742,185 @@ class _DataBaseSkillState extends State<DataBaseSkill>
                                     }
                                     return baseStyle;
                                   },
-                                );
-                              }).toList(),
-                            ),
-                            Wrap(
-//                          crossAxisAlignment: CrossAxisAlignment.start,
-                              children: item['limit'].map<Widget>((limit) {
-                                int index = item['limit'].indexOf(limit);
-                                return Container(
-                                  width:
-                                      (index == 0 ? 7 : 8) * ScreenUtil.getInstance().setWidth(16),
-                                  child: Html(
-                                    data: '$limit',
+                                ),
+                              ),
+                              Container(
+                                padding:
+                                    EdgeInsets.only(bottom: ScreenUtil.getInstance().setWidth(12)),
+                                child: Text(
+                                  '${selectActiveSkill['secondaryClass']}',
+                                  style: TextStyle(
+                                      fontSize: ScreenUtil.getInstance().setWidth(16),
+                                      fontStyle: FontStyle.normal,
+                                      color: Color(0xff7A5C3F),
+                                      fontFamily: 'SourceHanSansCN'),
+                                ),
+                              ),
+                              Container(
+                                padding:
+                                    EdgeInsets.only(bottom: ScreenUtil.getInstance().setWidth(12)),
+                                child: RichText(
+                                  text: TextSpan(
+                                      text: '解锁于等级',
+                                      children: <TextSpan>[
+                                        TextSpan(
+                                            text: ' ${selectActiveSkill['unlockLevel']}',
+                                            style: TextStyle(
+                                                color: Color(0xff7A5C3F),
+                                                fontStyle: FontStyle.normal,
+                                                fontWeight: FontWeight.normal)),
+                                        TextSpan(text: '     触发系数'),
+                                        TextSpan(
+                                            text: '${selectActiveSkill['procFactor']}',
+                                            style: TextStyle(
+                                                color: Color(0xff00FF00),
+                                                fontStyle: FontStyle.normal,
+                                                fontWeight: FontWeight.normal))
+                                      ],
+                                      style: TextStyle(
+                                          fontSize: ScreenUtil.getInstance().setWidth(16),
+                                          fontStyle: FontStyle.normal,
+                                          color: Color(0xff8D7E54),
+                                          fontFamily: 'SourceHanSansCN')),
+                                ),
+                              ),
+
+//                              Column(
+//                                crossAxisAlignment: CrossAxisAlignment.start,
+//                                children: selectActiveSkill['second'].map<Widget>((item) {
+//                                  return Html(
+//                                    padding: EdgeInsets.only(
+//                                        bottom: ScreenUtil.getInstance().setWidth(12)),
+//                                    data: '$item',
+//                                    defaultTextStyle: TextStyle(
+//                                        fontSize: ScreenUtil.getInstance().setWidth(16),
+//                                        fontStyle: FontStyle.normal,
+//                                        color: Color(0xffffff00),
+//                                        fontFamily: 'SourceHanSansCN'),
+//                                    customTextStyle: (dom.Node node, TextStyle baseStyle) {
+//                                      if (node is dom.Element) {
+//                                        switch (node.localName) {
+////                                                    case "span":
+////                                                      return baseStyle.merge(TextStyle(
+////                                                          color: Color(0xff7A3F1D)));
+////                                                      break;
+//                                          case "em":
+//                                            return baseStyle.merge(TextStyle(
+//                                                color: Color(0xff00FF00),
+//                                                fontStyle: FontStyle.normal,
+//                                                fontWeight: FontWeight.normal));
+//                                            break;
+//                                        }
+//                                      }
+//                                      return baseStyle;
+//                                    },
+//                                  );
+//                                }).toList(),
+//                              ),
+//                              Container(
+//                                padding:
+//                                    EdgeInsets.only(bottom: ScreenUtil.getInstance().setWidth(12)),
+//                                child: Text(
+//                                  '${selectActiveSkill['attr']}',
+//                                  style: TextStyle(color: Color(0xff705439)),
+//                                ),
+//                              ),
+//                              Wrap(
+////                          crossAxisAlignment: CrossAxisAlignment.start,
+//                                children: selectActiveSkill['limit'].map<Widget>((item) {
+//                                  int index = selectActiveSkill['limit'].indexOf(item);
+//                                  return Container(
+//                                    padding: EdgeInsets.only(
+//                                        bottom: ScreenUtil.getInstance().setWidth(12)),
+//                                    width: (index == 0 ? 7 : 8) *
+//                                        ScreenUtil.getInstance().setWidth(16),
+//                                    child: Html(
+//                                      data: '$item',
+//                                      defaultTextStyle: TextStyle(
+//                                          fontSize: ScreenUtil.getInstance().setWidth(16),
+//                                          fontStyle: FontStyle.normal,
+//                                          color: Color(0xff786A53),
+//                                          fontFamily: 'SourceHanSansCN'),
+//                                      customTextStyle: (dom.Node node, TextStyle baseStyle) {
+//                                        if (node is dom.Element) {
+//                                          switch (node.localName) {
+//                                            case "b":
+//                                              return baseStyle
+//                                                  .merge(TextStyle(color: Color(0xffAD835A)));
+//                                              break;
+//                                            case "em":
+//                                              return baseStyle.merge(TextStyle(
+//                                                  color: Color(0xff00FF00),
+//                                                  fontStyle: FontStyle.normal,
+//                                                  fontWeight: FontWeight.normal));
+//                                              break;
+//                                          }
+//                                        }
+//                                        return baseStyle;
+//                                      },
+//                                    ),
+//                                  );
+//                                }).toList(),
+//                              ),
+                            ],
+                          ),
+                        ))
+                  ],
+                ),
+              ),
+              Column(
+                children: selectActiveSkill['runeList'].map<Widget>((rune) {
+                  return Container(
+                    decoration: BoxDecoration(
+                        border: Border(
+                            bottom: BorderSide(
+                                color: Color(0xff322A20),
+                                width: ScreenUtil.getInstance().setWidth(1)))),
+                    padding: EdgeInsets.only(
+                        top: ScreenUtil.getInstance().setWidth(30),
+                        bottom: ScreenUtil.getInstance().setWidth(30),
+                        left: ScreenUtil.getInstance().setWidth(15),
+                        right: ScreenUtil.getInstance().setWidth(15)),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          width: ScreenUtil.getInstance().setWidth(84),
+                          height: ScreenUtil.getInstance().setHeight(84),
+                          margin: EdgeInsets.only(right: ScreenUtil.getInstance().setWidth(12)),
+                          child: Image.asset(
+                            'images/rune_${rune['type']}_light.png',
+                            fit: BoxFit.fill,
+                          ),
+                        ),
+                        Expanded(
+                            flex: 1,
+                            child: Container(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Container(
+                                    padding: EdgeInsets.only(
+                                        bottom: ScreenUtil.getInstance().setWidth(12)),
+                                    child: Text(
+                                      '${rune['name']}',
+                                      style: TextStyle(color: Color(0xff705439)),
+                                    ),
+                                  ),
+                                  Container(
+                                      child: Html(
+                                    padding: EdgeInsets.only(
+                                        bottom: ScreenUtil.getInstance().setWidth(12)),
+                                    data: '${rune['description']}',
                                     defaultTextStyle: TextStyle(
                                         fontSize: ScreenUtil.getInstance().setWidth(16),
                                         fontStyle: FontStyle.normal,
-                                        color: Color(0xff786A53),
+                                        color: Color(0xff8D7E54),
                                         fontFamily: 'SourceHanSansCN'),
                                     customTextStyle: (dom.Node node, TextStyle baseStyle) {
                                       if (node is dom.Element) {
-                                        switch (node.localName) {
-                                          case "b":
-                                            return baseStyle
-                                                .merge(TextStyle(color: Color(0xffAD835A)));
-                                            break;
-                                          case "em":
+                                        switch (node.className) {
+                                          case "d3-color-green":
                                             return baseStyle.merge(TextStyle(
                                                 color: Color(0xff00FF00),
                                                 fontStyle: FontStyle.normal,
@@ -1124,20 +930,80 @@ class _DataBaseSkillState extends State<DataBaseSkill>
                                       }
                                       return baseStyle;
                                     },
-                                  ),
-                                );
-                              }).toList(),
-                            ),
-                          ],
-                        ),
-                      ))
-                ],
-              ),
-            );
-          }).toList(),
-        )
-      ],
-    );
+                                  )),
+                                  Container(
+                                    padding: EdgeInsets.only(
+                                        bottom: ScreenUtil.getInstance().setWidth(12)),
+                                    child: RichText(
+                                      text: TextSpan(
+                                          text: '解锁于等级',
+                                          children: <TextSpan>[
+                                            TextSpan(
+                                                text: ' ${rune['level']}',
+                                                style: TextStyle(
+                                                    color: Color(0xff7A5C3F),
+                                                    fontStyle: FontStyle.normal,
+                                                    fontWeight: FontWeight.normal)),
+                                            TextSpan(text: '     触发系数'),
+                                            TextSpan(
+                                                text: '${rune['procFactor']}',
+                                                style: TextStyle(
+                                                    color: Color(0xff00FF00),
+                                                    fontStyle: FontStyle.normal,
+                                                    fontWeight: FontWeight.normal))
+                                          ],
+                                          style: TextStyle(
+                                              fontSize: ScreenUtil.getInstance().setWidth(16),
+                                              fontStyle: FontStyle.normal,
+                                              color: Color(0xff8D7E54),
+                                              fontFamily: 'SourceHanSansCN')),
+                                    ),
+                                  )
+//                                  Wrap(
+////                          crossAxisAlignment: CrossAxisAlignment.start,
+//                                    children: item['limit'].map<Widget>((limit) {
+//                                      int index = item['limit'].indexOf(limit);
+//                                      return Container(
+//                                        width: (index == 0 ? 7 : 8) *
+//                                            ScreenUtil.getInstance().setWidth(16),
+//                                        child: Html(
+//                                          data: '$limit',
+//                                          defaultTextStyle: TextStyle(
+//                                              fontSize: ScreenUtil.getInstance().setWidth(16),
+//                                              fontStyle: FontStyle.normal,
+//                                              color: Color(0xff786A53),
+//                                              fontFamily: 'SourceHanSansCN'),
+//                                          customTextStyle: (dom.Node node, TextStyle baseStyle) {
+//                                            if (node is dom.Element) {
+//                                              switch (node.localName) {
+//                                                case "b":
+//                                                  return baseStyle
+//                                                      .merge(TextStyle(color: Color(0xffAD835A)));
+//                                                  break;
+//                                                case "em":
+//                                                  return baseStyle.merge(TextStyle(
+//                                                      color: Color(0xff00FF00),
+//                                                      fontStyle: FontStyle.normal,
+//                                                      fontWeight: FontWeight.normal));
+//                                                  break;
+//                                              }
+//                                            }
+//                                            return baseStyle;
+//                                          },
+//                                        ),
+//                                      );
+//                                    }).toList(),
+//                                  ),
+                                ],
+                              ),
+                            ))
+                      ],
+                    ),
+                  );
+                }).toList(),
+              )
+            ],
+          );
   }
 
   passiveSkillDialog() {
@@ -1314,47 +1180,55 @@ class _DataBaseSkillState extends State<DataBaseSkill>
                     height: ScreenUtil.getInstance().setHeight(120),
                     child: Row(
                       children: <Widget>[
-                        Expanded(
-                            child: ListView(
-                          padding: EdgeInsets.only(
-                              top: ScreenUtil.getInstance().setHeight(36),
-                              left: ScreenUtil.getInstance().setWidth(24),
-                              bottom: ScreenUtil.getInstance().setHeight(36)),
-                          scrollDirection: Axis.horizontal,
-                          children: roles.map<Widget>((item) {
-                            int id = item['id'];
-                            return GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  roleIndex = id;
-                                });
-                              },
-                              child: Container(
-                                margin:
-                                    EdgeInsets.only(right: ScreenUtil.getInstance().setWidth(24)),
-                                decoration: BoxDecoration(
-                                    color: id == roleIndex ? Color(0xffB51610) : Colors.transparent,
-                                    borderRadius: BorderRadius.all(Radius.circular(4)),
-                                    border: Border.all(
-                                      width: ScreenUtil.getInstance().setWidth(1),
-                                      color:
-                                          id == roleIndex ? Color(0xffB51610) : Color(0xff6A5C41),
-                                    )),
-                                width: ScreenUtil.getInstance()
-                                    .setWidth(item['name'].length * 28 + 48.0),
-                                child: Center(
-                                  child: Text(
-                                    item['name'],
-                                    style: TextStyle(
-                                        color:
-                                            id == roleIndex ? Color(0xffF3D699) : Color(0xff6A5C41),
-                                        fontSize: ScreenUtil.getInstance().setSp(26)),
-                                  ),
-                                ),
-                              ),
-                            );
-                          }).toList(),
-                        )),
+                        constant.isEmpty
+                            ? Container()
+                            : Expanded(
+                                child: ListView(
+                                padding: EdgeInsets.only(
+                                    top: ScreenUtil.getInstance().setHeight(36),
+                                    left: ScreenUtil.getInstance().setWidth(24),
+                                    bottom: ScreenUtil.getInstance().setHeight(36)),
+                                scrollDirection: Axis.horizontal,
+                                children: constant['classesInfo'].map<Widget>((item) {
+                                  String id = item['id'];
+                                  return GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        roleIndex = id;
+                                        nowRole = item;
+                                        getRoleSkills();
+                                      });
+                                    },
+                                    child: Container(
+                                      margin: EdgeInsets.only(
+                                          right: ScreenUtil.getInstance().setWidth(24)),
+                                      decoration: BoxDecoration(
+                                          color: id == roleIndex
+                                              ? Color(0xffB51610)
+                                              : Colors.transparent,
+                                          borderRadius: BorderRadius.all(Radius.circular(4)),
+                                          border: Border.all(
+                                            width: ScreenUtil.getInstance().setWidth(1),
+                                            color: id == roleIndex
+                                                ? Color(0xffB51610)
+                                                : Color(0xff6A5C41),
+                                          )),
+                                      width: ScreenUtil.getInstance()
+                                          .setWidth(item['cnname'].length * 28 + 48.0),
+                                      child: Center(
+                                        child: Text(
+                                          item['cnname'],
+                                          style: TextStyle(
+                                              color: id == roleIndex
+                                                  ? Color(0xffF3D699)
+                                                  : Color(0xff6A5C41),
+                                              fontSize: ScreenUtil.getInstance().setSp(26)),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }).toList(),
+                              )),
                         GestureDetector(
                           onTap: () {
                             if (showRoles) {

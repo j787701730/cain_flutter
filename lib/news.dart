@@ -12,6 +12,9 @@ import 'news_content3.dart';
 import 'news_list.dart';
 import 'util.dart';
 
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
+
 class News extends StatefulWidget {
   @override
   _NewsState createState() => _NewsState();
@@ -38,6 +41,9 @@ class _NewsState extends State<News> with AutomaticKeepAliveClientMixin, TickerP
     super.initState();
     getBanner();
     getNews();
+    _getInstanceEquipmentList();
+    _getInstanceSkillList();
+    _getInstanceGemList();
   }
 
   getBanner() {
@@ -66,6 +72,70 @@ class _NewsState extends State<News> with AutomaticKeepAliveClientMixin, TickerP
             news.addAll(data['list']);
           });
         }
+      }
+    });
+  }
+
+  _saveEquipmentList(data) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('equipmentList', data);
+  }
+
+  _getInstanceEquipmentList() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String equipmentList = prefs.getString('equipmentList');
+    if (equipmentList == null) {
+      getEquipmentList();
+    }
+  }
+
+  getEquipmentList() {
+    ajax('https://cain-api.gameyw.netease.com/diablo3db-web/item/listAll', (data) {
+      if (data['code'] == 200) {
+        _saveEquipmentList(jsonEncode(data['list']));
+      }
+    });
+  }
+
+  _saveSkillList(data) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('skillList', data);
+  }
+
+  _getInstanceSkillList() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String skillList = prefs.getString('skillList');
+    if (skillList == null) {
+      getSkillList();
+    }
+  }
+
+  getSkillList() {
+    ajax('https://cain-api.gameyw.netease.com/diablo3db-web/skill/listAll', (data) {
+      if (data['code'] == 200) {
+        _saveSkillList(jsonEncode(data['list']));
+      }
+    });
+  }
+
+  _saveGemList(data) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('gemList', data);
+  }
+
+  _getInstanceGemList() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String gemList = prefs.getString('gemList');
+    print(gemList);
+    if (gemList == null) {
+      getGemList();
+    }
+  }
+
+  getGemList() {
+    ajax('https://cain-api.gameyw.netease.com/diablo3db-web/item/legendaryGem/listAll', (data) {
+      if (data['code'] == 200) {
+        _saveGemList(jsonEncode(data['list']));
       }
     });
   }

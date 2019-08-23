@@ -70,9 +70,7 @@ class _DataBaseEquipmentState extends State<DataBaseEquipment>
                     onTap: () {
                       Navigator.push(
                         context,
-                        new MaterialPageRoute(
-                            builder: (context) =>
-                                new Equipment({'use': true, 'title': list['name']})),
+                        new MaterialPageRoute(builder: (context) => new Equipment({'item': list})),
                       );
                     },
                     child: Container(

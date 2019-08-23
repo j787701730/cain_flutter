@@ -44,111 +44,7 @@ class _DataBaseSkillState extends State<DataBaseSkill>
 
   Map selectActiveSkill = {};
 
-  Map selectPassiveSkill = {
-    'image': 'berserker_man/ia_400000019.png',
-    'name': '血肉铸就',
-    'level': '2',
-    'attributes': 'wl',
-    'list': [
-      '<span>当你受到生命球治疗时，每秒获得 <em>2%</em> 的生命恢复速度以及 <em>4%</em> 的移动速度加成，持续 <em>15</em> 秒。该加成效果最多叠加 <em>5</em> 次。</span>',
-    ],
-    'limit': [
-      '<span>解锁于等级<b> 10</b></span>',
-    ],
-    'story': '“天降甘霖使庄稼更加茁壮，敌洒热血令我们愈发势不可当。”——丰收颂歌',
-  };
-
-  List passiveSkills = [
-    {
-      'image': 'berserker_man/ia_400000019.png',
-      'name': '血肉铸就',
-      'level': '2',
-      'attributes': 'wl',
-      'list': [
-        '<span>当你受到生命球治疗时，每秒获得 <em>2%</em> 的生命恢复速度以及 <em>4%</em> 的移动速度加成，持续 <em>15</em> 秒。该加成效果最多叠加 <em>5</em> 次。</span>',
-      ],
-      'limit': [
-        '<span>解锁于等级<b> 10</b></span>',
-      ],
-      'story': '“天降甘霖使庄稼更加茁壮，敌洒热血令我们愈发势不可当。”——丰收颂歌',
-    },
-    {
-      'image': 'berserker_man/ia_400000020.png',
-      'name': '残酷',
-      'level': '2',
-      'attributes': 'wl',
-      'list': [
-        '<span>对生命值低于 <em>30%</em> 的敌人造成额外 <em>40%</em> 的伤害。</span>',
-      ],
-      'limit': [
-        '<span>解锁于等级<b> 10</b></span>',
-      ],
-      'story': '每个部族都会在自己的战士身上绘饰独具特色的图案。有些赞美高山，有些崇尚烈焰，但塔戈斯部族却偏爱纯粹的苦痛之殇。',
-    },
-    {
-      'image': 'berserker_man/ia_400000021.png',
-      'name': '钢铁神经',
-      'level': '2',
-      'attributes': 'wl',
-      'list': [
-        '<span>致命伤害现在将使你的生命值降低至 <em>15%</em>。在随后的 <em>3</em> 秒内，你受到的伤害降低 <em>95%</em>，并且对所有控制类限制效果免疫。</span>',
-        '<span>该效果每 <em>60</em> 秒内只能生效一次。</span>'
-      ],
-      'limit': [
-        '<span>解锁于等级<b> 13</b></span>',
-      ],
-      'story':
-          '“他们从孩提时期就要经受高强度的训练，征服凶猛残暴的野兽，攀爬暴风肆虐的峭壁，携带连南方战士都能压垮的重型武器。难怪他们从来都不知道什么叫畏缩！”——敦克雷的艾瑞克长官语录',
-    },
-    {
-      'image': 'berserker_man/ia_400000022.png',
-      'name': '武器大师',
-      'level': '2',
-      'attributes': 'wl',
-      'list': [
-        '<span>基于你主手的武器类型，可获得武器属性加成：</span>',
-        '<span>剑/匕首：伤害提高 <em>8%</em></span>',
-        '<span>锤/斧：暴击几率提高 <em>5%</em></span>',
-        '<span>长柄/矛：攻击速度提高 <em>8%</em></span>',
-        '<span>重型武器：每一击获得 <em>2</em> 点怒气</span>',
-      ],
-      'limit': [
-        '<span>解锁于等级<b> 10</b></span>',
-      ],
-      'story': '“我们的人在丛林中伏击了那位旅行者，但大吃一惊的却是我们自己。如此敏锐的感知力、迅捷的移动力、无懈可击的战斗力。我们就连一点儿机会都没有。”——红衣大盗',
-    },
-    {
-      'image': 'berserker_man/ia_400000023.png',
-      'name': '振奋军心',
-      'level': '2',
-      'attributes': 'wl',
-      'list': [
-        '<span>呐喊类技能的持续时间延长一倍。使用呐喊后，你和 <em>100</em> 码内的所有</span>',
-        '<span>同伴可每秒恢复生命值上限的 <em>3%</em> ，持续 <em>120</em> 秒。</span>',
-        '<span>呐喊类技能包括：</span>',
-        '<span>战斗怒火</span>',
-        '<span>威吓呐喊</span>',
-        '<span>战吼</span>',
-      ],
-      'limit': [
-        '<span>解锁于等级<b> 20</b></span>',
-      ],
-      'story': '“敌人从裂隙汹涌而出，直到战斗大师卡尔加用战旗一下子钉死了三只恶魔，在高高的城垛上发出一声振奋战呼，把恶魔的尸体扔到下方的乱军之中。”——无星之夜战斗纪实',
-    },
-    {
-      'image': 'berserker_man/ia_400000024.png',
-      'name': '狂战盛怒',
-      'level': '2',
-      'attributes': 'wl',
-      'list': [
-        '<span>当怒气接近上限时，野蛮人可造成额外 <em>25%</em> 的伤害。</span>',
-      ],
-      'limit': [
-        '<span>解锁于等级<b> 20</b></span>',
-      ],
-      'story': '“你不会想要看到我发怒的样子。” ——狂战班纳',
-    },
-  ];
+  Map selectPassiveSkill = {};
 
   String roleIndex = '1';
   Map nowRole = {};
@@ -168,16 +64,25 @@ class _DataBaseSkillState extends State<DataBaseSkill>
   List skills = [];
 
   List roleActiveSkills = [];
+  List rolePassiveSkills = [];
+
+  ScrollController _listController = ScrollController();
 
   getRoleSkills() {
     roleActiveSkills.clear();
+    rolePassiveSkills.clear();
+    String name = nowRole['enname'].replaceAll('-', '');
     for (int i = 0; i < skills.length; i++) {
       Map item = skills[i];
-      if (item['topClassKey'] == 'Active' &&
-          item['professionKey'].toLowerCase() == nowRole['enname'].replaceAll('-', '')) {
+      if (item['topClassKey'] == 'Active' && item['professionKey'].toLowerCase() == name) {
         roleActiveSkills.add(item);
       }
+      if (item['topClassKey'] == 'Passive' && item['professionKey'].toLowerCase() == name) {
+        rolePassiveSkills.add(item);
+      }
     }
+    roleActiveSkills.sort((a, b) => a['unlockLevel'].compareTo(b['unlockLevel']));
+    rolePassiveSkills.sort((a, b) => a['unlockLevel'].compareTo(b['unlockLevel']));
   }
 
   _getInstanceConstant() async {
@@ -221,6 +126,7 @@ class _DataBaseSkillState extends State<DataBaseSkill>
   void dispose() {
     super.dispose();
     _refreshController.dispose();
+    _listController.dispose();
     if (animationLoadingController != null) {
       animationLoadingController.dispose();
     }
@@ -325,7 +231,6 @@ class _DataBaseSkillState extends State<DataBaseSkill>
         child: roleActiveSkills.isEmpty
             ? Container()
             : ListView(
-//      controller: _listController,
                 padding: EdgeInsets.only(
                     left: ScreenUtil.getInstance().setWidth(24),
                     right: ScreenUtil.getInstance().setWidth(24)),
@@ -479,83 +384,86 @@ class _DataBaseSkillState extends State<DataBaseSkill>
           if (mounted) setState(() {});
           _refreshController.loadComplete();
         },
-        child: ListView(
+        child: rolePassiveSkills.isEmpty
+            ? Container()
+            : ListView(
 //      controller: _listController,
-          padding: EdgeInsets.only(
-              left: ScreenUtil.getInstance().setWidth(24),
-              right: ScreenUtil.getInstance().setWidth(24)),
-          children: passiveSkills.map<Widget>((item) {
-            return GestureDetector(
-              onTap: () {
-                setState(() {
-                  passiveSkillsShow = false;
-                  selectPassiveSkill = item;
-                });
-              },
-              child: Container(
-                margin: EdgeInsets.only(top: ScreenUtil.getInstance().setHeight(24)),
-                decoration: BoxDecoration(
-                    color: Color(0xffE3D4BF),
-                    border: Border.all(
-                        color: Color(0xffB5A88E), width: ScreenUtil.getInstance().setWidth(1)),
-                    borderRadius: BorderRadius.all(Radius.circular(6))),
                 padding: EdgeInsets.only(
                     left: ScreenUtil.getInstance().setWidth(24),
-                    top: ScreenUtil.getInstance().setWidth(24),
-                    right: ScreenUtil.getInstance().setWidth(24),
-                    bottom: ScreenUtil.getInstance().setWidth(24)),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(right: ScreenUtil.getInstance().setWidth(12)),
-                      width: ScreenUtil.getInstance().setWidth(84),
-                      height: ScreenUtil.getInstance().setHeight(84),
-                      child: Image.asset(
-                        'skills/${item['image']}',
-                        fit: BoxFit.fill,
+                    right: ScreenUtil.getInstance().setWidth(24)),
+                children: rolePassiveSkills.map<Widget>((item) {
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        passiveSkillsShow = false;
+                        selectPassiveSkill = item;
+                      });
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(top: ScreenUtil.getInstance().setHeight(24)),
+                      decoration: BoxDecoration(
+                          color: Color(0xffE3D4BF),
+                          border: Border.all(
+                              color: Color(0xffB5A88E),
+                              width: ScreenUtil.getInstance().setWidth(1)),
+                          borderRadius: BorderRadius.all(Radius.circular(6))),
+                      padding: EdgeInsets.only(
+                          left: ScreenUtil.getInstance().setWidth(24),
+                          top: ScreenUtil.getInstance().setWidth(24),
+                          right: ScreenUtil.getInstance().setWidth(24),
+                          bottom: ScreenUtil.getInstance().setWidth(24)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            margin: EdgeInsets.only(right: ScreenUtil.getInstance().setWidth(12)),
+                            width: ScreenUtil.getInstance().setWidth(84),
+                            height: ScreenUtil.getInstance().setHeight(84),
+                            child: Image.network(
+                              'https://ok.166.net/cain-corner/diablo3db/49512/cn/skills/${item['picIcon']}.png?imageView&type=webp&thumbnail=84x84',
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                          Expanded(
+                              child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Wrap(
+                                crossAxisAlignment: WrapCrossAlignment.center,
+                                children: <Widget>[
+                                  Text(
+                                    '${item['name']}',
+                                    style: TextStyle(
+                                        color: Color(0xff3D2F1B),
+                                        fontSize: ScreenUtil.getInstance().setSp(30)),
+                                  ),
+                                ],
+                              ),
+                              Wrap(
+                                children: <Widget>[
+                                  Text('属性·${attributes[item['damageType'].toString()]}',
+                                      style: TextStyle(
+                                          color: Color(0xff9B8C73),
+                                          fontSize: ScreenUtil.getInstance().setSp(26))),
+                                  Container(
+                                    width: ScreenUtil.getInstance().setWidth(10),
+                                  ),
+                                  Text('等级·${item['unlockLevel']}',
+                                      style: TextStyle(
+                                          color: Color(0xff9B8C73),
+                                          fontSize: ScreenUtil.getInstance().setSp(26))),
+                                ],
+                              )
+                            ],
+                          ))
+                        ],
                       ),
                     ),
-                    Expanded(
-                        child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Wrap(
-                          crossAxisAlignment: WrapCrossAlignment.center,
-                          children: <Widget>[
-                            Text(
-                              '${item['name']}',
-                              style: TextStyle(
-                                  color: Color(0xff3D2F1B),
-                                  fontSize: ScreenUtil.getInstance().setSp(30)),
-                            ),
-                          ],
-                        ),
-                        Wrap(
-                          children: <Widget>[
-                            Text('属性·${attributes[item['attributes']]}',
-                                style: TextStyle(
-                                    color: Color(0xff9B8C73),
-                                    fontSize: ScreenUtil.getInstance().setSp(26))),
-                            Container(
-                              width: ScreenUtil.getInstance().setWidth(10),
-                            ),
-                            Text('等级·${item['level']}',
-                                style: TextStyle(
-                                    color: Color(0xff9B8C73),
-                                    fontSize: ScreenUtil.getInstance().setSp(26))),
-                          ],
-                        )
-                      ],
-                    ))
-                  ],
-                ),
-              ),
-            );
-          }).toList(),
-        ));
+                  );
+                }).toList(),
+              ));
   }
 
   createSelectPopupWindow(width, height, top) {
@@ -684,8 +592,8 @@ class _DataBaseSkillState extends State<DataBaseSkill>
     return overlayEntry;
   }
 
-  activeSkillDialog() {
-    return selectActiveSkill.isEmpty
+  passiveSkillDialog() {
+    return rolePassiveSkills.isEmpty
         ? Container()
         : ListView(
             children: <Widget>[
@@ -707,15 +615,18 @@ class _DataBaseSkillState extends State<DataBaseSkill>
                       width: ScreenUtil.getInstance().setWidth(126),
                       height: ScreenUtil.getInstance().setHeight(126),
                       margin: EdgeInsets.only(right: ScreenUtil.getInstance().setWidth(12)),
+                      padding: EdgeInsets.all(ScreenUtil.getInstance().setWidth(30)),
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage('images/1_profile_tooltip_trait-64_03.png'))),
                       child: Image.network(
-                        'https://ok.166.net/cain-corner/diablo3db/49512/cn/skills/${selectActiveSkill['picIcon']}.png?imageView&type=webp&thumbnail=84x84',
+                        'https://ok.166.net/cain-corner/diablo3db/49512/cn/skills/${selectPassiveSkill['picIcon']}.png?imageView&type=webp&thumbnail=84x84',
                         fit: BoxFit.fill,
                       ),
                     ),
                     Expanded(
                         flex: 1,
                         child: Container(
-                          padding: EdgeInsets.only(top: ScreenUtil.getInstance().setWidth(10)),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
@@ -723,7 +634,7 @@ class _DataBaseSkillState extends State<DataBaseSkill>
                                 child: Html(
                                   padding: EdgeInsets.only(
                                       bottom: ScreenUtil.getInstance().setWidth(12)),
-                                  data: '${selectActiveSkill['attrDesc']}',
+                                  data: '${selectPassiveSkill['attrDesc']}',
                                   defaultTextStyle: TextStyle(
                                       fontSize: ScreenUtil.getInstance().setWidth(16),
                                       fontStyle: FontStyle.normal,
@@ -747,35 +658,16 @@ class _DataBaseSkillState extends State<DataBaseSkill>
                               Container(
                                 padding:
                                     EdgeInsets.only(bottom: ScreenUtil.getInstance().setWidth(12)),
-                                child: Text(
-                                  '${selectActiveSkill['secondaryClass']}',
-                                  style: TextStyle(
-                                      fontSize: ScreenUtil.getInstance().setWidth(16),
-                                      fontStyle: FontStyle.normal,
-                                      color: Color(0xff7A5C3F),
-                                      fontFamily: 'SourceHanSansCN'),
-                                ),
-                              ),
-                              Container(
-                                padding:
-                                    EdgeInsets.only(bottom: ScreenUtil.getInstance().setWidth(12)),
                                 child: RichText(
                                   text: TextSpan(
                                       text: '解锁于等级',
                                       children: <TextSpan>[
                                         TextSpan(
-                                            text: ' ${selectActiveSkill['unlockLevel']}',
+                                            text: ' ${selectPassiveSkill['unlockLevel']}',
                                             style: TextStyle(
                                                 color: Color(0xff7A5C3F),
                                                 fontStyle: FontStyle.normal,
                                                 fontWeight: FontWeight.normal)),
-                                        TextSpan(text: '     触发系数'),
-                                        TextSpan(
-                                            text: '${selectActiveSkill['procFactor']}',
-                                            style: TextStyle(
-                                                color: Color(0xff00FF00),
-                                                fontStyle: FontStyle.normal,
-                                                fontWeight: FontWeight.normal))
                                       ],
                                       style: TextStyle(
                                           fontSize: ScreenUtil.getInstance().setWidth(16),
@@ -783,85 +675,7 @@ class _DataBaseSkillState extends State<DataBaseSkill>
                                           color: Color(0xff8D7E54),
                                           fontFamily: 'SourceHanSansCN')),
                                 ),
-                              ),
-
-//                              Column(
-//                                crossAxisAlignment: CrossAxisAlignment.start,
-//                                children: selectActiveSkill['second'].map<Widget>((item) {
-//                                  return Html(
-//                                    padding: EdgeInsets.only(
-//                                        bottom: ScreenUtil.getInstance().setWidth(12)),
-//                                    data: '$item',
-//                                    defaultTextStyle: TextStyle(
-//                                        fontSize: ScreenUtil.getInstance().setWidth(16),
-//                                        fontStyle: FontStyle.normal,
-//                                        color: Color(0xffffff00),
-//                                        fontFamily: 'SourceHanSansCN'),
-//                                    customTextStyle: (dom.Node node, TextStyle baseStyle) {
-//                                      if (node is dom.Element) {
-//                                        switch (node.localName) {
-////                                                    case "span":
-////                                                      return baseStyle.merge(TextStyle(
-////                                                          color: Color(0xff7A3F1D)));
-////                                                      break;
-//                                          case "em":
-//                                            return baseStyle.merge(TextStyle(
-//                                                color: Color(0xff00FF00),
-//                                                fontStyle: FontStyle.normal,
-//                                                fontWeight: FontWeight.normal));
-//                                            break;
-//                                        }
-//                                      }
-//                                      return baseStyle;
-//                                    },
-//                                  );
-//                                }).toList(),
-//                              ),
-//                              Container(
-//                                padding:
-//                                    EdgeInsets.only(bottom: ScreenUtil.getInstance().setWidth(12)),
-//                                child: Text(
-//                                  '${selectActiveSkill['attr']}',
-//                                  style: TextStyle(color: Color(0xff705439)),
-//                                ),
-//                              ),
-//                              Wrap(
-////                          crossAxisAlignment: CrossAxisAlignment.start,
-//                                children: selectActiveSkill['limit'].map<Widget>((item) {
-//                                  int index = selectActiveSkill['limit'].indexOf(item);
-//                                  return Container(
-//                                    padding: EdgeInsets.only(
-//                                        bottom: ScreenUtil.getInstance().setWidth(12)),
-//                                    width: (index == 0 ? 7 : 8) *
-//                                        ScreenUtil.getInstance().setWidth(16),
-//                                    child: Html(
-//                                      data: '$item',
-//                                      defaultTextStyle: TextStyle(
-//                                          fontSize: ScreenUtil.getInstance().setWidth(16),
-//                                          fontStyle: FontStyle.normal,
-//                                          color: Color(0xff786A53),
-//                                          fontFamily: 'SourceHanSansCN'),
-//                                      customTextStyle: (dom.Node node, TextStyle baseStyle) {
-//                                        if (node is dom.Element) {
-//                                          switch (node.localName) {
-//                                            case "b":
-//                                              return baseStyle
-//                                                  .merge(TextStyle(color: Color(0xffAD835A)));
-//                                              break;
-//                                            case "em":
-//                                              return baseStyle.merge(TextStyle(
-//                                                  color: Color(0xff00FF00),
-//                                                  fontStyle: FontStyle.normal,
-//                                                  fontWeight: FontWeight.normal));
-//                                              break;
-//                                          }
-//                                        }
-//                                        return baseStyle;
-//                                      },
-//                                    ),
-//                                  );
-//                                }).toList(),
-//                              ),
+                              )
                             ],
                           ),
                         ))
@@ -869,263 +683,20 @@ class _DataBaseSkillState extends State<DataBaseSkill>
                 ),
               ),
               Column(
-                children: selectActiveSkill['runeList'].map<Widget>((rune) {
-                  return Container(
-                    decoration: BoxDecoration(
-                        border: Border(
-                            bottom: BorderSide(
-                                color: Color(0xff322A20),
-                                width: ScreenUtil.getInstance().setWidth(1)))),
-                    padding: EdgeInsets.only(
-                        top: ScreenUtil.getInstance().setWidth(30),
-                        bottom: ScreenUtil.getInstance().setWidth(30),
-                        left: ScreenUtil.getInstance().setWidth(15),
-                        right: ScreenUtil.getInstance().setWidth(15)),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          width: ScreenUtil.getInstance().setWidth(84),
-                          height: ScreenUtil.getInstance().setHeight(84),
-                          margin: EdgeInsets.only(right: ScreenUtil.getInstance().setWidth(12)),
-                          child: Image.asset(
-                            'images/rune_${rune['type']}_light.png',
-                            fit: BoxFit.fill,
-                          ),
-                        ),
-                        Expanded(
-                            flex: 1,
-                            child: Container(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Container(
-                                    padding: EdgeInsets.only(
-                                        bottom: ScreenUtil.getInstance().setWidth(12)),
-                                    child: Text(
-                                      '${rune['name']}',
-                                      style: TextStyle(color: Color(0xff705439)),
-                                    ),
-                                  ),
-                                  Container(
-                                      child: Html(
-                                    padding: EdgeInsets.only(
-                                        bottom: ScreenUtil.getInstance().setWidth(12)),
-                                    data: '${rune['description']}',
-                                    defaultTextStyle: TextStyle(
-                                        fontSize: ScreenUtil.getInstance().setWidth(16),
-                                        fontStyle: FontStyle.normal,
-                                        color: Color(0xff8D7E54),
-                                        fontFamily: 'SourceHanSansCN'),
-                                    customTextStyle: (dom.Node node, TextStyle baseStyle) {
-                                      if (node is dom.Element) {
-                                        switch (node.className) {
-                                          case "d3-color-green":
-                                            return baseStyle.merge(TextStyle(
-                                                color: Color(0xff00FF00),
-                                                fontStyle: FontStyle.normal,
-                                                fontWeight: FontWeight.normal));
-                                            break;
-                                        }
-                                      }
-                                      return baseStyle;
-                                    },
-                                  )),
-                                  Container(
-                                    padding: EdgeInsets.only(
-                                        bottom: ScreenUtil.getInstance().setWidth(12)),
-                                    child: RichText(
-                                      text: TextSpan(
-                                          text: '解锁于等级',
-                                          children: <TextSpan>[
-                                            TextSpan(
-                                                text: ' ${rune['level']}',
-                                                style: TextStyle(
-                                                    color: Color(0xff7A5C3F),
-                                                    fontStyle: FontStyle.normal,
-                                                    fontWeight: FontWeight.normal)),
-                                            TextSpan(text: '     触发系数'),
-                                            TextSpan(
-                                                text: '${rune['procFactor']}',
-                                                style: TextStyle(
-                                                    color: Color(0xff00FF00),
-                                                    fontStyle: FontStyle.normal,
-                                                    fontWeight: FontWeight.normal))
-                                          ],
-                                          style: TextStyle(
-                                              fontSize: ScreenUtil.getInstance().setWidth(16),
-                                              fontStyle: FontStyle.normal,
-                                              color: Color(0xff8D7E54),
-                                              fontFamily: 'SourceHanSansCN')),
-                                    ),
-                                  )
-//                                  Wrap(
-////                          crossAxisAlignment: CrossAxisAlignment.start,
-//                                    children: item['limit'].map<Widget>((limit) {
-//                                      int index = item['limit'].indexOf(limit);
-//                                      return Container(
-//                                        width: (index == 0 ? 7 : 8) *
-//                                            ScreenUtil.getInstance().setWidth(16),
-//                                        child: Html(
-//                                          data: '$limit',
-//                                          defaultTextStyle: TextStyle(
-//                                              fontSize: ScreenUtil.getInstance().setWidth(16),
-//                                              fontStyle: FontStyle.normal,
-//                                              color: Color(0xff786A53),
-//                                              fontFamily: 'SourceHanSansCN'),
-//                                          customTextStyle: (dom.Node node, TextStyle baseStyle) {
-//                                            if (node is dom.Element) {
-//                                              switch (node.localName) {
-//                                                case "b":
-//                                                  return baseStyle
-//                                                      .merge(TextStyle(color: Color(0xffAD835A)));
-//                                                  break;
-//                                                case "em":
-//                                                  return baseStyle.merge(TextStyle(
-//                                                      color: Color(0xff00FF00),
-//                                                      fontStyle: FontStyle.normal,
-//                                                      fontWeight: FontWeight.normal));
-//                                                  break;
-//                                              }
-//                                            }
-//                                            return baseStyle;
-//                                          },
-//                                        ),
-//                                      );
-//                                    }).toList(),
-//                                  ),
-                                ],
-                              ),
-                            ))
-                      ],
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.all(ScreenUtil.getInstance().setWidth(12)),
+                    child: Text(
+                      '${selectPassiveSkill['backgroundText']}',
+                      style: TextStyle(
+                          color: Color(0xff705439), fontSize: ScreenUtil.getInstance().setSp(16)),
                     ),
-                  );
-                }).toList(),
+                  )
+                ],
               )
             ],
           );
-  }
-
-  passiveSkillDialog() {
-    return ListView(
-      children: <Widget>[
-        Container(
-          decoration: BoxDecoration(
-              border: Border(
-                  bottom: BorderSide(
-                      color: Color(0xff322A20), width: ScreenUtil.getInstance().setWidth(1)))),
-          padding: EdgeInsets.only(
-              top: ScreenUtil.getInstance().setWidth(30),
-              bottom: ScreenUtil.getInstance().setWidth(30),
-              left: ScreenUtil.getInstance().setWidth(15),
-              right: ScreenUtil.getInstance().setWidth(15)),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                width: ScreenUtil.getInstance().setWidth(126),
-                height: ScreenUtil.getInstance().setHeight(126),
-                margin: EdgeInsets.only(right: ScreenUtil.getInstance().setWidth(12)),
-                child: Image.asset(
-                  'skills/${selectPassiveSkill['image']}',
-                  fit: BoxFit.fill,
-                ),
-              ),
-              Expanded(
-                  flex: 1,
-                  child: Container(
-                    padding: EdgeInsets.only(top: ScreenUtil.getInstance().setWidth(10)),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: selectPassiveSkill['list'].map<Widget>((item) {
-                            return Html(
-                              padding:
-                                  EdgeInsets.only(bottom: ScreenUtil.getInstance().setWidth(12)),
-                              data: '$item',
-                              defaultTextStyle: TextStyle(
-                                  fontSize: ScreenUtil.getInstance().setWidth(16),
-                                  fontStyle: FontStyle.normal,
-                                  color: Color(0xff8D7E54),
-                                  fontFamily: 'SourceHanSansCN'),
-                              customTextStyle: (dom.Node node, TextStyle baseStyle) {
-                                if (node is dom.Element) {
-                                  switch (node.localName) {
-//                                                    case "span":
-//                                                      return baseStyle.merge(TextStyle(
-//                                                          color: Color(0xff7A3F1D)));
-//                                                      break;
-                                    case "em":
-                                      return baseStyle.merge(TextStyle(
-                                          color: Color(0xff00FF00),
-                                          fontStyle: FontStyle.normal,
-                                          fontWeight: FontWeight.normal));
-                                      break;
-                                  }
-                                }
-                                return baseStyle;
-                              },
-                            );
-                          }).toList(),
-                        ),
-                        Wrap(
-//                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: selectPassiveSkill['limit'].map<Widget>((item) {
-                            int index = selectPassiveSkill['limit'].indexOf(item);
-                            return Container(
-                              padding:
-                                  EdgeInsets.only(bottom: ScreenUtil.getInstance().setWidth(12)),
-                              width: (index == 0 ? 7 : 8) * ScreenUtil.getInstance().setWidth(16),
-                              child: Html(
-                                data: '$item',
-                                defaultTextStyle: TextStyle(
-                                    fontSize: ScreenUtil.getInstance().setWidth(16),
-                                    fontStyle: FontStyle.normal,
-                                    color: Color(0xff786A53),
-                                    fontFamily: 'SourceHanSansCN'),
-                                customTextStyle: (dom.Node node, TextStyle baseStyle) {
-                                  if (node is dom.Element) {
-                                    switch (node.localName) {
-                                      case "b":
-                                        return baseStyle.merge(TextStyle(color: Color(0xffAD835A)));
-                                        break;
-                                      case "em":
-                                        return baseStyle.merge(TextStyle(
-                                            color: Color(0xff00FF00),
-                                            fontStyle: FontStyle.normal,
-                                            fontWeight: FontWeight.normal));
-                                        break;
-                                    }
-                                  }
-                                  return baseStyle;
-                                },
-                              ),
-                            );
-                          }).toList(),
-                        ),
-                      ],
-                    ),
-                  ))
-            ],
-          ),
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.all(ScreenUtil.getInstance().setWidth(12)),
-              child: Text(
-                '${selectPassiveSkill['story']}',
-                style: TextStyle(
-                    color: Color(0xff705439), fontSize: ScreenUtil.getInstance().setSp(16)),
-              ),
-            )
-          ],
-        )
-      ],
-    );
   }
 
   @override
@@ -1388,6 +959,7 @@ class _DataBaseSkillState extends State<DataBaseSkill>
                     onTap: () {
                       setState(() {
                         activeSkillsShow = true;
+                        _listController.jumpTo(0);
                       });
                     },
                     child: Container(
@@ -1430,6 +1002,7 @@ class _DataBaseSkillState extends State<DataBaseSkill>
                                         onTap: () {
                                           setState(() {
                                             activeSkillsShow = true;
+                                            _listController.jumpTo(0);
                                           });
                                         },
                                         child: Image.asset(
@@ -1440,7 +1013,271 @@ class _DataBaseSkillState extends State<DataBaseSkill>
                                 ],
                               ),
                             ),
-                            Expanded(flex: 1, child: activeSkillDialog())
+                            Expanded(
+                                flex: 1,
+                                child: selectActiveSkill.isEmpty
+                                    ? Container()
+                                    : ListView(
+                                        controller: _listController,
+                                        children: <Widget>[
+                                          Container(
+                                            decoration: BoxDecoration(
+                                                border: Border(
+                                                    bottom: BorderSide(
+                                                        color: Color(0xff322A20),
+                                                        width:
+                                                            ScreenUtil.getInstance().setWidth(1)))),
+                                            padding: EdgeInsets.only(
+                                                top: ScreenUtil.getInstance().setWidth(30),
+                                                bottom: ScreenUtil.getInstance().setWidth(30),
+                                                left: ScreenUtil.getInstance().setWidth(15),
+                                                right: ScreenUtil.getInstance().setWidth(15)),
+                                            child: Row(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: <Widget>[
+                                                Container(
+                                                  width: ScreenUtil.getInstance().setWidth(126),
+                                                  height: ScreenUtil.getInstance().setHeight(126),
+                                                  margin: EdgeInsets.only(
+                                                      right: ScreenUtil.getInstance().setWidth(12)),
+                                                  child: Image.network(
+                                                    'https://ok.166.net/cain-corner/diablo3db/49512/cn/skills/${selectActiveSkill['picIcon']}.png?imageView&type=webp&thumbnail=84x84',
+                                                    fit: BoxFit.fill,
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                    flex: 1,
+                                                    child: Container(
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment.start,
+                                                        children: <Widget>[
+                                                          Container(
+                                                            child: Html(
+                                                              padding: EdgeInsets.only(
+                                                                  bottom: ScreenUtil.getInstance()
+                                                                      .setWidth(12)),
+                                                              data:
+                                                                  '${selectActiveSkill['attrDesc']}',
+                                                              defaultTextStyle: TextStyle(
+                                                                  fontSize: ScreenUtil.getInstance()
+                                                                      .setWidth(16),
+                                                                  fontStyle: FontStyle.normal,
+                                                                  color: Color(0xff8D7E54),
+                                                                  fontFamily: 'SourceHanSansCN'),
+                                                              customTextStyle: (dom.Node node,
+                                                                  TextStyle baseStyle) {
+                                                                if (node is dom.Element) {
+                                                                  switch (node.className) {
+                                                                    case "d3-color-green":
+                                                                      return baseStyle.merge(
+                                                                          TextStyle(
+                                                                              color:
+                                                                                  Color(0xff00FF00),
+                                                                              fontStyle:
+                                                                                  FontStyle.normal,
+                                                                              fontWeight: FontWeight
+                                                                                  .normal));
+                                                                      break;
+                                                                  }
+                                                                }
+                                                                return baseStyle;
+                                                              },
+                                                            ),
+                                                          ),
+                                                          Container(
+                                                            padding: EdgeInsets.only(
+                                                                bottom: ScreenUtil.getInstance()
+                                                                    .setWidth(12)),
+                                                            child: Text(
+                                                              '${selectActiveSkill['secondaryClass']}',
+                                                              style: TextStyle(
+                                                                  fontSize: ScreenUtil.getInstance()
+                                                                      .setWidth(16),
+                                                                  fontStyle: FontStyle.normal,
+                                                                  color: Color(0xff7A5C3F),
+                                                                  fontFamily: 'SourceHanSansCN'),
+                                                            ),
+                                                          ),
+                                                          Container(
+                                                            padding: EdgeInsets.only(
+                                                                bottom: ScreenUtil.getInstance()
+                                                                    .setWidth(12)),
+                                                            child: RichText(
+                                                              text: TextSpan(
+                                                                  text: '解锁于等级',
+                                                                  children: <TextSpan>[
+                                                                    TextSpan(
+                                                                        text:
+                                                                            ' ${selectActiveSkill['unlockLevel']}',
+                                                                        style: TextStyle(
+                                                                            color:
+                                                                                Color(0xff7A5C3F),
+                                                                            fontStyle:
+                                                                                FontStyle.normal,
+                                                                            fontWeight:
+                                                                                FontWeight.normal)),
+                                                                    TextSpan(text: '     触发系数'),
+                                                                    TextSpan(
+                                                                        text:
+                                                                            '${selectActiveSkill['procFactor']}',
+                                                                        style: TextStyle(
+                                                                            color:
+                                                                                Color(0xff00FF00),
+                                                                            fontStyle:
+                                                                                FontStyle.normal,
+                                                                            fontWeight:
+                                                                                FontWeight.normal))
+                                                                  ],
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          ScreenUtil.getInstance()
+                                                                              .setWidth(16),
+                                                                      fontStyle: FontStyle.normal,
+                                                                      color: Color(0xff8D7E54),
+                                                                      fontFamily:
+                                                                          'SourceHanSansCN')),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ))
+                                              ],
+                                            ),
+                                          ),
+                                          Column(
+                                            children:
+                                                selectActiveSkill['runeList'].map<Widget>((rune) {
+                                              return Container(
+                                                decoration: BoxDecoration(
+                                                    border: Border(
+                                                        bottom: BorderSide(
+                                                            color: Color(0xff322A20),
+                                                            width: ScreenUtil.getInstance()
+                                                                .setWidth(1)))),
+                                                padding: EdgeInsets.only(
+                                                    top: ScreenUtil.getInstance().setWidth(30),
+                                                    bottom: ScreenUtil.getInstance().setWidth(30),
+                                                    left: ScreenUtil.getInstance().setWidth(15),
+                                                    right: ScreenUtil.getInstance().setWidth(15)),
+                                                child: Row(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: <Widget>[
+                                                    Container(
+                                                      width: ScreenUtil.getInstance().setWidth(84),
+                                                      height:
+                                                          ScreenUtil.getInstance().setHeight(84),
+                                                      margin: EdgeInsets.only(
+                                                          right: ScreenUtil.getInstance()
+                                                              .setWidth(12)),
+                                                      child: Image.asset(
+                                                        'images/rune_${rune['type']}_light.png',
+                                                        fit: BoxFit.fill,
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                        flex: 1,
+                                                        child: Container(
+                                                          child: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment.start,
+                                                            children: <Widget>[
+                                                              Container(
+                                                                padding: EdgeInsets.only(
+                                                                    bottom: ScreenUtil.getInstance()
+                                                                        .setWidth(12)),
+                                                                child: Text(
+                                                                  '${rune['name']}',
+                                                                  style: TextStyle(
+                                                                      color: Color(0xff705439)),
+                                                                ),
+                                                              ),
+                                                              Container(
+                                                                  child: Html(
+                                                                padding: EdgeInsets.only(
+                                                                    bottom: ScreenUtil.getInstance()
+                                                                        .setWidth(12)),
+                                                                data: '${rune['description']}',
+                                                                defaultTextStyle: TextStyle(
+                                                                    fontSize:
+                                                                        ScreenUtil.getInstance()
+                                                                            .setWidth(16),
+                                                                    fontStyle: FontStyle.normal,
+                                                                    color: Color(0xff8D7E54),
+                                                                    fontFamily: 'SourceHanSansCN'),
+                                                                customTextStyle: (dom.Node node,
+                                                                    TextStyle baseStyle) {
+                                                                  if (node is dom.Element) {
+                                                                    switch (node.className) {
+                                                                      case "d3-color-green":
+                                                                        return baseStyle.merge(
+                                                                            TextStyle(
+                                                                                color: Color(
+                                                                                    0xff00FF00),
+                                                                                fontStyle: FontStyle
+                                                                                    .normal,
+                                                                                fontWeight:
+                                                                                    FontWeight
+                                                                                        .normal));
+                                                                        break;
+                                                                    }
+                                                                  }
+                                                                  return baseStyle;
+                                                                },
+                                                              )),
+                                                              Container(
+                                                                padding: EdgeInsets.only(
+                                                                    bottom: ScreenUtil.getInstance()
+                                                                        .setWidth(12)),
+                                                                child: RichText(
+                                                                  text: TextSpan(
+                                                                      text: '解锁于等级',
+                                                                      children: <TextSpan>[
+                                                                        TextSpan(
+                                                                            text:
+                                                                                ' ${rune['level']}',
+                                                                            style: TextStyle(
+                                                                                color: Color(
+                                                                                    0xff7A5C3F),
+                                                                                fontStyle: FontStyle
+                                                                                    .normal,
+                                                                                fontWeight:
+                                                                                    FontWeight
+                                                                                        .normal)),
+                                                                        TextSpan(text: '     触发系数'),
+                                                                        TextSpan(
+                                                                            text:
+                                                                                '${rune['procFactor']}',
+                                                                            style: TextStyle(
+                                                                                color: Color(
+                                                                                    0xff00FF00),
+                                                                                fontStyle: FontStyle
+                                                                                    .normal,
+                                                                                fontWeight:
+                                                                                    FontWeight
+                                                                                        .normal))
+                                                                      ],
+                                                                      style: TextStyle(
+                                                                          fontSize: ScreenUtil
+                                                                                  .getInstance()
+                                                                              .setWidth(16),
+                                                                          fontStyle:
+                                                                              FontStyle.normal,
+                                                                          color: Color(0xff8D7E54),
+                                                                          fontFamily:
+                                                                              'SourceHanSansCN')),
+                                                                ),
+                                                              )
+                                                            ],
+                                                          ),
+                                                        ))
+                                                  ],
+                                                ),
+                                              );
+                                            }).toList(),
+                                          )
+                                        ],
+                                      ))
                           ],
                         ),
                       ),

@@ -22,38 +22,41 @@ class _EquipmentState extends State<Equipment> with TickerProviderStateMixin {
   AnimationController animationLoadingController;
   Animation animationLoading;
 
-  ScrollController _listController = ScrollController();
-
-  bool flag = true;
-
-  bool show = false;
   bool showEquip = true;
 
-  // type 0=>普通 equipment_normal , 1=>魔法 equipment_magic,
-  // 2=>稀有 equipment_rare, 3=>传奇 equipment_legendary , 4=>套装 equipment_set
-  //switch (item['qualityKey']) {
-  //                                  case 'Normal':
-  //                                    bg = 'equipment_normal';
-  //                                    break;
-  //                                  case 'Magic':
-  //                                    bg = 'equipment_magic';
-  //                                    break;
-  //                                  case 'Rare':
-  //                                    bg = 'equipment_rare';
-  //                                    break;
-  //                                  case 'Legendary':
-  //                                    bg = 'equipment_legendary';
-  //                                    break;
-  //                                  case 'Set':
-  //                                    bg = 'equipment_set';
-  //                                    break;
-  //                                }
   Map titleBg = {
     'Normal': 'images/tooltip-title0.png',
     'Magic': 'images/tooltip-title1.png',
     'Rare': 'images/tooltip-title2.png',
     'Legendary': 'images/tooltip-title3.png',
     'Set': 'images/tooltip-title4.png',
+  };
+
+//  String bg = 'equipment_normal';
+//  switch (item['qualityKey']) {
+//  case 'Normal':
+//  bg = 'equipment_normal';
+//  break;
+//  case 'Magic':
+//  bg = 'equipment_magic';
+//  break;
+//  case 'Rare':
+//  bg = 'equipment_rare';
+//  break;
+//  case 'Legendary':
+//  bg = 'equipment_legendary';
+//  break;
+//  case 'Set':
+//  bg = 'equipment_set';
+//  break;
+//  }
+
+  Map eBg = {
+    'Normal': 'images/equipment_normal.png',
+    'Magic': 'images/equipment_magic.png',
+    'Rare': 'images/equipment_rare.png',
+    'Legendary': 'images/equipment_legendary.png',
+    'Set': 'images/equipment_set.png',
   };
 
   Map equipBg = {
@@ -78,27 +81,29 @@ class _EquipmentState extends State<Equipment> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _ajax();
     _getInstanceEquipmentList();
-    _listController.addListener(() {
-      setState(() {
-        show = (200 < _listController.offset) ? true : false;
-      });
-    });
   }
 
   List equipItems = [];
 
   _getInstanceEquipmentList() async {
-    equipItems.clear();
+    setState(() {
+      equipItems.clear();
+    });
+    List temp = [];
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String equipmentList = prefs.getString('equipmentList');
     if (equipmentList != null) {
       for (var o in jsonDecode(equipmentList)) {
         if (o['parentTypeKey'] == widget.props['item']['parentTypeKey'] &&
             o['typeKey'] == widget.props['item']['typeKey']) {
-          equipItems.add(o);
+          temp.add(o);
         }
+      }
+      if (mounted) {
+        setState(() {
+          equipItems = temp;
+        });
       }
     }
   }
@@ -121,20 +126,10 @@ class _EquipmentState extends State<Equipment> with TickerProviderStateMixin {
     });
   }
 
-  _ajax() async {
-    await Future.delayed(Duration(seconds: 1), () {
-      if (mounted)
-        setState(() {
-          flag = false;
-        });
-    });
-  }
-
   @override
   void dispose() {
     super.dispose();
     _refreshController.dispose();
-    _listController.dispose();
     if (animationLoadingController != null) {
       animationLoadingController.dispose();
     }
@@ -315,29 +310,10 @@ class _EquipmentState extends State<Equipment> with TickerProviderStateMixin {
                               _refreshController.loadComplete();
                             },
                             child: ListView(
-                              controller: _listController,
                               padding: EdgeInsets.only(
                                   left: ScreenUtil.getInstance().setWidth(24),
                                   right: ScreenUtil.getInstance().setWidth(24)),
                               children: equipItems.map<Widget>((item) {
-                                String bg = 'equipment_normal';
-                                switch (item['qualityKey']) {
-                                  case 'Normal':
-                                    bg = 'equipment_normal';
-                                    break;
-                                  case 'Magic':
-                                    bg = 'equipment_magic';
-                                    break;
-                                  case 'Rare':
-                                    bg = 'equipment_rare';
-                                    break;
-                                  case 'Legendary':
-                                    bg = 'equipment_legendary';
-                                    break;
-                                  case 'Set':
-                                    bg = 'equipment_set';
-                                    break;
-                                }
                                 return GestureDetector(
                                   onTap: () {
                                     _getEquipDetail(item);
@@ -365,7 +341,7 @@ class _EquipmentState extends State<Equipment> with TickerProviderStateMixin {
                                           height: ScreenUtil.getInstance().setWidth(84),
                                           decoration: BoxDecoration(
                                               image: DecorationImage(
-                                                  image: AssetImage('images/$bg.png'))),
+                                                  image: AssetImage('${eBg[item['qualityKey']]}'))),
                                           padding: EdgeInsets.all(10),
                                           child: Image.network(
                                             'https://ok.166.net/cain-corner/diablo3db/49512/cn/items/${item['picIcon']}.png?'
@@ -547,9 +523,10 @@ class _EquipmentState extends State<Equipment> with TickerProviderStateMixin {
                                                     image: DecorationImage(
                                                         image: AssetImage(
                                                             '${equipBg[equipDetail['item']['itemClassKey']]}'))),
-                                                child:
-                                                    Image.network('https://ok.166.net/cain-corner/diablo3db/49512/cn/items/${equipDetail['item']['picIcon']}.png?'
-                                                        'imageView&type=webp&thumbnail=76x76',),
+                                                child: Image.network(
+                                                  'https://ok.166.net/cain-corner/diablo3db/49512/cn/items/${equipDetail['item']['picIcon']}.png?'
+                                                  'imageView&type=webp&thumbnail=76x76',
+                                                ),
                                               ),
                                               Expanded(
                                                   child: Container(
